@@ -114,63 +114,14 @@
         <ul>
             <li>
                 <a href="#">Home</a>
-                <ul>
-                    <li><a href='index1.html'>Modern Technology</a></li>
-                    <!-- <li><a href='index2.html'>Neural Networks</a></li>
-                    <li><a href='index3.html'>AI Agency</a></li>
-                    <li><a href='index4.html'>Chatbot</a></li>
-                    <li><a href='index5.html'>Startup</a></li>
-                    <li><a href='index6.html'>AI Consulting</a></li>
-                    <li><a href='index7.html'>Futurism</a></li>
-                    <li><a href='index8.html'>Hi-Tech</a></li>
-                    <li><a href='index9.html'>Voiceover</a></li>
-                    <li><a href='index10.html'>Science</a></li>
-                    <li><a href='index11.html'>Creative Bureau</a></li>
-                    <li><a href='index12.html'>Video Voiceover</a></li>
-                    <li><a href='index13.html'>IT Services</a></li>
-                    <li><a href='index14.html'>AI Devices</a></li>
-                    <li><a href='index15.html'>AI Solutions</a></li>
-                    <li><a href='index16.html'>Image Generator</a></li>
-                    <li><a href='index17.html'>Content Generator</a></li>
-                    <li><a href='index.html'>Intro</a></li> -->
-                </ul>
-            </li>
-            <li>
-                <a href="#">pages</a>
-                <ul>
-                    <li><a href='about-us.html'>About us</a></li>
-                    <li class="sub-menu">
-                        <a href="#">Team</a>
-                        <ul>
-                            <li><a href='team.html' title>Creative team</a></li>
-                            <li><a href='team-single.html' title>Team Single</a></li>
-                        </ul>
-                    </li>
-                    <li class="sub-menu">
-                        <a href="#">Projects</a>
-                        <ul>
-                            <li><a href='project.html'>Projects Grid</a></li>
-                            <li><a href='project2.html'>Projects Modern</a></li>
-                            <li><a href='project-single.html'>Project Single</a></li>
-                        </ul>
-                    </li>
-                    <li><a href='gallery-grid.html'>Gallery Grid</a></li>
-                    <li><a href='gallery-masonry.html'>Gallery Masonry</a></li>
-                    <li><a href='pricing.html'>Pricing plans</a></li>
-                    <li><a href='faq.html'>FAQ</a></li>
-                    <li><a href='typography.html'>Typography</a></li>
-                    <li><a href='404.html'>404</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Services</a>
-                <ul>
-                    <li><a href='service.html'>Services Page</a></li>
-                    <li><a href='service-single.html'>Service Single</a></li>
-                </ul>
+                
             </li>
             
-            <li><a href="#">Contact us</a></li>
+            <li>
+                <a href="{{ route('onboard.services') }}">Services</a>
+               
+            </li>
+            
         </ul>
         <div class="menu-contact">
             <span>Contacts</span>
@@ -186,7 +137,7 @@
                 <li><a href="#" title=""><i class="fab fa-youtube"></i></a></li>
             </ul>
             <a href="#" title="" class="ibt-btn ibt-btn-outline-3 ibt-btn-rounded">
-                <span>Get in Touch</span>
+                <span>Login</span>
             </a>
         </div>
     </div>
@@ -209,46 +160,35 @@
                     <nav class="main-menu menu-style1">
                         <ul>
                             <li>
-                                <a class='active' href='index.html'>
+                                <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href='{{route("home")}}' wire:navigate>
                                     <span class="menu-item">Home</span>
-                                    <span class="menu-item2">Home</span>
+                                    <span class="menu-item">Home</span>
+
+                                    
                                 </a>
-                                <ul class="mega-sub-menu">
-                                    <li class="mega-menu-column">
-                                        <ul>
-                                            <li><a href='index1.html'>Modern Technology</a></li>
-                                          
-                                        </ul>
-                                      
-                                    </li>
-                                    <li class="mega-menu-column">
-                                        <a class='darkModeTriggerImg' href='index1.html'><img src="/onboarding/assets/images/event/dark-version.png" alt="AI Agency & Technology HTML Template"></a>
-                                        <a class='darkModeTriggerImg2' href='index1.html'><img src="/onboarding/assets/images/event/light-version.png" alt="AI Agency & Technology HTML Template"></a>
-                                    </li>
-                                </ul>
+                               
                             </li>
                             <li>
                                
-                                <ul class="sub-menu">
-                                    <li><a href='about-us.html'>About us</a></li>
-                                    
-                                   
-                                </ul>
+                                    <a class="{{ request()->routeIs('onboard.about') ? 'active' : '' }}" href='{{ route("onboard.about") }}' wire:navigate>
+
+                                        <span class="menu-item">About</span>
+                                        <span class="menu-item">About</span>
+
+                                    </a>
+                               
                             </li>
                             <li>
-                                <a href='{{ route("onboard.services") }}' wire:navigate>
+                                <a class="{{ request()->routeIs('onboard.services') ? 'active' : '' }}" href='{{ route("onboard.services") }}' wire:navigate>
                                     <span class="menu-item">services</span>
                                     <span class="menu-item2">services</span>
                                 </a>
-                                <ul class="sub-menu">
-                                    <li><a href='{{ route("onboard.services") }}' wire:navigate>Services Page</a></li>
-                                    <li><a href='service-single.html'>Service Single</a></li>
-                                </ul>
+                                
                             </li>
                             
                             
                             <li>
-                                <a href='contact.html'>
+                                <a class="{{ request()->routeIs('onboard.contact') ? 'active' : '' }}" href='{{ route("onboard.contact") }}' wire:navigate >
                                     <span class="menu-item">Contacts</span>
                                     <span class="menu-item2">Contacts</span>
                                 </a>
@@ -291,58 +231,34 @@
                         <nav class="main-menu menu-style1">
                             <ul>
                                 <li>
-                                    <a class='active' href='{{route("home")}}' wire:navigate>
+                                    <a class="{{ request()->routeIs('home') ? 'active' : '' }}"  href='{{route("home")}}' wire:navigate>
                                         <span class="menu-item">Home</span>
                                         <span class="menu-item2">Home</span>
                                     </a>
-                                    <ul class="mega-sub-menu">
-                                        <li class="mega-menu-column">
-                                            <ul>
-                                                <li><a href='{{route("home")}}' wire:navigate>Modern Technology</a></li>
-                                               
-                                            </ul>
-                                            <ul>
-                                                <li><a href='{{route("home")}}' wire:navigate>Science</a></li>
-                                              
-                                            </ul>
-                                        </li>
-                                        <li class="mega-menu-column">
-                                            <a class='darkModeTriggerImg' href='{{route("home")}}' wire:navigate><img src="/onboarding/assets/images/event/dark-version.png" alt="AI Agency & Technology HTML Template"></a>
-                                            <a class='darkModeTriggerImg2' href='{{route("home")}}' wire:navigate><img src="/onboarding/assets/images/event/light-version.png" alt="AI Agency & Technology HTML Template"></a>
-                                        </li>
-                                    </ul>
+                                   
                                 </li>
                                 
                                  <li>
-                                    <a href='{{ route("onboard.services") }}' wire:navigate>
+                                    <a class="{{ request()->routeIs('onboard.services') ? 'active' : '' }}"  href='{{ route("onboard.services") }}' wire:navigate>
                                         <span class="menu-item">services</span>
                                         <span class="menu-item2">services</span>
                                     </a>
-                                    <ul class="sub-menu">
-                                        <li><a href='{{ route("onboard.services") }}' wire:navigate>Services Page</a></li>
-                                        <li><a href='service-single.html'>Service Single</a></li>
-                                    </ul>
+                                   
                                 </li>
                                 <li>
-                                    <a href='{{ route("onboard.about") }}' wire:navigate>
+                                    <a class="{{ request()->routeIs('onboard.about') ? 'active' : '' }}"  href='{{ route("onboard.about") }}' wire:navigate>
                                         <span class="menu-item">About Us</span>
                                         <span class="menu-item2">About Us</span>
                                     </a>
-                                    <ul class="sub-menu">
-                                        <li><a href='{{ route("onboard.about") }}' wire:navigate>About us</a></li>
-                                        
-                                    </ul>
+                                    
                                 </li>
 
                                 <li>
-                                    <a href='{{ route("onboard.contact") }}' wire:navigate>
+                                    <a class="{{ request()->routeIs('onboard.contact') ? 'active' : '' }}"  href='{{ route("onboard.contact") }}' wire:navigate>
                                         <span class="menu-item">contact Us</span>
                                         <span class="menu-item2">contact Us</span>
                                     </a>
-                                    <ul class="sub-menu">
-                                        <li><a href='{{ route("onboard.contact") }}' wire:navigate>contact</a></li>
-                                        
-                                    </ul>
+                                    
                                 </li>
                                 
                             </ul>
@@ -351,8 +267,8 @@
                     <div class="col-auto d-none d-xl-block">
                         <div class="btn-box">
                             <a href="#" class="popup-search" data-popup="1"><i class="fa fa-search"></i></a>
-                            <a class='ibt-btn ibt-btn-outline-3 ibt-btn-rounded' href='{{ route("onboard.contact") }}' title>
-                                <span>Get in Touch</span>
+                            <a class='ibt-btn ibt-btn-outline-3 ibt-btn-rounded' href='{{ route("login") }}' title>
+                                <span>login</span>
                             </a>
                         </div>
                     </div>
