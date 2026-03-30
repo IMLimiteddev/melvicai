@@ -40,7 +40,7 @@ services:
       MYSQL_USER: laravell
       MYSQL_PASSWORD: secret
     ports:
-      - "3307:3306"
+      - "3304:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
