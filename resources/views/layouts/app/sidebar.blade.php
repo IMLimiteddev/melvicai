@@ -297,61 +297,177 @@
             <div class="page-body-wrapper"> 
                 <!-- Page Sidebar Start-->
                 <div class="sidebar-wrapper" data-layout="stroke-svg">
-                <div>
-                    <div class="logo-wrapper">
-                        
-                    <a href="index-2.html"> <img class="img-fluid for-light" style="width: 60px; height: auto;" src="/dash/logo/iandm_logo_black.png" alt=""><img class="img-fluid for-dark" src="/dash/assets/images/logo/logo_dark.png" alt=""></a>
-                    
-                    <div class="toggle-sidebar">
-                        <i class="fa fa-bars"></i>
-                       
-                    </div>
-                    </div>
-                    <!-- <div class="logo-icon-wrapper"><a href="index-2.html"><img class="img-fluid" src="/dash/assets/images/logo/logo-icon.png" alt=""></a></div> -->
-                    <nav class="sidebar-main">
-                    <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
-                    <div id="sidebar-menu">
-                        <ul class="sidebar-links" id="simple-bar">
-                            <li class="back-btn"><a href="index-2.html"><img class="img-fluid" src="/dash/assets/images/logo/logo-icon.png" alt=""></a>
-                                <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
-                            </li>
-                            <li class="pin-title sidebar-main-title">
-                                <div> 
-                                <h6>Pinned</h6>
-                                </div>
-                            </li>
-                            <li class="sidebar-main-title">
-                                <div>
-                                <h6 class="lan-1">General</h6>
-                                </div>
-                            </li>
-                            <li class="sidebar-list">
-                                <i class="fa fa-thumb-tack"></i>
+                    <div>
+                        <div class="logo-wrapper">
                             
-                                <a class="sidebar-link " href="{{route('dashboard')}}">
-                                    <span class="lan-3">Dashboard</span>
-                                </a>
-                            </li>
-                           
-                            <li class="sidebar-list"><i class="fa fa-thumb-tack">    </i>
-                                <a class="sidebar-link " href="{{route('admin.roles-perm')}}">
-                                 <span>Roles & Permissions</span>
-                                </a>
-                               
-                            </li>
-                            <li class="sidebar-list"><i class="fa fa-thumb-tack">    </i><a class="sidebar-link " href="{{route('admin.models')}}">
-                                <span>Models</span></a>
-                            </li>
-                            <li class="sidebar-list"><i class="fa fa-thumb-tack">    </i><a class="sidebar-link " href="{{route('admin.users')}}">
-                                <span>Users</span></a>
-                            </li>
+                            <a href="{{ route('dashboard') }}"> <img class="img-fluid for-light" style="width: 60px; height: auto;" src="/dash/logo/iandm_logo_black.png" alt=""><img class="img-fluid for-dark" src="/dash/assets/images/logo/logo_dark.png" alt=""></a>
                             
-                        </ul>
+                                <div class="toggle-sidebar">
+                                    <i class="fa fa-bars"></i>
+                                
+                                </div>
+                        </div>
+                        <!-- <div class="logo-icon-wrapper"><a href="index-2.html"><img class="img-fluid" src="/dash/assets/images/logo/logo-icon.png" alt=""></a></div> -->
+                        <flux:sidebar class="sidebar-main">
+
+                            <!-- General Section -->
+                            <flux:sidebar.group label="General">
+
+                                <flux:sidebar.item 
+                                    href="{{ route('dashboard') }}" 
+                                    wire:navigate 
+                                    current
+                                    icon="home"
+                                >
+                                    Dashboard
+                                </flux:sidebar.item>
+
+                            </flux:sidebar.group>
+
+
+                            <!-- Administration Dropdown -->
+                            <flux:sidebar.group label="Administration" collapsible>
+
+                                <!-- Roles & Permissions -->
+                                <div x-data="{ open: false }">
+
+                                    <flux:sidebar.item 
+                                        href="javascript:void(0)" 
+                                        @click="open = !open"
+                                        icon="shield-check"
+                                    >
+                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                                            
+                                            <span>Roles</span>
+
+                                            <flux:icon 
+                                                name="chevron-down" 
+                                                style="width:16px; transition:0.3s;"
+                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
+                                            />
+                                        </span>
+                                    </flux:sidebar.item>
+
+                                    <div x-show="open" x-transition style="margin-left: 25px;">
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.roles-perm') }}" 
+                                            wire:navigate
+                                        >
+                                            All Roles
+                                        </flux:sidebar.item>
+
+                                        <flux:sidebar.item href="#">
+                                            Add Role
+                                        </flux:sidebar.item>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Models (already done) -->
+                                <div x-data="{ open: false }">
+
+                                    <flux:sidebar.item 
+                                        href="javascript:void(0)" 
+                                        @click="open = !open"
+                                        icon="cube"
+                                    >
+                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                                            
+                                            <span>Models</span>
+
+                                            <flux:icon 
+                                                name="chevron-down" 
+                                                style="width:16px; transition:0.3s;"
+                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
+                                            />
+                                        </span>
+                                    </flux:sidebar.item>
+
+                                    <div x-show="open" x-transition style="margin-left: 25px;">
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.models') }}" 
+                                            wire:navigate
+                                        >
+                                            All Models
+                                        </flux:sidebar.item>
+
+                                        <flux:sidebar.item href="#">
+                                            Add Model
+                                        </flux:sidebar.item>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Users -->
+                                <div x-data="{ open: false }">
+
+                                    <flux:sidebar.item 
+                                        href="javascript:void(0)" 
+                                        @click="open = !open"
+                                        icon="users"
+                                    >
+                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                                            
+                                            <span>Users</span>
+
+                                            <flux:icon 
+                                                name="chevron-down" 
+                                                style="width:16px; transition:0.3s;"
+                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
+                                            />
+                                        </span>
+                                    </flux:sidebar.item>
+
+                                    <div x-show="open" x-transition style="margin-left: 25px;">
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.users') }}" 
+                                            wire:navigate
+                                        >
+                                            All Users
+                                        </flux:sidebar.item>
+
+                                        <flux:sidebar.item href="#">
+                                            Add User
+                                        </flux:sidebar.item>
+
+                                    </div>
+
+                                </div>
+
+                            </flux:sidebar.group>
+
+
+                            <!-- Optional: More Dropdown -->
+                            <flux:sidebar.group label="Settings" collapsible>
+
+                                <flux:sidebar.item 
+                                    href="#" 
+                                    icon="cog"
+                                >
+                                    General Settings
+                                </flux:sidebar.item>
+
+                                <flux:sidebar.item 
+                                    href="#" 
+                                    icon="lock-closed"
+                                >
+                                    Security
+                                </flux:sidebar.item>
+
+                            </flux:sidebar.group>
+
+                        </flux:sidebar>
                     </div>
-                    <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
-                    </nav>
                 </div>
-                </div>
+
+              
                 <!-- Page Sidebar Ends-->
                 
                  {{ $slot }}
@@ -364,50 +480,69 @@
 
         <!-- The template js -->
         <!-- latest jquery-->
-        <script src="/dash/assets/js/jquery.min.js"></script>
+        <script src="/dash/assets/js/jquery.min.js" data-navigate-track></script>
         <!-- Bootstrap js-->
-        <script src="/dash/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+        <script src="/dash/assets/js/bootstrap/bootstrap.bundle.min.js" data-navigate-track></script>
         <!-- feather icon js-->
-        <script src="/dash/assets/js/icons/feather-icon/feather.min.js"></script>
-        <script src="/dash/assets/js/icons/feather-icon/feather-icon.js"></script>
+        <script src="/dash/assets/js/icons/feather-icon/feather.min.js" data-navigate-track></script>
+        <script src="/dash/assets/js/icons/feather-icon/feather-icon.js" data-navigate-track></script>
         <!-- scrollbar js-->
-        <script src="/dash/assets/js/scrollbar/simplebar.js"></script>
-        <script src="/dash/assets/js/scrollbar/custom.js"></script>
+        <script src="/dash/assets/js/scrollbar/simplebar.js" data-navigate-track></script>
+        <script src="/dash/assets/js/scrollbar/custom.js" data-navigate-track></script>
         <!-- Sidebar jquery-->
-        <script src="/dash/assets/js/config.js"></script>
+        <script src="/dash/assets/js/config.js" data-navigate-track></script>
         <!-- Plugins JS start-->
-        <script src="/dash/assets/js/sidebar-menu.js"></script>
-        <script src="/dash/assets/js/sidebar-pin.js"></script>
-        <script src="/dash/assets/js/slick/slick.min.js"></script>
-        <script src="/dash/assets/js/slick/slick.js"></script>
-        <script src="/dash/assets/js/header-slick.js"></script>
-        <script src="/dash/assets/js/chart/morris-chart/raphael.js"></script>
-        <script src="/dash/assets/js/chart/morris-chart/morris.js"> </script>
-        <script src="/dash/assets/js/chart/morris-chart/prettify.min.js"></script>
-        <script src="/dash/assets/js/chart/apex-chart/apex-chart.js"></script>
-        <script src="/dash/assets/js/chart/apex-chart/stock-prices.js"></script>
-        <script src="/dash/assets/js/chart/apex-chart/moment.min.js"></script>
-        <script src="/dash/assets/js/notify/bootstrap-notify.min.js"></script>
-        <script src="/dash/assets/js/dashboard/default.js"></script>
-        <script src="/dash/assets/js/notify/index.js"></script>
-        <script src="/dash/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
-        <script src="/dash/assets/js/datatable/datatables/datatable.custom.js"></script>
-        <script src="/dash/assets/js/datatable/datatables/datatable.custom1.js"></script>
-        <script src="/dash/assets/js/owlcarousel/owl.carousel.js"></script>
-        <script src="/dash/assets/js/owlcarousel/owl-custom.js"></script>
-        <script src="/dash/assets/js/typeahead/handlebars.js"></script>
-        <script src="/dash/assets/js/typeahead/typeahead.bundle.js"></script>
-        <script src="/dash/assets/js/typeahead/typeahead.custom.js"></script>
-        <script src="/dash/assets/js/typeahead-search/handlebars.js"></script>
-        <script src="/dash/assets/js/typeahead-search/typeahead-custom.js"></script>
-        <script src="/dash/assets/js/height-equal.js"></script>
+        <script src="/dash/assets/js/sidebar-menu.js"data-navigate-track></script>
+        <script src="/dash/assets/js/sidebar-pin.js" data-navigate-track></script>
+        <script src="/dash/assets/js/slick/slick.min.js" data-navigate-track></script>
+        <script src="/dash/assets/js/slick/slick.js" data-navigate-track></script>
+        <script src="/dash/assets/js/header-slick.js" data-navigate-track></script>
+        <script src="/dash/assets/js/chart/morris-chart/raphael.js" data-navigate-track></script>
+        <script src="/dash/assets/js/chart/morris-chart/morris.js" data-navigate-track> </script>
+        <script src="/dash/assets/js/chart/morris-chart/prettify.min.js" data-navigate-track></script>
+        <script src="/dash/assets/js/chart/apex-chart/apex-chart.js" data-navigate-track></script>
+        <script src="/dash/assets/js/chart/apex-chart/stock-prices.js" data-navigate-track></script>
+        <script src="/dash/assets/js/chart/apex-chart/moment.min.js" data-navigate-track></script>
+        <script src="/dash/assets/js/notify/bootstrap-notify.min.js" data-navigate-track></script>
+        <script src="/dash/assets/js/dashboard/default.js" data-navigate-track></script>
+        <script src="/dash/assets/js/notify/index.js" data-navigate-track></script>
+        <script src="/dash/assets/js/datatable/datatables/jquery.dataTables.min.js" data-navigate-track></script>
+        <script src="/dash/assets/js/datatable/datatables/datatable.custom.js" data-navigate-track></script>
+        <script src="/dash/assets/js/datatable/datatables/datatable.custom1.js" data-navigate-track></script>
+        <script src="/dash/assets/js/owlcarousel/owl.carousel.js" data-navigate-track></script>
+        <script src="/dash/assets/js/owlcarousel/owl-custom.js" data-navigate-track></script>
+        <script src="/dash/assets/js/typeahead/handlebars.js" data-navigate-track></script>
+        <script src="/dash/assets/js/typeahead/typeahead.bundle.js" data-navigate-track></script>
+        <script src="/dash/assets/js/typeahead/typeahead.custom.js" data-navigate-track></script>
+        <script src="/dash/assets/js/typeahead-search/handlebars.js" data-navigate-track></script>
+        <script src="/dash/assets/js/typeahead-search/typeahead-custom.js" data-navigate-track></script>
+        <script src="/dash/assets/js/height-equal.js" data-navigate-track></script>
         <!-- Plugins JS Ends-->
         <!-- Theme js-->
-        <script src="/dash/assets/js/script.js"></script>
-        <script src="/dash/assets/js/theme-customizer/customizer.js"></script>
+        <script src="/dash/assets/js/script.js" data-navigate-track></script>
+        <script src="/dash/assets/js/theme-customizer/customizer.js" data-navigate-track></script>
         <!-- Plugin used-->
         <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e263577fee8b28b',t:'MTc3NDUyODY2OQ=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/h/g/scripts/jsd/ea2d291c0fdc/maind41d.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"ad651ca6cb1442c28591d5acd632a6c4","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
 
+            <script>
+                document.addEventListener('livewire:navigated', function () {
+                    // Re-init feather icons
+                    if (typeof feather !== 'undefined') {
+                        feather.replace();
+                    }
+
+                    // Re-init simplebar
+                    if (typeof SimpleBar !== 'undefined') {
+                        document.querySelectorAll('[data-simplebar]').forEach(function(el) {
+                            new SimpleBar(el);
+                        });
+                    }
+
+                    // Hide loader
+                    const loader = document.querySelector('.loader-wrapper');
+                    if (loader) loader.style.display = 'none';
+                });
+            </script>
     </body>
 </html>

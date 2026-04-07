@@ -14,31 +14,31 @@
 
 <!-- dashboard stylings from templates -->
 
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/font-awesome.css" data-navigate-track>
  <!-- ico-font-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/icofont.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/icofont.css" data-navigate-track>
 <!-- Themify icon-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/themify.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/themify.css" data-navigate-track>
 <!-- Flag icon-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/flag-icon.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/flag-icon.css" data-navigate-track>
 <!-- Feather icon-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/feather-icon.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/feather-icon.css" data-navigate-track>
 <!-- Plugins css start-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/slick.css">
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/slick-theme.css">
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/scrollbar.css">
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/animate.css">
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/datatables.css">
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/owlcarousel.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/slick.css"    data-navigate-track>
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/slick-theme.css" data-navigate-track>
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/scrollbar.css" data-navigate-track>
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/animate.css" data-navigate-track>
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/datatables.css" data-navigate-track>
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/owlcarousel.css" data-navigate-track>
 <!-- Plugins css Ends-->
 <!-- Bootstrap css-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/vendors/bootstrap.css" data-navigate-track>
 <!-- App css-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/style.css">
-<link id="color" rel="stylesheet" href="/dash/assets/css/color-1.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/style.css" data-navigate-track>
+<link id="color" rel="stylesheet" href="/dash/assets/css/color-1.css" media="screen" data-navigate-track>
 <!-- Responsive css-->
-<link rel="stylesheet" type="text/css" href="/dash/assets/css/responsive.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/dash/assets/css/responsive.css" data-navigate-track>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" data-navigate-track>
 <!-- template laravel stylings -->
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @fluxAppearance
