@@ -328,7 +328,7 @@
                             <li class="sidebar-list">
                                 <i class="fa fa-thumb-tack"></i>
                             
-                                <a class="sidebar-link " href="#">
+                                <a class="sidebar-link " href="{{route('dashboard')}}">
                                     <span class="lan-3">Dashboard</span>
                                 </a>
                             </li>
