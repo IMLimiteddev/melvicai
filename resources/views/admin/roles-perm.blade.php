@@ -1,12 +1,14 @@
 <x-layouts::app :title="__('Roles & Permissions')">
     <div class="page-body">
 
+
+    
        
           <div class="container-fluid">
             <div class="page-title">
               <div class="row"> 
                 <div class="col-xl-4 col-sm-7 box-col-3">
-                  <h3> Project Create</h3>
+                  <h3> Roles/Permissions Create</h3>
                 </div>
                 <div class="col-5 d-none d-xl-block">
                   <!-- Page Sub Header Start-->
@@ -304,8 +306,8 @@
                         <svg class="stroke-icon">
                           <use href="https://admin.pixelstrap.net/zono/assets/svg/icon-sprite.svg#stroke-home"></use>
                         </svg></a></li>
-                    <li class="breadcrumb-item">Apps</li>
-                    <li class="breadcrumb-item active">Project Create </li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.roles-perm') }}">Roles/Permissions</a></li>
+                    <li class="breadcrumb-item active">Roles/Permissions Create </li>
                   </ol>
                 </div>
               </div>
@@ -324,28 +326,15 @@
                             <div style="padding-bottom: 20px;">
                                 <h6>Create new Role/Premissions</h6>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label>Roles</label>
-                                    <input class="form-control" type="text" placeholder="Enter project Rate">
-                                    <div class="text-left mt-2">
-                                            <btn class="btn btn-success me-3">Create</btn>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label>Permission</label>
-                                    <input class="form-control" type="text" placeholder="Enter project Rate">
-                                    <div class="text-left mt-2">
-                                            <btn class="btn btn-success me-3">Create</btn>
-                                    </div>
-                                </div>
-                            </div>
+                              <div class="col-sm-6">
+                                   <livewire:admin.roles />
+                              </div>
 
+                              <div class="col-sm-6">
+                                  <livewire:admin.permissions />
+                              </div>
                             
-
                             <div>
                                 <span>Please create a role or create a permission individually above.</span>
                             </div>
@@ -353,39 +342,11 @@
 
                        <div class="p-4">
                             <div style="padding-bottom: 20px;">
-                                <h6>Give permissiond to a role</h6>
+                                <h6>Give permissions to a role</h6>
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="mb-3">
-                                        <label>Role</label>
-                                        <select class="form-select">
-                                          <option selected disabled>Choose a role</option>
-                                          <option>Hourly</option>
-                                          <option>Fix price</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="mb-3">
-                                        <label>Assign Permissions to role chosen</label>
-                                        <select class="form-select">
-
-                                          <option selected disabled>Choose a role</option>
-                                          <option>Low</option>
-                                          <option>Medium</option>
-                                          <option>High</option>
-                                          <option>Urgent</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="text-left mt-2">
-                                            <btn class="btn btn-success me-3">Connect both</btn>
-                                </div>
-
+                                <livewire:admin.assign-permission />
                             </div>
 
                             <div>
@@ -395,50 +356,16 @@
 
                         <div class="row p-4">
 
-                            <div style="padding-bottom: 20px;">
-                                <h6>Give Role to a user</h6>
-                            </div>
+                           <livewire:admin.assign-user-role />
 
 
-                            <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label>Role</label>
-                                <select class="form-select">
-                                <option selected disabled>Choose a role</option>
-                                <option>Hourly</option>
-                                <option>Fix price</option>
-                                </select>
-                            </div>
-                            </div>
-                            
-                            <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label>Assign a user to role</label>
-                                <select class="form-select">
-                                <option selected disabled>Choose a user</option>
-                                <option>Low</option>
-                                <option>Medium</option>
-                                <option>High</option>
-                                <option>Urgent</option>
-                                </select>
-                            </div>
-                            </div>
-
-                            <div class="text-left mt-2">
-                                            <btn class="btn btn-success me-3">Connect both</btn>
-                                </div>
-
-                            <div>
-                                <span>Choose a specific Role and choose a User to be assigned to this role Eg. <span style="font-weight: bold;">Role->sub-admin</span> TO <span style="font-weight: bold;">User->clintonace09@gmail.com</span></span>
-                            
-                            </div>
+                              <div>
+                                  <span>Choose a specific Role and choose a User to be assigned to this role Eg. <span style="font-weight: bold;">Role->sub-admin</span> TO <span style="font-weight: bold;">User->clintonace09@gmail.com</span></span>
+                              
+                              </div>
 
                         </div>
-                        <!-- <div class="row">
-                          <div class="col">
-                            <div class="text-end"><a class="btn btn-success me-3" href="#">Add</a><a class="btn btn-danger" href="#">Cancel</a></div>
-                          </div>
-                        </div> -->
+                        
                     </div>
                   </div>
                 </div>

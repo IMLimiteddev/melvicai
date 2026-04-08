@@ -524,6 +524,81 @@
         <!-- Plugin used-->
         <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e263577fee8b28b',t:'MTc3NDUyODY2OQ=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/h/g/scripts/jsd/ea2d291c0fdc/maind41d.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"ad651ca6cb1442c28591d5acd632a6c4","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
+            
+           
+            @if(session('success'))
+            <script>
+                (function ($) {
+                    "use strict";
+
+                    $.notify(
+                        '<i class="fa fa-check"></i><strong> Success </strong> {{ session('success') }}',
+                        {
+                            type: "success",
+                            allow_dismiss: true,
+                            delay: 3000,
+                            showProgressbar: true,
+                            timer: 800,
+                            animate: {
+                                enter: "animated fadeInDown",
+                                exit: "animated fadeOutUp",
+                            },
+                        }
+                    );
+
+                })(jQuery);
+            </script>
+            @endif
+
+
+            @if(session('warning'))
+            <script>
+                (function ($) {
+                    "use strict";
+
+                    $.notify(
+                        '<i class="fa fa-exclamation-triangle"></i><strong> Warning </strong> {{ session('warning') }}',
+                        {
+                            type: "warning",
+                            allow_dismiss: true,
+                            delay: 3000,
+                            showProgressbar: true,
+                            timer: 800,
+                            animate: {
+                                enter: "animated fadeInDown",
+                                exit: "animated fadeOutUp",
+                            },
+                        }
+                    );
+
+                })(jQuery);
+            </script>
+            @endif
+
+
+            @if(session('error'))
+            <script>
+                (function ($) {
+                    "use strict";
+
+                    $.notify(
+                        '<i class="fa fa-times"></i><strong> Error </strong> {{ session('error') }}',
+                        {
+                            type: "danger",
+                            allow_dismiss: true,
+                            delay: 4000,
+                            showProgressbar: true,
+                            timer: 1000,
+                            animate: {
+                                enter: "animated shake",
+                                exit: "animated fadeOutUp",
+                            },
+                        }
+                    );
+
+                })(jQuery);
+            </script>
+            @endif
 
             <script>
                 document.addEventListener('livewire:navigated', function () {
@@ -542,6 +617,53 @@
                     // Hide loader
                     const loader = document.querySelector('.loader-wrapper');
                     if (loader) loader.style.display = 'none';
+                });
+            </script>
+
+            @livewireScripts
+
+
+            <script>
+                document.addEventListener('livewire:init', () => {
+
+                    window.addEventListener('notify', (event) => {
+
+                        let { type, message } = event.detail;
+
+                        let icon = 'fa fa-bell';
+                        let notifyType = 'info';
+
+                        if (type === 'success') {
+                            icon = 'fa fa-check';
+                            notifyType = 'success';
+                        }
+
+                        if (type === 'warning') {
+                            icon = 'fa fa-exclamation-triangle';
+                            notifyType = 'warning';
+                        }
+
+                        if (type === 'error') {
+                            icon = 'fa fa-times';
+                            notifyType = 'danger';
+                        }
+
+                        $.notify(
+                            `<i class="${icon}"></i><strong> ${type.toUpperCase()} </strong> ${message}`,
+                            {
+                                type: notifyType,
+                                allow_dismiss: true,
+                                delay: 3000,
+                                showProgressbar: true,
+                                timer: 800,
+                                animate: {
+                                    enter: "animated fadeInDown",
+                                    exit: "animated fadeOutUp",
+                                },
+                            }
+                        );
+                    });
+
                 });
             </script>
     </body>
