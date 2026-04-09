@@ -303,8 +303,8 @@
                         <svg class="stroke-icon"> 
                           <use href="https://admin.pixelstrap.net/zono/assets/svg/icon-sprite.svg#stroke-home"></use>
                         </svg></a></li>
-                    <li class="breadcrumb-item">Model</li>
-                    <li class="breadcrumb-item active">Model Cards</li>
+                    <li class="breadcrumb-item">Rules</li>
+                    <li class="breadcrumb-item active">Rules Cards</li>
                   </ol>
                 </div>
               </div>
@@ -319,80 +319,167 @@
                 
                   <div class="card-body">
 
-                    <div style="background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; max-width: 420px;">
-                        <div style="padding: 1.25rem;">
+                    
+                        <div style="background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; max-width: 420px;">
+                          <div style="padding: 1.25rem;">
 
-                            {{-- Header --}}
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
+                              {{-- Header --}}
+                              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                              <div style="display: flex; align-items: center; gap: 10px;">
 
-                                {{-- Avatar --}}
-                                <div style="width: 38px; height: 38px; border-radius: 50%; background: #e6f1fb; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #185fa5; flex-shrink: 0;">
-                                FH
-                                </div>
+                                  {{-- Avatar --}}
+                                  <div style="width: 38px; height: 38px; border-radius: 50%; background: #e6f1fb; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #185fa5; flex-shrink: 0;">
+                                  FH
+                                  </div>
 
-                                <div>
-                                <p style="margin: 0; font-size: 15px; font-weight: 500; color: var(--color-text-primary);">
-                                    <a href="#" style="text-decoration: none; color: inherit;">Finger Haus</a>
-                                </p>
-                                <div style="display: flex; align-items: center; gap: 5px; margin-top: 3px;">
-                                    <span style="width: 7px; height: 7px; border-radius: 50%; background: #28a745; display: inline-block;"></span>
-                                    <span style="font-size: 12px; color: #28a745;">Active</span>
-                                </div>
-                                </div>
-                            </div>
+                                  <div>
+                                  <p style="margin: 0; font-size: 15px; font-weight: 500; color: var(--color-text-primary);">
+                                      <a href="#" style="text-decoration: none; color: inherit;">Finger Haus</a>
+                                  </p>
+                                  <div style="display: flex; align-items: center; gap: 5px; margin-top: 3px;">
+                                      <span style="width: 7px; height: 7px; border-radius: 50%; background: #28a745; display: inline-block;"></span>
+                                      <span style="font-size: 12px; color: #28a745;">Active</span>
+                                  </div>
+                                  </div>
+                              </div>
 
-                            {{-- Action Buttons --}}
-                            <div style="display: flex; gap: 6px;">
-                                
-                                <button title="Edit" style="width: 32px; height: 32px; border-radius: 8px; border: 0.5px solid #ccc; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--color-text-secondary);">
-                                <i class="fa fa-edit" style="font-size: 13px;"></i>
-                                </button>
-                                
-                            </div>
-                            </div>
+                              {{-- Action Buttons --}}
+                              <div style="display: flex; gap: 6px;">
+                                  
+                                  <button title="Edit" style="width: 32px; height: 32px; border-radius: 8px; border: 0.5px solid #ccc; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--color-text-secondary);">
+                                  <i class="fa fa-edit" style="font-size: 13px;"></i>
+                                  </button>
+                                  
+                              </div>
+                              </div>
 
-                            {{-- Divider --}}
-                            <div style="border-top: 0.5px solid #e0e0e0; margin-bottom: 1rem;"></div>
+                              {{-- Divider --}}
+                              <div style="border-top: 0.5px solid #e0e0e0; margin-bottom: 1rem;"></div>
 
-                            {{-- Attachments Label --}}
-                            <p style="margin: 0 0 10px; font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em;">
-                            Attachments
-                            </p>
+                              {{-- Attachments Label --}}
+                              <p style="margin: 0 0 10px; font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em;">
+                              Attachments
+                              </p>
 
-                            {{-- File Cards --}}
-                            <div style="display: flex; gap: 10px;">
+                              {{-- File Cards --}}
+                              <div style="display: flex; gap: 10px;">
 
-                            {{-- PDF --}}
-                            <a href="/dash/file_samples/ex.pdf" target="_blank" rel="noopener noreferrer"
-                                style="flex: 1; text-decoration: none; background: #fafafa; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div style="width: 36px; height: 36px; border-radius: 8px; background: #fdecea; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-file-pdf" style="font-size: 16px; color: #dc3545;"></i>
-                                </div>
-                                <div style="text-align: center;">
-                                <p style="margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary);">PDF File</p>
-                                <p style="margin: 0; font-size: 11px; color: var(--color-text-secondary);">ex.pdf</p>
-                                </div>
-                            </a>
+                              {{-- PDF --}}
+                              <a href="/dash/file_samples/ex.pdf" target="_blank" rel="noopener noreferrer"
+                                  style="flex: 1; text-decoration: none; background: #fafafa; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                  <div style="width: 36px; height: 36px; border-radius: 8px; background: #fdecea; display: flex; align-items: center; justify-content: center;">
+                                  <i class="fa fa-file-pdf" style="font-size: 16px; color: #dc3545;"></i>
+                                  </div>
+                                  <div style="text-align: center;">
+                                  <p style="margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary);">PDF File</p>
+                                  <p style="margin: 0; font-size: 11px; color: var(--color-text-secondary);">ex.pdf</p>
+                                  </div>
+                              </a>
 
-                            {{-- TXT --}}
-                            <a href="/dash/file_samples/ext.txt" target="_blank" rel="noopener noreferrer"
-                                style="flex: 1; text-decoration: none; background: #fafafa; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                <div style="width: 36px; height: 36px; border-radius: 8px; background: #f1f1f1; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-file-text" style="font-size: 16px; color: #6c757d;"></i>
-                                </div>
-                                <div style="text-align: center;">
-                                <p style="margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary);">Text File</p>
-                                <p style="margin: 0; font-size: 11px; color: var(--color-text-secondary);">ext.txt</p>
-                                </div>
-                            </a>
+                              {{-- TXT --}}
+                              <a href="/dash/file_samples/ext.txt" target="_blank" rel="noopener noreferrer"
+                                  style="flex: 1; text-decoration: none; background: #fafafa; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                  <div style="width: 36px; height: 36px; border-radius: 8px; background: #f1f1f1; display: flex; align-items: center; justify-content: center;">
+                                  <i class="fa fa-file-text" style="font-size: 16px; color: #6c757d;"></i>
+                                  </div>
+                                  <div style="text-align: center;">
+                                  <p style="margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary);">Text File</p>
+                                  <p style="margin: 0; font-size: 11px; color: var(--color-text-secondary);">ext.txt</p>
+                                  </div>
+                              </a>
 
-                            </div>
-                        </div>
-                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  
                   </div>
                 </div>
               </div>
+
+
+              <a href="{{route('admin.rule.single')}}" style="cursor: pointer;" wire:navigate>
+                <div class="col-xl-4 col-sm-6 col-xxl-3 col-ed-4 box-col-4">
+                  <div class="card social-profile">
+
+                  
+                    <div class="card-body">
+
+                      <div style="background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; max-width: 420px;">
+                          <div style="padding: 1.25rem;">
+
+                              {{-- Header --}}
+                              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                              <div style="display: flex; align-items: center; gap: 10px;">
+
+                                  {{-- Avatar --}}
+                                  <div style="width: 38px; height: 38px; border-radius: 50%; background: #e6f1fb; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #185fa5; flex-shrink: 0;">
+                                  DF
+                                  </div>
+
+                                  <div>
+                                  <p style="margin: 0; font-size: 15px; font-weight: 500; color: var(--color-text-primary);">
+                                      <a href="#" style="text-decoration: none; color: inherit;">DFH</a>
+                                  </p>
+                                  <div style="display: flex; align-items: center; gap: 5px; margin-top: 3px;">
+                                      <span style="width: 7px; height: 7px; border-radius: 50%; background: #28a745; display: inline-block;"></span>
+                                      <span style="font-size: 12px; color: #28a745;">Active</span>
+                                  </div>
+                                  </div>
+                              </div>
+
+                              {{-- Action Buttons --}}
+                              <div style="display: flex; gap: 6px;">
+                                  
+                                  <button title="Edit" style="width: 32px; height: 32px; border-radius: 8px; border: 0.5px solid #ccc; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--color-text-secondary);">
+                                  <i class="fa fa-edit" style="font-size: 13px;"></i>
+                                  </button>
+                                  
+                              </div>
+                              </div>
+
+                              {{-- Divider --}}
+                              <div style="border-top: 0.5px solid #e0e0e0; margin-bottom: 1rem;"></div>
+
+                              {{-- Attachments Label --}}
+                              <p style="margin: 0 0 10px; font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em;">
+                              Attachments
+                              </p>
+
+                              {{-- File Cards --}}
+                              <div style="display: flex; gap: 10px;">
+
+                              {{-- PDF --}}
+                              <a href="/dash/file_samples/ex.pdf" target="_blank" rel="noopener noreferrer"
+                                  style="flex: 1; text-decoration: none; background: #fafafa; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                  <div style="width: 36px; height: 36px; border-radius: 8px; background: #fdecea; display: flex; align-items: center; justify-content: center;">
+                                  <i class="fa fa-file-pdf" style="font-size: 16px; color: #dc3545;"></i>
+                                  </div>
+                                  <div style="text-align: center;">
+                                  <p style="margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary);">PDF File</p>
+                                  <p style="margin: 0; font-size: 11px; color: var(--color-text-secondary);">ex.pdf</p>
+                                  </div>
+                              </a>
+
+                              {{-- TXT --}}
+                              <a href="/dash/file_samples/ext.txt" target="_blank" rel="noopener noreferrer"
+                                  style="flex: 1; text-decoration: none; background: #fafafa; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                                  <div style="width: 36px; height: 36px; border-radius: 8px; background: #f1f1f1; display: flex; align-items: center; justify-content: center;">
+                                  <i class="fa fa-file-text" style="font-size: 16px; color: #6c757d;"></i>
+                                  </div>
+                                  <div style="text-align: center;">
+                                  <p style="margin: 0; font-size: 12px; font-weight: 500; color: var(--color-text-primary);">Text File</p>
+                                  <p style="margin: 0; font-size: 11px; color: var(--color-text-secondary);">ext.txt</p>
+                                  </div>
+                              </a>
+
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </a>
 
               <div class="col-xl-4 col-sm-6 col-xxl-3 col-ed-4 box-col-4">
                 <div class="card social-profile">
@@ -409,12 +496,12 @@
 
                                 {{-- Avatar --}}
                                 <div style="width: 38px; height: 38px; border-radius: 50%; background: #e6f1fb; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #185fa5; flex-shrink: 0;">
-                                DF
+                                SH
                                 </div>
 
                                 <div>
                                 <p style="margin: 0; font-size: 15px; font-weight: 500; color: var(--color-text-primary);">
-                                    <a href="#" style="text-decoration: none; color: inherit;">DFH</a>
+                                    <a href="#" style="text-decoration: none; color: inherit;">Schower</a>
                                 </p>
                                 <div style="display: flex; align-items: center; gap: 5px; margin-top: 3px;">
                                     <span style="width: 7px; height: 7px; border-radius: 50%; background: #28a745; display: inline-block;"></span>
@@ -556,7 +643,6 @@
                 </div>
               </div>
 
-              
              
             </div>
           </div>

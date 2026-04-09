@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\RulesController;
 use App\Livewire\Admin\Roles;
 
 Route::view('/', 'welcome')->name('home');
@@ -16,6 +17,7 @@ Route::view('/admin/users', 'admin.users')->name('admin.users');
 Route::post('/admin/roles', [RolesController::class, 'mkRole'])->name('admin.roles');
 Route::post('/admin/permissions', [RolesController::class, 'mkPermission'])->name('admin.permissions');
 
+Route::get('/admin/rule-single', [RulesController::class, 'ruleSingle'])->name('admin.rule.single');
 
 Route::view('/admin/roles-permissions', 'admin.roles-perm')
     ->name('admin.roles-perm');
