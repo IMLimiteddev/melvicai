@@ -1,0 +1,663 @@
+{
+    "Summary": {
+        "Customer": "Schw\u00f6rerHaus",
+        "Order_ID": "N\/A"
+    },
+    "Header_Mapping": [
+        {
+            "Col": 1,
+            "Field": "Fixed",
+            "Logic": "Default: 2148",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 2,
+            "Field": "Fixed",
+            "Logic": "Default: 58",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 3,
+            "Field": "Fixed",
+            "Logic": "Default: 58",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 4,
+            "Field": "Fixed",
+            "Logic": "Default: 58",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 5,
+            "Field": "Vom Datum",
+            "Logic": "Get Vom Datum from input file",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 6,
+            "Field": "KD-Auftrag:",
+            "Logic": "Get KD-Auftrag number from the file",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 7,
+            "Field": "Bestnr",
+            "Logic": "Get Bestnr number from the file",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 8,
+            "Field": "Fixed",
+            "Logic": "Default: 0",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 9,
+            "Field": "Fixed",
+            "Logic": "Default: I&M",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 10,
+            "Field": "Rollladen Panzer",
+            "Logic": "Get Rollladen Panzer color and Match Panzer Color Rules to output color (e.g input tiefschwarz, output Tiefschwarz.368m)if color not in panzer color rules else Farbe eintragen",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 11,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 12,
+            "Field": "Fehro F\u00fchrungsschiene",
+            "Logic": "Get Fehro F\u00fchrungsschiene color code from the file (e.g hwf9016) else Farbe eintragen",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 13,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 14,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 15,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 16,
+            "Field": "Fixed",
+            "Logic": "Default: hwf9016",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 17,
+            "Field": "Fixed",
+            "Logic": "Default: grau",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 18,
+            "Field": "Rollladen\/Jalousie Endschiene",
+            "Logic": "Get Endschiene color code from the file (e.g hwf9016) else Farbe eintragen",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 19,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 20,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 21,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 22,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 23,
+            "Field": "Rollladen\/Jalousie Endschiene",
+            "Logic": "Get Endschiene color code from the file (e.g hwf9016) else Farbe eintragen",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 24,
+            "Field": "Fehro F\u00fchrungsschiene",
+            "Logic": "Get Fehro F\u00fchrungsschiene color code from the file (e.g hwf9016) else Farbe eintragen",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 25,
+            "Field": "Fehro F\u00fchrungsschiene",
+            "Logic": "Get Fehro F\u00fchrungsschiene color code from the file (e.g hwf9016) else Farbe eintragen",
+            "Type": "T",
+            "Output": ""
+        },
+        {
+            "Col": 26,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 27,
+            "Field": "Fixed",
+            "Logic": "Default: LKW",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 28,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 29,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 30,
+            "Field": "Fixed",
+            "Logic": "Default: 0",
+            "Type": "D",
+            "Output": ""
+        },
+        {
+            "Col": 31,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 32,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 33,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 34,
+            "Field": "Empty",
+            "Logic": "",
+            "Type": "E",
+            "Output": ""
+        },
+        {
+            "Col": 35,
+            "Field": "Revisionsblende",
+            "Logic": "Get Revisionsblende color code from the file (e.g hwf9016) else Farbe eintragen. If schwarz is present then put \"schwarz\"",
+            "Type": "T",
+            "Output": ""
+        }
+    ],
+    "Panzer_Color_Mapping": [
+        {
+            "Input_Contains": "anthrazit",
+            "Output_Result": "Anthrazit"
+        },
+        {
+            "Input_Contains": "beige",
+            "Output_Result": "beige"
+        },
+        {
+            "Input_Contains": "graualuminium",
+            "Output_Result": "graualuminium"
+        },
+        {
+            "Input_Contains": "grau or lichtgrau",
+            "Output_Result": "lichtgrau"
+        },
+        {
+            "Input_Contains": "silber or silberfarbig",
+            "Output_Result": "Silber (~RAL 9006)"
+        },
+        {
+            "Input_Contains": "anthrazitgrau.354m",
+            "Output_Result": "Anthrazitgrau.354m"
+        },
+        {
+            "Input_Contains": "weiss",
+            "Output_Result": "weiss"
+        },
+        {
+            "Input_Contains": "graualuminium.353m",
+            "Output_Result": "Graualuminium.353m"
+        },
+        {
+            "Input_Contains": "tiefschwarz",
+            "Output_Result": "Tiefschwarz.368m"
+        },
+        {
+            "Input_Contains": "verkehrsweiss.356m",
+            "Output_Result": "Verkehrsweiss.356m"
+        },
+        {
+            "Input_Contains": "weissaluminium.360m",
+            "Output_Result": "Weissaluminium.360m"
+        }
+    ],
+    "Positions_Mapping": [
+        {
+            "Position_ID": "Sample",
+            "Mapping": [
+                {
+                    "Col": 1,
+                    "Field": "Importzeilen-Num",
+                    "Logic": "Importzeilen-Num (1, 2, 3...): +1",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 2,
+                    "Field": "Kernwand",
+                    "Logic": "if Zeichnungsnummer is 4921, 4996, 5025, or 5026; put \"7\"if Zeichnungsnummer is 4709, 4715, 5251, or 5252; put \"13\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 3,
+                    "Field": "Gescho\u00df",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 4,
+                    "Field": "Fensterart",
+                    "Logic": "Fixed Default: 1",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 5,
+                    "Field": "Fenstergeometrie",
+                    "Logic": "Fixed Default: 1",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 6,
+                    "Field": "Fensteraufteilung",
+                    "Logic": "If Antriebsseite is 'links' or 'rechts' then put \"1\"If Antriebsseite in (links, rechts) and Insektenschutzrollo: Ja and Bemerkung in (linke, rechte) then put 55If Antriebsseite in (links, rechts) and Insektenschutzrollo: Ja and Bemerkung in (li + re, re + li) then put 25If Antriebsseite: Beidseitig and Zeichnungsnummer in (4709, 4921, 5025, 5026, 5251) and Breite <= 2396 then put 2If Antriebsseite: Beidseitig and Zeichnungsnummer in (4715, 4996, 5252) and Breite <= 4000 then put 2If Antriebsseite: Beidseitig and Zeichnungsnummer in (4709, 4921, 5025, 5026, 5251) and Breite > 2396 then put 8If Antriebsseite: Beidseitig and Zeichnungsnummer in (4715, 4996, 5252) and Breite > 4000 then put 8",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 7,
+                    "Field": "Material FS",
+                    "Logic": "Default: \"5\"If Insektenschutzrollo: Ja then put \"6\"If Zeichnungsnummer is 5251 then put \"9\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 8,
+                    "Field": "Ma\u00dfbezug",
+                    "Logic": "Fixed Default: 1",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 9,
+                    "Field": "Fenstertyp-Beschreibung",
+                    "Logic": "Empty",
+                    "Type": "E",
+                    "Output": ""
+                },
+                {
+                    "Col": 10,
+                    "Field": "Positionsbeschreibung",
+                    "Logic": "Empty",
+                    "Type": "E",
+                    "Output": ""
+                },
+                {
+                    "Col": 11,
+                    "Field": "Breite",
+                    "Logic": "Value for Breite in file",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 12,
+                    "Field": "H\u00f6he",
+                    "Logic": "Value for H\u00f6he in file",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 13,
+                    "Field": "Bedienung links",
+                    "Logic": "Default: 1If Antriebsseite: links then \"1\"If Antriebsseite: rechts then \"0\"If Notkurbel: links then \"1\"If Notkurbel: rechts then \"0\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 14,
+                    "Field": "Bedienung rechts",
+                    "Logic": "Default: 0If Antriebsseite: links then \"0\"If Antriebsseite: rechts then \"1\"If Notkurbel: links then \"0\"If Notkurbel: rechts then \"1\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 15,
+                    "Field": "Ausf\u00fchrung Standard",
+                    "Logic": "Fixed Default: Ja",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 16,
+                    "Field": "Preis",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 17,
+                    "Field": "Konstruktion",
+                    "Logic": "If Zeichnungsnummer in (4709, 4715, 5251, 5252) then put \"2\"If Zeichnungsnummer in (4921, 4996, 5025, 5026) then put \"37\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 18,
+                    "Field": "idBehangtyp",
+                    "Logic": "If 'CDL' in Bezeichnung then '103'If 'DBL70' in Bezeichnung then '99'If 'DM40' in Bezeichnung then '2'",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 19,
+                    "Field": "Antrieb",
+                    "Logic": "Default: \"0\"If Motor Becker E03 - Kurzmotor then '25'If Motor Becker E03 then '23'If Motor Becker E22 mit NHK-Kit3 then '24'If Funk Motor I\/O RS100 +NHK-Kit2 then '19'If Funk Motor I\/O RS100 then '13'If Motor Oximo WT mit NHK-Kit2 then '17'If Motor Oximo 1\/0 or Funk Motor: 1\/0 J4 io Protect then '11'If Motor Elero JA Soft or Motor Ilmo then '6'If Kurbel abnehmbar then '5'If Motor CBshort then '26'",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 20,
+                    "Field": "L\u00e4nge Bedelem.",
+                    "Logic": "Empty",
+                    "Type": "E",
+                    "Output": ""
+                },
+                {
+                    "Col": 21,
+                    "Field": "Wand 2 (Awand)",
+                    "Logic": "If Zeichnungsnummer in (4709, 4715, 5252) then put \"13\"If Zeichnungsnummer in (4921, 4996) then put \"9\"If Zeichnungsnummer is 5052 then put \"8\"If Zeichnungsnummer is 5026 then put \"3\"If Zeichnungsnummer is 5251 then put \"33\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 22,
+                    "Field": "Wand 3 (Iwand)",
+                    "Logic": "If Zeichnungsnummer in (4921, 4996, 5025, 5026) then put \"6\"If Zeichnungsnummer in (4709, 4715, 5251, 5252) then put \"9\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 23,
+                    "Field": "Einzelteil-Typ",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 24,
+                    "Field": "Einzelteil-Art",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 25,
+                    "Field": "Einzelteil-Anzahl",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 26,
+                    "Field": "Einzelteil-Farbe",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 27,
+                    "Field": "Einzelteil-L\u00e4nge(Breite)",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 28,
+                    "Field": "Einzelteil-H\u00f6he",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 29,
+                    "Field": "Einzelteil-Besonderheit",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 30,
+                    "Field": "Einzelteilpreis",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 31,
+                    "Field": "Positionsnummer",
+                    "Logic": "The Bezeichnung number if is like '20_Rollladensystem Fehro'then number is 20, else 0",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 32,
+                    "Field": "Fenster\u00f6ffnung",
+                    "Logic": "Fixed Default: 1",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 33,
+                    "Field": "Kombipos1",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 34,
+                    "Field": "Asymmetrisch",
+                    "Logic": "Default: \"0\"If Asymmetrisch matches '1\/(\\d+)' and 'links' in text then calculate (Breite \/ denominator)If 'rechts' in text then calculate (Breite \/ denominator * 2)",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 35,
+                    "Field": "Platzhalter",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 36,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 37,
+                    "Field": "ISS Konstruktion",
+                    "Logic": "Default: \"0\"If Insektenschutzrollo: Ja then put \"1\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 38,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 39,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 40,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 41,
+                    "Field": "ISS Bedienung links",
+                    "Logic": "Default: \"0\"If Insektenschutzrollo: Ja and Antriebsseite: links then put \"1\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 42,
+                    "Field": "ISS Bedienung rechts",
+                    "Logic": "Default: \"0\"If Insektenschutzrollo: Ja and Antriebsseite: rechts then put \"1\"",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 43,
+                    "Field": "Platzhalter",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 44,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 45,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 46,
+                    "Field": "",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 47,
+                    "Field": "Mehrpreis-Art",
+                    "Logic": "Default: \"0\"If Abschnittwinkel is '0' then '9'If Abschnittwinkel is '5' then '2'",
+                    "Type": "T",
+                    "Output": ""
+                },
+                {
+                    "Col": 48,
+                    "Field": "Schallschutz",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 49,
+                    "Field": "Platzhalter",
+                    "Logic": "Fixed: Empty",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 50,
+                    "Field": "Platzhalter",
+                    "Logic": "Fixed Default: 0",
+                    "Type": "D",
+                    "Output": ""
+                },
+                {
+                    "Col": 51,
+                    "Field": "ReviblendeArt",
+                    "Logic": "Default: \"1\"If Insektenschutzrollo: Ja or Revisionblende has kunststoff then '2'If InitialBeschreibung has raffstoresystem then '0'",
+                    "Type": "T",
+                    "Output": ""
+                }
+            ]
+        }
+    ]
+}

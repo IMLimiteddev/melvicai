@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Users')">
-    <div class="page-body">
+    <div class="page-body" id="pageBody">
           <div class="container-fluid">
             <div class="page-title">
               <div class="row">

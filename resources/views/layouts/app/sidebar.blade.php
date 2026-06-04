@@ -5,6 +5,8 @@
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
 
+        
+
         <!-- loader starts-->
         <div class="loader-wrapper">
         <div class="theme-loader">    
@@ -51,216 +53,8 @@
                         <input type="text" placeholder="Search here...">
                         </div>
                     </li>
-                    <li class="onhover-dropdown"> 
-                        <div class="notification-box">
-                        <!-- <svg> 
-                            <use href="https://admin.pixelstrap.net/zono/assets/svg/icon-sprite.svg#Bell"></use>
-                        </svg> -->
-
-                         <i class="fa fa-bell"></i>
-                        </div>
-                        <div class="onhover-show-div notification-dropdown"> 
-                        <h6 class="f-18 mb-0 dropdown-title">Notifications</h6>
-                        <div class="notification-card">
-                            <ul>
-                            <li>
-                                <div class="user-notification">
-                                <div><img src="/dash/assets/images/avtar/2.jpg" alt="avatar"></div>
-                                <div class="user-description"><a href="letter-box.html">
-                                    <h4>You have new finical page design.</h4></a><span>Today 11:45pm</span></div>
-                                </div>
-                                <div class="notification-btn">
-                                <button class="btn btn-pill btn-primary" type="button" title="btn btn-pill btn-primary">Accpet</button>
-                                <button class="btn btn-pill btn-secondary" type="button" title="btn btn-pill btn-primary">Decline</button>
-                                </div>
-                                <div class="show-btn"><a href="index-2.html"> <span>Show</span></a></div>
-                            </li>
-                            <li>
-                                <div class="user-notification">
-                                <div><img src="/dash/assets/images/avtar/17.jpg" alt="avatar"></div>
-                                <div class="user-description"><a href="letter-box.html">
-                                    <h4>Congrats! you all task for today.</h4></a><span>Today 01:05pm</span></div>
-                                </div>
-                                <div class="notification-btn">
-                                <button class="btn btn-pill btn-primary" type="button" title="btn btn-pill btn-primary">Accpet</button>
-                                <button class="btn btn-pill btn-secondary" type="button" title="btn btn-pill btn-primary">Decline</button>
-                                </div>
-                                <div class="show-btn"><a href="index-2.html"> <span>Show</span></a></div>
-                            </li>
-                            <li> 
-                                <div class="user-notification">
-                                <div> <img src="/dash/assets/images/avtar/18.jpg" alt="avatar"></div>
-                                <div class="user-description"><a href="letter-box.html">
-                                    <h4>You have new in landing page design.</h4></a><span>Today 06:55pm</span></div>
-                                </div>
-                                <div class="notification-btn">
-                                <button class="btn btn-pill btn-primary" type="button" title="btn btn-pill btn-primary">Accpet</button>
-                                <button class="btn btn-pill btn-secondary" type="button" title="btn btn-pill btn-primary">Decline</button>
-                                </div>
-                                <div class="show-btn"><a href="index-2.html"> <span>Show</span></a></div>
-                            </li>
-                            <li>
-                                <div class="user-notification">
-                                <div><img src="/dash/assets/images/avtar/19.jpg" alt="avatar"></div>
-                                <div class="user-description"><a href="letter-box.html">
-                                    <h4>Congrats! you all task for today.</h4></a><span>Today 06:55pm</span></div>
-                                </div>
-                                <div class="notification-btn">
-                                <button class="btn btn-pill btn-primary" type="button" title="btn btn-pill btn-primary">Accpet</button>
-                                <button class="btn btn-pill btn-secondary" type="button" title="btn btn-pill btn-primary">Decline</button>
-                                </div>
-                                <div class="show-btn"> <a href="index-2.html"> <span>Show</span></a></div>
-                            </li>
-                            <li> <a class="f-w-700" href="letter-box.html">Check all </a></li>
-                            </ul>
-                        </div>
-                        </div>
-                    </li>
-                    <li class="onhover-dropdown">
-                        <!-- <svg>
-                        <use href="https://admin.pixelstrap.net/zono/assets/svg/icon-sprite.svg#Bookmark"></use>
-                        </svg> -->
-
-                        <i class="fa fa-bookmark"></i>
-
-                        <div class="onhover-show-div bookmark-flip">
-                        <div class="flip-card">
-                            <div class="flip-card-inner">
-                            <div class="front">
-                                <h6 class="f-18 mb-0 dropdown-title">Bookmark</h6>
-                                <ul class="bookmark-dropdown">
-                                <li>
-                                    <div class="row">
-                                    <div class="col-4 text-center"><a href="form-validation.html">
-                                        <div class="bookmark-content">
-                                            <div class="bookmark-icon bg-light-primary"><i data-feather="file-text"></i></div><span>Forms</span>
-                                        </div></a></div>
-                                    <div class="col-4 text-center"><a href="user-profile.html">
-                                        <div class="bookmark-content"> 
-                                            <div class="bookmark-icon bg-light-secondary"><i data-feather="user"></i></div><span>Profile</span>
-                                        </div></a></div>
-                                    <div class="col-4 text-center"><a href="bootstrap-basic-table.html">
-                                        <div class="bookmark-content">
-                                            <div class="bookmark-icon bg-light-warning"> <i data-feather="server"> </i></div><span>Tables </span>
-                                        </div></a></div>
-                                    </div>
-                                </li>
-                                <li class="text-centermedia-body"> <a class="flip-btn f-w-700" id="flip-btn" href="javascript:void(0)">Add New Bookmark</a></li>
-                                </ul>
-                            </div>
-                            <div class="back">
-                                <ul>
-                                <li>
-                                    <div class="bookmark-dropdown flip-back-content">
-                                    <input type="text" placeholder="search...">
-                                    </div>
-                                </li>
-                                <li><a class="f-w-700 d-block flip-back" id="flip-back" href="javascript:void(0)">Back</a></li>
-                                </ul>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </li>
-                    <li class="onhover-dropdown"> 
-                        <div class="message position-relative">
-                        <!-- <svg>
-                            <use href="https://admin.pixelstrap.net/zono/assets/svg/icon-sprite.svg#Message"></use>
-                        </svg> -->
-
-                        <i class="fa fa-message"></i>   
-                        
-                        <span class="rounded-pill badge-danger"></span>
-                        </div>
-                        <div class="onhover-show-div message-dropdown">
-                        <h6 class="f-18 mb-0 dropdown-title">Message</h6>
-                        <ul>
-                            <li>
-                            <div class="d-flex align-items-start">
-                                <div class="message-img bg-light-primary"><img src="/dash/assets/images/user/3.jpg" alt=""></div>
-                                <div class="flex-grow-1">
-                                <h5><a href="letter-box.html">Emay Walter</a></h5>
-                                <p>Do you want to go see movie?</p>
-                                </div>
-                                <div class="notification-right"><i data-feather="x"></i></div>
-                            </div>
-                            </li>
-                            <li>
-                            <div class="d-flex align-items-start">
-                                <div class="message-img bg-light-primary"><img src="/dash/assets/images/user/6.jpg" alt=""></div>
-                                <div class="flex-grow-1">
-                                <h5> <a href="letter-box.html">Jason Borne</a></h5>
-                                <p>Thank you for rating us.</p>
-                                </div>
-                                <div class="notification-right"><i data-feather="x"></i></div>
-                            </div>
-                            </li>
-                            <li>
-                            <div class="d-flex align-items-start"> 
-                                <div class="message-img bg-light-primary"><img src="/dash/assets/images/user/10.jpg" alt=""></div>
-                                <div class="flex-grow-1">
-                                <h5> <a href="letter-box.html">Sarah Loren</a></h5>
-                                <p>What`s the project report update?</p>
-                                </div>
-                                <div class="notification-right"><i data-feather="x"></i></div>
-                            </div>
-                            </li>
-                            <li> <a class="f-w-700" href="private-chat.html">Check all</a></li>
-                        </ul>
-                        </div>
-                    </li>
-                    <li class="cart-nav onhover-dropdown">
-                        <div class="cart-box"> 
-                            <!-- <svg>
-                                <use href="https://admin.pixelstrap.net/zono/assets/svg/icon-sprite.svg#Buy"></use>
-                            </svg> -->
-                            <i class="fa fa-cart-shopping"></i>
-                        
-                        </div>
-                        <div class="cart-dropdown onhover-show-div">
-                        <h6 class="f-18 mb-0 dropdown-title">Cart</h6>
-                        <ul>
-                            <li>
-                            <div class="d-flex"><img class="img-fluid b-r-5 img-50" src="/dash/assets/images/ecommerce/05.jpg" alt="">
-                                <div class="flex-grow-1"> <span>Women's Track Suit</span>
-                                <h6 class="font-primary">8 x $65.00</h6>
-                                </div>
-                                <div class="close-circle"><a class="bg-primary" href="#"><i data-feather="x"></i></a></div>
-                            </div>
-                            </li>
-                            <li>
-                            <div class="d-flex"><img class="img-fluid b-r-5 img-50" src="/dash/assets/images/ecommerce/02.jpg" alt="">
-                                <div class="flex-grow-1"><span>Men's Jacket</span>
-                                <h6 class="font-primary">10 x $50.00</h6>
-                                </div>
-                                <div class="close-circle"><a class="bg-primary" href="#"><i data-feather="x"></i></a></div>
-                            </div>
-                            </li>
-                            <li class="total">
-                            <h6 class="mb-0">Order Total :<span class="f-right">$1020.00</span></h6>
-                            </li>
-                            <li class="text-center"> <a href="cart.html">
-                                <button class="btn btn-outline-primary" type="button">View Cart</button></a><a class="btn btn-primary view-checkout" href="checkout.html">Checkout  </a></li>
-                        </ul>
-                        </div>
-                    </li>
                     
-                    <li class="language-nav">
-                        <div class="translate_wrapper">
-                        <div class="current_lang">
-                            <div class="lang"><i class="flag-icon flag-icon-gb"></i><span class="lang-txt box-col-none">EN            </span></div>
-                        </div>
-                        <div class="more_lang">
-                            <div class="lang selected" data-value="en"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">English<span> (US)</span></span></div>
-                            <div class="lang" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="lang-txt">Deutsch</span></div>
-                            <div class="lang" data-value="es"><i class="flag-icon flag-icon-es"></i><span class="lang-txt">Español</span></div>
-                            <div class="lang" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span class="lang-txt">Français</span></div>
-                            <div class="lang" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span class="lang-txt">Português<span> (BR)</span></span></div>
-                            <div class="lang" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span class="lang-txt">简体中文</span></div>
-                            <div class="lang" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span class="lang-txt">لعربية <span> (ae)</span></span></div>
-                        </div>
-                        </div>
-                    </li>
+                         <!-- Notification LI's should go here, but I removed them for now to save space. You can add them back in if you want to use them.     -->
                     <li class="profile-nav onhover-dropdown pe-0 py-0">
                         <div class="d-flex align-items-center profile-media"><img class="b-r-25" src="/dash/assets/images/dashboard/profile.png" alt="">
                         <div class="flex-grow-1 user"><span>Clinton Brown</span>
@@ -296,15 +90,20 @@
             <!-- Page body Start -->
             <div class="page-body-wrapper"> 
                 <!-- Page Sidebar Start-->
-                <div class="sidebar-wrapper" data-layout="stroke-svg">
+                {{-- <div class="sidebar-wrapper" data-layout="stroke-svg"> --}}
+                    <div class="sidebar-wrapper" id="sidebarWrapper" data-layout="stroke-svg" style="transition:0.3s ease;">
                     <div>
                         <div class="logo-wrapper">
                             
                             <a href="{{ route('dashboard') }}"> <img class="img-fluid for-light" style="width: 60px; height: auto;" src="/dash/logo/iandm_logo_black.png" alt=""><img class="img-fluid for-dark" src="/dash/assets/images/logo/logo_dark.png" alt=""></a>
                             
-                                <div class="toggle-sidebar">
+                                {{-- <div class="toggle-sidebar">
                                     <i class="fa fa-bars"></i>
                                 
+                                </div> --}}
+
+                                <div class="toggle-sidebar" onclick="hideSidebar()" style="cursor:pointer;">
+                                    <i class="fa fa-bars"></i>
                                 </div>
                         </div>
                         <!-- <div class="logo-icon-wrapper"><a href="index-2.html"><img class="img-fluid" src="/dash/assets/images/logo/logo-icon.png" alt=""></a></div> -->
@@ -376,7 +175,7 @@
                                     >
                                         <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
                                             
-                                            <span>Models</span>
+                                            <span>Customers</span>
 
                                             <flux:icon 
                                                 name="chevron-down" 
@@ -389,14 +188,14 @@
                                     <div x-show="open" x-transition style="margin-left: 25px;">
 
                                         <flux:sidebar.item 
-                                            href="{{ route('admin.models') }}" 
+                                            href="{{ route('admin.customers') }}" 
                                             wire:navigate
                                         >
-                                            All Models
+                                            All Customers
                                         </flux:sidebar.item>
 
                                         <flux:sidebar.item href="#">
-                                            Add Model
+                                            Add New
                                         </flux:sidebar.item>
 
                                     </div>
@@ -467,16 +266,57 @@
                     </div>
                 </div>
 
-              
+               <div id="openSidebarBtn"
+                    onclick="showSidebar()"
+                    style="
+                        display:none;
+                        position:fixed;
+                        top:20px;
+                        left:20px;
+                        z-index:9999;
+                        background:#E94E1B;
+                        color:white;
+                        width:45px;
+                        height:45px;
+                        border-radius:50%;
+                        justify-content:center;
+                        align-items:center;
+                        cursor:pointer;
+                        box-shadow:0 4px 10px rgba(0,0,0,0.2);
+                    ">
+                    <i class="fa fa-bars"></i>
+                </div>
+
                 <!-- Page Sidebar Ends-->
                 
                  {{ $slot }}
-
-                
             </div>
         </div>
 
         @fluxScripts
+
+        // sidebar toggle functions
+        <script>
+            function hideSidebar() {
+                document.getElementById('sidebarWrapper').style.display = 'none';
+                document.getElementById('openSidebarBtn').style.display = 'flex';
+
+                 // Expand page body
+                document.getElementById('pageBody').style.marginLeft = '0';
+                document.getElementById('pageBody').style.paddingLeft = '0';
+                document.getElementById('pageBody').style.width = '100%';
+            }
+
+            function showSidebar() {
+                document.getElementById('sidebarWrapper').style.display = 'block';
+                document.getElementById('openSidebarBtn').style.display = 'none';
+
+                // Restore spacing
+                document.getElementById('pageBody').style.marginLeft = '';
+                document.getElementById('pageBody').style.paddingLeft = '';
+                document.getElementById('pageBody').style.width = '';
+            }
+        </script>
 
         <!-- The template js -->
         <!-- latest jquery-->
@@ -520,7 +360,7 @@
         <!-- Plugins JS Ends-->
         <!-- Theme js-->
         <script src="/dash/assets/js/script.js" data-navigate-track></script>
-        <script src="/dash/assets/js/theme-customizer/customizer.js" data-navigate-track></script>
+        <!-- <script src="/dash/assets/js/theme-customizer/customizer.js" data-navigate-track></script> -->
         <!-- Plugin used-->
         <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e263577fee8b28b',t:'MTc3NDUyODY2OQ=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/h/g/scripts/jsd/ea2d291c0fdc/maind41d.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"ad651ca6cb1442c28591d5acd632a6c4","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
