@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\RulesController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ManageLogicController;
 use App\Livewire\Admin\Roles;
 
 Route::view('/', 'welcome')->name('home');
@@ -61,6 +62,24 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
 
 });
 
+
+Route::prefix('admin/logic-manager')->middleware(['auth', 'verified'])->group(function () {
+    
+
+
+    Route::get('/verbs', [ManageLogicController::class, 'indexVerb'])
+    ->name('admin.verbs.index');
+  
+    Route::post('/verb', [ManageLogicController::class, 'storeVerb'])
+    ->name('admin.verb.store');
+
+    Route::post('/verb/{verb?}', [ManageLogicController::class, 'updateVerb'])
+    ->name('admin.verb.edit');
+
+    Route::delete('/verb/{verb}', [ManageLogicController::class, 'destroyVerb'])
+    ->name('admin.verb.destroy');
+
+});
 
 // Route::get('/admin/roles-permissions', Roles::class)
 //     ->name('admin.roles-perm');

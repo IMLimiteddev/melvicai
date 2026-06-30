@@ -357,6 +357,7 @@
         <script src="/dash/assets/js/typeahead-search/handlebars.js" data-navigate-track></script>
         <script src="/dash/assets/js/typeahead-search/typeahead-custom.js" data-navigate-track></script>
         <script src="/dash/assets/js/height-equal.js" data-navigate-track></script>
+       
         <!-- Plugins JS Ends-->
         <!-- Theme js-->
         <script src="/dash/assets/js/script.js" data-navigate-track></script>

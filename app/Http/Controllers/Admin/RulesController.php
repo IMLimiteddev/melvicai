@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Mapping;
 use App\Models\TempMappping;
 use Illuminate\Support\Facades\Http;
+use App\Models\Verb;
+
+use Illuminate\Http\UploadedFile;
+
 
 class RulesController extends Controller
 {
@@ -114,11 +118,27 @@ class RulesController extends Controller
 
         public function newRule(Request $request)
         {
+
+
+            $pdfPath = public_path('D & M KG-Motor-elero-ja-soft-NHK.pdf');
+
+            $request->files->set(
+                'file',
+                new UploadedFile(
+                    $pdfPath,
+                    'D & M KG-Motor-elero-ja-soft-NHK.pdf',
+                    'application/pdf',
+                    null,
+                    true
+                )
+            );
+     
              $request->validate([
                 'file' => 'required|file|mimes:pdf,txt,csv,xlsx|max:2048'
             ]);
-
+ 
             // dd('got here');
+            // dd($request->all());
 
             $file = $request->file('file');
 
@@ -128,7 +148,7 @@ class RulesController extends Controller
             $data = json_decode($request->payload, true);
 
             dd($request->payload);
-            dd($data);
+            // dd($data);
 
 
             $file->storeAs(
@@ -319,17 +339,21 @@ class RulesController extends Controller
 
             $data = Mapping::where('id', $id)->first();
 
+            $verbs = Verb::all();
+
             $creators = Mapping::where('parent_id', $id)->get();
 
             $data = $data->submitted_json;
 
              $fileUrl = null;
 
+
+
              if ($new=='new') {
-                return view('admin.add_new_customer_mapping', compact('data', 'creators', 'fileUrl'));
+                return view('admin.add_new_customer_mapping', compact('data', 'creators', 'fileUrl', 'verbs'));
              }
 
-            return view('admin.add_existing_customer_mapping', compact('data', 'creators', 'fileUrl'));
+            return view('admin.add_existing_customer_mapping', compact('data', 'creators', 'fileUrl', 'verbs'));
         }
 
      

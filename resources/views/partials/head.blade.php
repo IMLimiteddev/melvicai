@@ -39,6 +39,7 @@
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="/dash/assets/css/responsive.css" data-navigate-track>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" data-navigate-track>
+<link rel="stylesheet" href="{{ asset('pdfjs/pdf_viewer.css') }}">
 <!-- template laravel stylings -->
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @fluxAppearance
