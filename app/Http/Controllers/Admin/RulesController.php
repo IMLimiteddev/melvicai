@@ -118,47 +118,109 @@ class RulesController extends Controller
 
         public function newRule(Request $request)
         {
+            try {
 
+                $pdfPath = public_path('D & M KG-Motor-elero-ja-soft-NHK.pdf');
 
-            $pdfPath = public_path('D & M KG-Motor-elero-ja-soft-NHK.pdf');
+                $request->files->set(
+                    'file',
+                    new UploadedFile(
+                        $pdfPath,
+                        'D & M KG-Motor-elero-ja-soft-NHK.pdf',
+                        'application/pdf',
+                        null,
+                        true
+                    )
+                );
 
-            $request->files->set(
-                'file',
-                new UploadedFile(
-                    $pdfPath,
-                    'D & M KG-Motor-elero-ja-soft-NHK.pdf',
-                    'application/pdf',
-                    null,
-                    true
-                )
-            );
-     
-             $request->validate([
-                'file' => 'required|file|mimes:pdf,txt,csv,xlsx|max:2048'
-            ]);
- 
-            // dd('got here');
-            // dd($request->all());
+                $request->validate([
+                    'file' => 'required|file|mimes:pdf'
+                ]);
 
-            $file = $request->file('file');
+                $file = $request->file('file');
 
+                $originalName = $file->getClientOriginalName();
 
-            $originalName = $file->getClientOriginalName();
+                // ----------------------------
+                // Hardcoded config for testing
+                // ----------------------------
+                $config = [
+                    "Summary" => [
+                        "Customer" => "SchwörerHaus",
+                        "Order_ID" => "N/A"
+                    ],
+                    "Header_Mapping" => [
+                        [
+                            "Col" => 1,
+                            "Field_name" => "KD-Auftrag:",
+                            "Ifs" => [
+                                [
+                                    "If" => "KD-Auftrag: Contain 68970",
+                                    "Then" => "Add Oberstetten"
+                                ]
+                            ],
+                            "Else" => ""
+                        ]
+                    ],
+                    "Positions_Mapping" => [
+                        [
+                            "Position_ID" => "0",
+                            "Mapping" => [
+                                [
+                                    "Col" => 1,
+                                    "Field_name" => "Bestellun",
+                                    "Ifs" => [
+                                        [
+                                            "If" => "Bestellun Contain 6870",
+                                            "Then" => "Add 1122"
+                                        ]
+                                    ],
+                                    "Else" => ""
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
 
-            $data = json_decode($request->payload, true);
+                $response = Http::timeout(300)
+                    ->attach(
+                        'file',
+                        file_get_contents($file->getRealPath()),
+                        $originalName
+                    )
+                    ->post(
+                        'http://31.97.126.130:3333/docs/schworer/new-rule',
+                        [
+                            'config' => json_encode($config)
+                        ]
+                    );
 
-            dd($request->payload);
-            // dd($data);
+                if (!$response->successful()) {
 
+                    dd([
+                        'status' => $response->status(),
+                        'response' => $response->body(),
+                        'json' => $response->json()
+                    ]);
 
-            $file->storeAs(
-                'uploaded_mappings',
-                $originalName,
-                'public'
-            );
+                }
 
-            
+                $data = $response->json();
 
+                return view('admin.download', [
+                    'response' => $data,
+                    'originalName' => $originalName
+                ]);
+
+            } catch (\Throwable $e) {
+
+                dd([
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]);
+
+            }
         }
 
         public function ruleSend(Request $request)
@@ -356,5 +418,28 @@ class RulesController extends Controller
             return view('admin.add_existing_customer_mapping', compact('data', 'creators', 'fileUrl', 'verbs'));
         }
 
+        // public function downloadOutputFile($filename)
+        // {
+        //     $url = 'http://31.97.126.130:3333/download/output_file/' . rawurlencode($filename);
+
+        //     $response = Http::timeout(300)->get($url);
+
+        //     if (!$response->successful()) {
+        //         return back()->withErrors([
+        //             'download' => 'Unable to download the generated file.'
+        //         ]);
+        //     }
+
+        //     return response($response->body(), 200)
+        //         ->header('Content-Type', $response->header('Content-Type', 'application/octet-stream'))
+        //         ->header('Content-Disposition', 'attachment; filename="' . basename($filename) . '"');
+        // }
+
+       public function downloadOutputFile($filename)
+        {
+            return redirect()->away(
+                'http://31.97.126.130:3333/download/output_file/' . rawurlencode($filename)
+            );
+        }
      
 }

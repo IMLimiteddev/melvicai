@@ -60,6 +60,10 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/temp-mapping/{id?}', [RulesController::class, 'tempMapping'])->name('admin.temp_mappings');
     Route::post('/save-mapping/{id?}', [RulesController::class, 'saveMapping'])->name('admin.save.mapping');
 
+    Route::get('/download/output/{filename}', [ManageLogicController::class, 'downloadOutputFile'])
+    ->where('filename', '.*')
+    ->name('admin.download.output');
+
 });
 
 
@@ -69,6 +73,9 @@ Route::prefix('admin/logic-manager')->middleware(['auth', 'verified'])->group(fu
 
     Route::get('/verbs', [ManageLogicController::class, 'indexVerb'])
     ->name('admin.verbs.index');
+
+    Route::get('/verbs/create/view', [ManageLogicController::class, 'createVerbView'])
+    ->name('admin.verbs.create.view');
   
     Route::post('/verb', [ManageLogicController::class, 'storeVerb'])
     ->name('admin.verb.store');

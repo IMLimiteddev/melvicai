@@ -68,4 +68,10 @@ class ManageLogicController extends Controller
             ->back()
             ->with('success', 'Logic deleted successfully.');
     }
+
+    public function indexVerb()
+    {
+        $verbs = Verb::all();
+        return view('admin.logic-manager.index', compact('verbs'));
+    }
 }

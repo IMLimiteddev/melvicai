@@ -45,7 +45,7 @@
                                         </span>
                                     </li>
 
-                                    
+
 
                                     {{-- <li>
                                         <span class="tab-link" data-tab="map-history"
@@ -55,7 +55,7 @@
                                     </li> --}}
 
                                     <li>
-                                        
+
                                     </li>
                                 </ul>
 
@@ -156,8 +156,7 @@
                                             style="width:100%; height:1000px; border:1px solid #ccc; border-radius:8px; background:#fff;">
                                         </iframe> --}}
 
-                                        <div
-                                            id="pdfViewer"
+                                        <div id="pdfViewer"
                                             style="
                                                 width:100%;
                                                 height:1000px;
@@ -171,56 +170,86 @@
 
                                 <div class="col-lg-12" id="mappingColumn">
 
-                                    <div class="d-flex justify-content-end mb-3">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-dark"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#logicManagerModal">
-
-                                            <i class="fa fa-cogs me-2"></i>
-
-                                            Manage Logic
-
-                                        </button>
-
-                                    </div>
-
                                     <div class="card-body tab-content active" id="header">
-                                         <button type="button" onclick="addHeaderRow()"
-                                            style="background:#28a745;color:#fff;border:none;padding:8px 14px;border-radius:6px;margin-bottom:15px;cursor:pointer;font-size:18px;">
-                                            + Add Header 
-                                        </button>
 
-                                        <table class="table table-bordered" id="headerMappingTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Col</th>
-                                                    <th>Field</th>
-                                                    <th>Logic</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
 
-                                            <tbody id="headerMappingBody">
-                                                {{-- Rows will be added here --}}
-                                            </tbody>
-                                        </table>
+                                            <button type="button" onclick="addHeaderRow()" class="btn btn-success">
+
+                                                <i class="fa fa-plus me-1"></i>
+                                                Add Header
+
+                                            </button>
+
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal">
+
+                                                <i class="fa fa-plus me-2"></i>
+                                                Verb
+
+                                            </button>
+
+                                        </div>
+
+                                        <div style="width:100%;overflow-x:auto;overflow-y:hidden;">
+
+                                            <table class="table table-bordered table-hover align-middle"
+                                                id="headerMappingTable"
+                                                style="min-width:1700px;width:100%;table-layout:auto;">
+
+                                                <thead>
+
+                                                    <tr>
+
+                                                        <th style="width:90px;">Col</th>
+
+                                                        <th style="width:250px;">Field</th>
+
+                                                        <th style="min-width:1100px;">Logic</th>
+
+                                                        <th style="width:140px;">Action</th>
+
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody id="headerMappingBody">
+                                                    {{-- Header rows will be added here --}}
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
                                     </div>
+
 
                                     <div class="card-body tab-content" id="map-body" style="display:none;">
 
-                                         <button type="button" onclick="addPositionBlock()"
-                                            style="background:#28a745;color:#fff;border:none;padding:8px 14px;border-radius:6px;margin-bottom:15px;cursor:pointer;font-size:18px;">
-                                            + Add Position
-                                        </button>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                            <button type="button" onclick="addPositionBlock()" class="btn btn-success">
+
+                                                <i class="fa fa-plus me-1"></i>
+                                                Add Position
+
+                                            </button>
+
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal">
+
+                                                <i class="fa fa-plus me-2"></i>
+                                                Verb
+
+                                            </button>
+
+                                        </div>
 
                                         <div id="positionsContainer"></div>
 
                                     </div>
 
-                                    
+
 
                                     <!-- ================= SUBMIT ================= -->
                                     <div style="padding:20px; text-align:right;">
@@ -242,41 +271,36 @@
         </div>
     </div>
 
-    <div class="modal fade"
-            id="logicManagerModal"
-            tabindex="-1"
-            aria-hidden="true">
+    <div class="modal fade" id="logicManagerModal" tabindex="-1" aria-hidden="true">
 
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
 
-                <div class="modal-content">
+            <div class="modal-content">
 
-                    <div class="modal-header">
+                <div class="modal-header">
 
-                        <h4 class="modal-title">
+                    <h4 class="modal-title">
 
-                            <i class="fa fa-cogs me-2"></i>
+                        <i class="fa fa-cogs me-2"></i>
 
-                            Logic Manager
+                        Verb Manager
 
-                        </h4>
+                    </h4>
 
-                        <button
-                            class="btn-close"
-                            data-bs-dismiss="modal">
-                        </button>
+                    <button class="btn-close" data-bs-dismiss="modal">
+                    </button>
 
-                    </div>
+                </div>
 
-                    <div class="modal-body">
+                <div class="modal-body">
 
-                        <div class="row">
+                    <div class="row">
 
-                            <!-- LEFT PANEL -->
+                        <!-- LEFT PANEL -->
 
-                            <div class="col-md-4">
+                        <div class="col-md-4">
 
-                               <div class="card shadow-sm">
+                            <div class="card shadow-sm">
 
                                 <div class="card-header">
                                     <strong>Add New Logic</strong>
@@ -293,7 +317,8 @@
 
                                             <select class="form-control" name="type" required>
                                                 <option value="">Select Type</option>
-                                                <option value="Operator" {{ old('type') == 'Operator' ? 'selected' : '' }}>
+                                                <option value="Operator"
+                                                    {{ old('type') == 'Operator' ? 'selected' : '' }}>
                                                     Operator
                                                 </option>
                                                 <option value="Action" {{ old('type') == 'Action' ? 'selected' : '' }}>
@@ -309,13 +334,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">Name <span>*</span></label>
 
-                                            <input
-                                                type="text"
-                                                name="verb"
-                                                class="form-control"
-                                                placeholder="Contains"
-                                                value="{{ old('verb') }}"
-                                                required>
+                                            <input type="text" name="verb" class="form-control"
+                                                placeholder="Contains" value="{{ old('verb') }}" required>
 
                                             @error('verb')
                                                 <small class="text-danger">{{ $message }}</small>
@@ -323,13 +343,10 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Meaning <span style="font-style: italic">This is not neccessary and can be ignored.</span></label>
+                                            <label class="form-label">Meaning <span style="font-style: italic">This is
+                                                    not neccessary and can be ignored.</span></label>
 
-                                            <textarea
-                                                name="meaning"
-                                                class="form-control"
-                                                rows="3"
-                                                placeholder="Describe what this logic does...">{{ old('meaning') }}</textarea>
+                                            <textarea name="meaning" class="form-control" rows="3" placeholder="Describe what this logic does...">{{ old('meaning') }}</textarea>
 
                                             @error('meaning')
                                                 <small class="text-danger">{{ $message }}</small>
@@ -346,67 +363,67 @@
 
                             </div>
 
-                            </div>
+                        </div>
 
-                            <!-- RIGHT PANEL -->
+                        <!-- RIGHT PANEL -->
 
-                            <div class="col-md-8">
+                        <div class="col-md-8">
 
-                                <div class="card shadow-sm">
+                            <div class="card shadow-sm">
 
-                                    <div class="card-header">
+                                <div class="card-header">
 
-                                        <strong>Existing Logic</strong>
+                                    <strong>Existing Logic</strong>
 
-                                    </div>
+                                </div>
 
-                                    <div class="card-body p-0">
+                                <div class="card-body p-0">
 
-                                        <table class="table table-bordered table-hover mb-0">
+                                    <table class="table table-bordered table-hover mb-0">
 
-                                            <thead>
+                                        <thead>
 
-                                                <tr>
+                                            <tr>
 
-                                                    <th width="60">
+                                                <th width="60">
 
-                                                        S/N
+                                                    S/N
 
-                                                    </th>
+                                                </th>
 
-                                                    <th>
+                                                <th>
 
-                                                        Type
+                                                    Type
 
-                                                    </th>
+                                                </th>
 
-                                                    <th>
+                                                <th>
 
-                                                        Name
+                                                    Name
 
-                                                    </th>
+                                                </th>
 
-                                                    <th>
+                                                <th>
 
-                                                        Meaning
+                                                    Meaning
 
-                                                    </th>
+                                                </th>
 
-                                                    <th>
+                                                <th>
 
-                                                        Creator
+                                                    Creator
 
-                                                    </th>
+                                                </th>
 
-                                                    <th width="170">
+                                                <th width="170">
 
-                                                        Action
+                                                    Action
 
-                                                    </th>
+                                                </th>
 
-                                                </tr>
+                                            </tr>
 
-                                            </thead>
+                                        </thead>
 
                                         <tbody>
                                             @forelse($verbs as $verb)
@@ -417,17 +434,19 @@
                                                     <td>
                                                         <span class="view type-text">{{ $verb->type }}</span>
 
-                                                        <select
-                                                            name="type"
-                                                            form="update-form-{{ $verb->id }}"
+                                                        <select name="type" form="update-form-{{ $verb->id }}"
                                                             class="form-control form-control-sm edit type-input d-none"
-                                                            
                                                             style="border:1px solid #000000; outline:none;"
                                                             onfocus="this.style.boxShadow='0 0 0 .25rem rgba(13,110,253,.25)';"
                                                             onblur="this.style.boxShadow='none';">
 
-                                                            <option value="Operator" {{ $verb->type=='Operator'?'selected':'' }}>Operator</option>
-                                                            <option value="Action" {{ $verb->type=='Action'?'selected':'' }}>Action</option>
+                                                            <option value="Operator"
+                                                                {{ $verb->type == 'Operator' ? 'selected' : '' }}>
+                                                                Operator
+                                                            </option>
+                                                            <option value="Action"
+                                                                {{ $verb->type == 'Action' ? 'selected' : '' }}>Action
+                                                            </option>
 
                                                         </select>
                                                     </td>
@@ -435,9 +454,7 @@
                                                     <td>
                                                         <span class="view verb-text">{{ $verb->verb ?? '-' }}</span>
 
-                                                        <input
-                                                            type="text"
-                                                            name="verb"
+                                                        <input type="text" name="verb"
                                                             form="update-form-{{ $verb->id }}"
                                                             class="form-control form-control-sm edit verb-input d-none"
                                                             value="{{ $verb->verb }}"
@@ -447,11 +464,10 @@
                                                     </td>
 
                                                     <td>
-                                                         <span class="view meaning-text">{{ $verb->meaning ?? '-' }}</span>
+                                                        <span
+                                                            class="view meaning-text">{{ $verb->meaning ?? '-' }}</span>
 
-                                                        <input
-                                                            type="text"
-                                                            name="meaning"
+                                                        <input type="text" name="meaning"
                                                             form="update-form-{{ $verb->id }}"
                                                             class="form-control form-control-sm edit meaning-input d-none"
                                                             value="{{ $verb->meaning }}"
@@ -460,22 +476,19 @@
                                                             onblur="this.style.boxShadow='none';">
                                                     </td>
 
-                                                     <td>
-                                                        {{ optional($verb->user)->name ?? $verb->user_id ?? 'Unknown' }}
+                                                    <td>
+                                                        {{ optional($verb->user)->name ?? ($verb->user_id ?? 'Unknown') }}
                                                     </td>
 
                                                     <td>
 
-                                                        <form
-                                                            id="update-form-{{ $verb->id }}"
+                                                        <form id="update-form-{{ $verb->id }}"
                                                             action="{{ route('admin.verb.edit', $verb->id) }}"
-                                                            method="POST"
-                                                            class="d-inline">
+                                                            method="POST" class="d-inline">
 
                                                             @csrf
 
-                                                            <button
-                                                                type="button"
+                                                            <button type="button"
                                                                 class="btn btn-warning btn-sm edit-btn"
                                                                 data-id="{{ $verb->id }}">
 
@@ -483,8 +496,7 @@
 
                                                             </button>
 
-                                                            <button
-                                                                type="submit"
+                                                            <button type="submit"
                                                                 class="btn btn-success btn-sm save-btn d-none">
 
                                                                 <i class="fas fa-check"></i>
@@ -493,10 +505,8 @@
 
                                                         </form>
 
-                                                        <form
-                                                            action="{{ route('admin.verb.destroy', $verb->id) }}"
-                                                            method="POST"
-                                                            class="d-inline">
+                                                        <form action="{{ route('admin.verb.destroy', $verb->id) }}"
+                                                            method="POST" class="d-inline">
 
                                                             @csrf
                                                             @method('DELETE')
@@ -521,9 +531,7 @@
 
 
 
-                                        </table>
-
-                                    </div>
+                                    </table>
 
                                 </div>
 
@@ -533,17 +541,15 @@
 
                     </div>
 
-                    <div class="modal-footer">
+                </div>
 
-                        <button
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                <div class="modal-footer">
 
-                            Close
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
 
-                        </button>
+                        Close
 
-                    </div>
+                    </button>
 
                 </div>
 
@@ -551,23 +557,23 @@
 
         </div>
 
+    </div>
+
     <script>
-
-        
         let headerIndex = 0;
-         let positionIndex = 0;
-           
+        let positionIndex = 0;
 
-            function addPositionBlock() {
-                let container = document.getElementById('positionsContainer');
 
-                let currentPositionIndex = positionIndex;
+        function addPositionBlock() {
+            let container = document.getElementById('positionsContainer');
 
-                let block = document.createElement('div');
-                block.id = `position_block_${currentPositionIndex}`;
-                block.style = 'margin-bottom:20px;border:1px solid #ddd;border-radius:6px;padding:15px;background:#fafafa;';
+            let currentPositionIndex = positionIndex;
 
-                block.innerHTML = `
+            let block = document.createElement('div');
+            block.id = `position_block_${currentPositionIndex}`;
+            block.style = 'margin-bottom:20px;border:1px solid #ddd;border-radius:6px;padding:15px;background:#fafafa;';
+
+            block.innerHTML = `
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                         <input class="form-control"
                             name="Positions_Mapping[${currentPositionIndex}][Position_ID]"
@@ -581,49 +587,58 @@
                                 + Add Row
                             </button>
 
-                            <button type="button" onclick="document.getElementById('position_block_${currentPositionIndex}').remove()"
-                                style="background:#dc3545;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;">
-                                Remove Position
-                            </button>
+                            
                         </div>
                     </div>
 
-                    <table class="table table-bordered" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>Col</th>
+                    <div style="width:100%;overflow-x:auto;overflow-y:hidden;">
 
-                                <th>Field</th>
-                                
-                                <th>Logic</th>
-                               
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                        <table
+                            class="table table-bordered table-hover align-middle"
+                            style="min-width:1700px;width:100%;table-layout:auto;">
 
-                        <tbody id="position_mapping_body_${currentPositionIndex}">
-                            {{-- Position rows added here --}}
-                        </tbody>
-                    </table>
+                            <thead>
+
+                                <tr>
+
+                                    <th style="width:90px;">Col</th>
+
+                                    <th style="width:250px;">Field</th>
+
+                                    <th style="min-width:1100px;">Logic</th>
+
+                                    <th style="width:140px;">Action</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="position_mapping_body_${currentPositionIndex}">
+                                {{-- Position rows added here --}}
+                            </tbody>
+
+                        </table>
+
+                    </div>
                 `;
 
-                container.appendChild(block);
+            container.appendChild(block);
 
-                addPositionRow(currentPositionIndex);
+            addPositionRow(currentPositionIndex);
 
-                positionIndex++;
-            }
+            positionIndex++;
+        }
 
-            function addPositionRow(posIndex) {
+        function addPositionRow(posIndex) {
 
-                let tbody = document.getElementById(`position_mapping_body_${posIndex}`);
-                let rowIndex = tbody.children.length;
+            let tbody = document.getElementById(`position_mapping_body_${posIndex}`);
+            let rowIndex = tbody.children.length;
 
-                let row = document.createElement('tr');
-                row.className = 'position-row';
-                row.setAttribute('data-position', posIndex);
+            let row = document.createElement('tr');
+            row.className = 'position-row';
+            row.setAttribute('data-position', posIndex);
 
-                row.innerHTML = `
+            row.innerHTML = `
 
                         <td style="width:80px;">
                             <input class="form-control col"
@@ -632,9 +647,21 @@
                         </td>
 
                         <td style="width:220px;">
-                            <input class="form-control field"
+
+                            <div class="mb-2"
+                                style="font-size:11px;color:#6c757d;background:#f8f9fa;border-left:3px solid #0d6efd;padding:6px 8px;border-radius:4px;">
+
+                                <i class="fa fa-info-circle me-1"></i>
+
+                                <strong>Tip:</strong> Click this field first, then highlight the text in the PDF. The selected text will automatically be inserted here.
+
+                            </div>
+
+                            <input
+                                class="form-control field"
                                 name="Positions_Mapping[${posIndex}][Mapping][${rowIndex}][Field]"
                                 placeholder="Field to extract">
+
                         </td>
 
                         <td>
@@ -657,29 +684,65 @@
 
                                                 <div style="font-size:12px;color:#555;">
                                                     Logic is built as:
-                                                    <code>IF + OPERATOR + FIELD</code>
+                                                    <code>IF Field + OPERATOR + VALUE</code>
                                                 </div>
 
                                                 <div style="font-size:12px;color:#555;margin-top:4px;">
                                                     Example:
-                                                    <code>IF + CONTAINS + "Rolladen"</code>
+                                                    <code>IF "Rolladen" + CONTAINS + "0011"</code>
                                                 </div>
 
                                     </div>
 
-                                    <div class="d-flex gap-2 align-items-center">
+                                    <div class="row g-3 align-items-end">
 
-                                        <span class="form-control-static"> IF</span>
+                                        <div class="col-auto">
 
-                                        <select class="form-control operator" style="max-width:180px;">
-                                            @foreach($verbs->where('type', 'Operator') as $verb)
-                                                <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
-                                            @endforeach
-                                        </select>
+                                           
 
-                                        <input
-                                            class="form-control if"
-                                            placeholder="Enter value">
+                                            <div class="form-control-plaintext fw-bold">
+                                                IF
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                           
+
+                                            <div class="form-control-plaintext fw-bold">
+                                                FIELD
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                Verb - Operator
+                                            </label>
+
+                                            <select class="form-control operator">
+                                                @foreach ($verbs->where('type', 'Operator') as $verb)
+                                                    <option value="{{ $verb->verb }}">
+                                                        {{ $verb->verb }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                Value
+                                            </label>
+
+                                            <input
+                                                class="form-control if"
+                                                placeholder="0016, 0017, Rolladen">
+
+                                        </div>
 
                                     </div>
 
@@ -706,18 +769,47 @@
 
                                     </div>
 
-                                    <div class="d-flex gap-2 align-items-center">
+                                    <div class="row g-3 align-items-end">
 
-                                        <span class="form-control-static"> THEN</span>
-                                        <select class="form-control action" style="max-width:180px;">
-                                            @foreach($verbs->where('type', 'Action') as $verb)
-                                                <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div class="col-auto">
 
-                                        <input
-                                            class="form-control then"
-                                            placeholder="eg +10, 1060">
+                                            
+
+                                            <div class="form-control-plaintext fw-bold">
+                                                THEN
+                                            </div>
+
+                                        </div>
+
+                                        
+
+                                        <div class="col-md-3">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                Verb - Action
+                                            </label>
+
+                                            <select class="form-control action">
+                                                @foreach ($verbs->where('type', 'Action') as $verb)
+                                                    <option value="{{ $verb->verb }}">
+                                                        {{ $verb->verb }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                Value
+                                            </label>
+
+                                            <input
+                                                class="form-control then"
+                                                placeholder="0011, +10, ABC123">
+
+                                        </div>
 
                                     </div>
 
@@ -727,7 +819,7 @@
                                             type="button"
                                             class="btn btn-danger btn-sm"
                                             onclick="removeIfThen(this)">
-                                            Remove Condition
+                                           <i class="fas fa-trash"></i>
                                         </button>
 
                                     </div>
@@ -764,33 +856,42 @@
                                 type="button"
                                 onclick="this.closest('tr').remove()"
                                 class="btn btn-danger btn-sm w-100">
-                                Remove
+                                <i class="fas fa-trash"></i>
                             </button>
 
                         </td>
 
                     `;
 
-                tbody.appendChild(row);
-            }
+            tbody.appendChild(row);
+        }
 
-            function addHeaderRow() {
+        function addHeaderRow() {
 
-                headerIndex++;
+            headerIndex++;
 
-                let tbody = document.getElementById('headerMappingBody');
+            let tbody = document.getElementById('headerMappingBody');
 
-                let row = document.createElement('tr');
-                row.className = 'header-row';
+            let row = document.createElement('tr');
+            row.className = 'header-row';
 
-                row.innerHTML = `
+            row.innerHTML = `
                     <td>
                         <input class="form-control col"
                             value="${headerIndex}"
                             type="number">
                     </td>
 
-                    <td>
+                    <td style="width:220px;">
+
+                            <div class="mb-2"
+                                style="font-size:11px;color:#6c757d;background:#f8f9fa;border-left:3px solid #0d6efd;padding:6px 8px;border-radius:4px;">
+
+                                <i class="fa fa-info-circle me-1"></i>
+
+                                <strong>Tip:</strong> Click this field first, then highlight the text in the PDF. The selected text will automatically be inserted here.
+
+                            </div>
                         <input class="form-control field"
                             name="Header_Mapping[${headerIndex}][Field]"
                             placeholder="Field to extract">
@@ -815,28 +916,56 @@
 
                                                 <div style="font-size:12px;color:#555;">
                                                     Logic is built as:
-                                                    <code>IF + OPERATOR + FIELD</code>
+                                                    <code>IF + FIELD + OPERATOR + VALUE</code>
                                                 </div>
 
                                                 <div style="font-size:12px;color:#555;margin-top:4px;">
                                                     Example:
-                                                    <code>IF + CONTAINS + "Rolladen"</code>
+                                                    <code>IF + "Rolladen" + CONTAINS + "0011"</code>
                                                 </div>
 
                                     </div>
-                                    <div class="d-flex gap-2 align-items-center">
+                                    <div class="row g-3 align-items-end">
 
-                                       <span class="form-control-static"> IF</span>
+                                        <div class="col-auto">
 
-                                       <select class="form-control operator" style="max-width:180px;">
-                                            @foreach($verbs->where('type', 'Operator') as $verb)
-                                                <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
-                                            @endforeach
-                                        </select>
+                                           
 
-                                        <input
-                                            class="form-control if"
-                                            placeholder="Enter value">
+                                            <div class="form-control-plaintext fw-bold">
+                                                IF
+                                            </div>
+
+                                             <div class="form-control-plaintext fw-bold">
+                                                FIELD
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <label class="form-label fw-bold mb-1">
+                                               Verb- Operator
+                                            </label>
+
+                                            <select class="form-control operator">
+                                                @foreach ($verbs->where('type', 'Operator') as $verb)
+                                                    <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                VALUE
+                                            </label>
+
+                                            <input
+                                                class="form-control if"
+                                                placeholder="0016, 0017, Rolladen">
+
+                                        </div>
 
                                     </div>
 
@@ -863,19 +992,43 @@
 
                                     </div>
 
-                                    <div class="d-flex gap-2 align-items-center">
+                                    <div class="row g-3 align-items-end">
 
-                                        <span class="form-control-static"> THEN</span>
+                                        <div class="col-auto">
 
-                                        <select class="form-control action" style="max-width:180px;">
-                                            @foreach($verbs->where('type', 'Action') as $verb)
-                                                <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
-                                            @endforeach
-                                        </select>
+                                            <div class="form-control-plaintext fw-bold">
+                                                THEN
+                                            </div>
 
-                                        <input
-                                            class="form-control then"
-                                            placeholder="eg +10, 1060">
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                Verb- Action
+                                            </label>
+
+                                            <select class="form-control action">
+                                                @foreach ($verbs->where('type', 'Action') as $verb)
+                                                    <option value="{{ $verb->verb }}">
+                                                        {{ $verb->verb }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col">
+
+                                            <label class="form-label fw-bold mb-1">
+                                                Value
+                                            </label>
+
+                                            <input
+                                                class="form-control then"
+                                                placeholder="e.g. 0011, +10, ABC123">
+
+                                        </div>
 
                                     </div>
 
@@ -885,7 +1038,7 @@
                                             type="button"
                                             class="btn btn-danger btn-sm"
                                             onclick="removeIfThen(this)">
-                                            Remove Condition
+                                            <i class="fas fa-trash"></i>
                                         </button>
 
                                     </div>
@@ -922,26 +1075,26 @@
                                 type="button"
                                 onclick="this.closest('tr').remove()"
                                 class="btn btn-danger btn-sm w-100">
-                                Remove
+                                <i class="fas fa-trash"></i>
                             </button>
 
                         </td>
                 `;
 
-                tbody.appendChild(row);
-            }
+            tbody.appendChild(row);
+        }
 
-            function addIfThen(button) {
+        function addIfThen(button) {
 
-                const container = button
-                    .closest('td')
-                    .querySelector('.ifs-container');
+            const container = button
+                .closest('td')
+                .querySelector('.ifs-container');
 
-                const row = document.createElement('div');
+            const row = document.createElement('div');
 
-                row.className = 'if-then-row gap-2 mb-3';
+            row.className = 'if-then-row gap-2 mb-3';
 
-                row.innerHTML = `
+            row.innerHTML = `
 
                     <div style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
@@ -952,7 +1105,7 @@
                         <div class="d-flex gap-2 align-items-center">
 
                             <select class="form-control operator" style="max-width:180px;">
-                                @foreach($verbs->where('type', 'Operator') as $verb)
+                                @foreach ($verbs->where('type', 'Operator') as $verb)
                                     <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
                                 @endforeach
                             </select>
@@ -970,7 +1123,7 @@
                         <div class="d-flex gap-2 align-items-center">
 
                             <select class="form-control action" style="max-width:180px;">
-                                @foreach($verbs->where('type', 'Action') as $verb)
+                                @foreach ($verbs->where('type', 'Action') as $verb)
                                     <option value="{{ $verb->verb }}">{{ $verb->verb }}</option>
                                 @endforeach
                             </select>
@@ -987,7 +1140,7 @@
                                 type="button"
                                 class="btn btn-danger btn-sm"
                                 onclick="removeIfThen(this)">
-                                Remove Condition
+                                <i class="fas fa-trash"></i>
                             </button>
 
                         </div>
@@ -996,32 +1149,32 @@
 
                 `;
 
-                container.appendChild(row);
+            container.appendChild(row);
+        }
+
+        function removeIfThen(button) {
+
+            const container = button
+                .closest('.ifs-container');
+
+            if (container.querySelectorAll('.if-then-row').length <= 1) {
+                return;
             }
 
-            function removeIfThen(button) {
+            button.closest('.if-then-row').remove();
+        }
 
-                const container = button
-                    .closest('.ifs-container');
+        function addElseField(button) {
 
-                if (container.querySelectorAll('.if-then-row').length <= 1) {
-                    return;
-                }
+            const row = button.closest('tr');
 
-                button.closest('.if-then-row').remove();
+            const container = row.querySelector('.else-container');
+
+            if (container.querySelector('.else')) {
+                return;
             }
 
-            function addElseField(button) {
-
-                const row = button.closest('tr');
-
-                const container = row.querySelector('.else-container');
-
-                if (container.querySelector('.else')) {
-                    return;
-                }
-
-                container.innerHTML = `
+            container.innerHTML = `
                     <div class="d-flex gap-2 mt-2">
 
                         <input
@@ -1032,23 +1185,23 @@
                             type="button"
                             class="btn btn-danger btn-sm"
                             onclick="this.parentElement.remove()">
-                            X
+                            <i class="fas fa-trash"></i>
                         </button>
 
                     </div>
                 `;
-            }
+        }
     </script>
 
-    {{--payload script--}}
+    {{-- payload script --}}
     <script>
-            document.getElementById("mappingForm").addEventListener("submit", function(e) {
+        document.getElementById("mappingForm").addEventListener("submit", function(e) {
 
             let payload = {
                 Summary: {},
                 Header_Mapping: [],
                 Positions_Mapping: [],
-                History: []
+                
             };
 
             payload.Summary = {
@@ -1056,42 +1209,45 @@
                 Order_ID: document.getElementById("summary_order_id").value
             };
 
+            
             // HEADER
             document.querySelectorAll(".header-row").forEach(row => {
 
-            const operator = row.querySelector(".operator")?.value || "";
-            const ifValue = row.querySelector(".if")?.value || "";
-            const action = row.querySelector(".action")?.value || "";
-            const thenValue = row.querySelector(".then")?.value || "";
-            const field = row.querySelector(".field")?.value || "";
+                const field = row.querySelector(".field")?.value || "";
 
-            payload.Header_Mapping.push({
+                const ifs = [];
 
-                Col: parseInt(row.querySelector(".col").value),
+                row.querySelectorAll(".if-then-row").forEach(ifRow => {
 
-                Field: row.querySelector(".field")?.value || "",
+                    const operator = ifRow.querySelector(".operator")?.value || "";
+                    const ifValue = ifRow.querySelector(".if")?.value || "";
+                    const action = ifRow.querySelector(".action")?.value || "";
+                    const thenValue = ifRow.querySelector(".then")?.value || "";
 
-                If: `${field} ${ifValue} ${operator}`.trim(),
+                    ifs.push({
 
-                Then: `${action} ${thenValue}`.trim(),
+                        If: `${field} ${operator} ${ifValue}`.trim(),
 
-                Else: row.querySelector(".else")?.value || "",
+                        Then: `${action} ${thenValue}`.trim()
 
-                Type: row.querySelector(".type")?.value || "T"
+                    });
 
-            });
+                });
 
-        });
+                payload.Header_Mapping.push({
 
-            // COLORS
-            document.querySelectorAll(".color-row").forEach(row => {
+                    Col: parseInt(row.querySelector(".col").value),
 
-                payload.Panzer_Color_Mapping.push({
-                    Input_Contains: row.querySelector(".input").value,
-                    Output_Result: row.querySelector(".output").value
+                    Field_name: field,
+
+                    Ifs: ifs,
+
+                    Else: row.querySelector(".else")?.value || ""
+
                 });
 
             });
+            
 
             // POSITIONS
             let positionsMap = {};
@@ -1134,13 +1290,13 @@
 
                     Col: parseInt(row.querySelector(".col").value),
 
-                    Field: row.querySelector(".field")?.value || "",
+                    Field_name: row.querySelector(".field")?.value || "",
 
                     Ifs: ifs,
 
                     Else: row.querySelector(".else")?.value || "",
 
-                    Type: row.querySelector(".type")?.value || "T"
+                    
 
                 });
 
@@ -1158,14 +1314,14 @@
     <script src="{{ asset('pdfjs/pdf.js') }}"></script>
 
     <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "{{ asset('pdfjs/pdf.worker.js') }}";
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "{{ asset('pdfjs/pdf.worker.js') }}";
     </script>
 
 
-    {{---------------------------------}}
-    {{----- PDF UPLOAD PREVIEW SCRIPT -----}}
-    {{-------------------------------}}
+    {{-- ----------------------------- --}}
+    {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
+    {{-- --------------------------- --}}
     <script>
         const pdfInput = document.getElementById('pdfInput');
         const pdfPreviewBox = document.getElementById('pdfPreviewBox');
@@ -1199,13 +1355,15 @@
 
             const loadingTask = pdfjsLib.getDocument(pdfObjectUrl);
 
-            loadingTask.promise.then(async function(pdf){
+            loadingTask.promise.then(async function(pdf) {
 
-                for(let pageNum = 1; pageNum <= pdf.numPages; pageNum++){
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
 
                     const page = await pdf.getPage(pageNum);
 
-                    const viewport = page.getViewport({ scale: 1.3 });
+                    const viewport = page.getViewport({
+                        scale: 1.3
+                    });
 
                     const pageDiv = document.createElement("div");
 
@@ -1280,9 +1438,9 @@
     </script>
 
 
-    {{---------------------------------}}
-    {{----- TAB SWITCHING SCRIPT -----}}
-    {{-------------------------------}}
+    {{-- ----------------------------- --}}
+    {{-- --- TAB SWITCHING SCRIPT --- --}}
+    {{-- --------------------------- --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -1330,59 +1488,95 @@
     </script>
 
 
-    {{---The inline edit script---}}
+    {{-- -The inline edit script- --}}
     <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
 
             const rows = document.querySelectorAll('tbody tr');
 
-            document.querySelectorAll('.edit-btn').forEach(function(btn){
+            document.querySelectorAll('.edit-btn').forEach(function(btn) {
 
-                btn.addEventListener('click', function(){
+                btn.addEventListener('click', function() {
 
-                    
-                    rows.forEach(function(row){
 
-                        row.querySelectorAll('.view').forEach(function(el){
+                    rows.forEach(function(row) {
+
+                        row.querySelectorAll('.view').forEach(function(el) {
                             el.classList.remove('d-none');
                         });
 
-                        row.querySelectorAll('.edit').forEach(function(el){
+                        row.querySelectorAll('.edit').forEach(function(el) {
                             el.classList.add('d-none');
                         });
 
                         const editBtn = row.querySelector('.edit-btn');
                         const saveBtn = row.querySelector('.save-btn');
 
-                        if(editBtn) editBtn.classList.remove('d-none');
-                        if(saveBtn) saveBtn.classList.add('d-none');
+                        if (editBtn) editBtn.classList.remove('d-none');
+                        if (saveBtn) saveBtn.classList.add('d-none');
 
                     });
 
-                  
+
                     const row = document.getElementById('row-' + this.dataset.id);
 
-                    row.querySelectorAll('.view').forEach(function(el){
+                    row.querySelectorAll('.view').forEach(function(el) {
                         el.classList.add('d-none');
                     });
 
-                    row.querySelectorAll('.edit').forEach(function(el){
+                    row.querySelectorAll('.edit').forEach(function(el) {
                         el.classList.remove('d-none');
                     });
 
                     row.querySelector('.edit-btn').classList.add('d-none');
                     row.querySelector('.save-btn').classList.remove('d-none');
 
-                    
+
                     const firstInput = row.querySelector('.edit:not(.d-none)');
-                    if(firstInput){
+                    if (firstInput) {
                         firstInput.focus();
                     }
 
                 });
 
             });
+
+        });
+    </script>
+
+    <script>
+        let activeField = null;
+
+        document.addEventListener("focusin", function(e) {
+
+            if (
+                e.target.matches('input[name^="Header_Mapping"][name$="[Field]"]') ||
+                e.target.matches('input[name^="Positions_Mapping"][name$="[Field]"]')
+            ) {
+                activeField = e.target;
+
+                console.log("Active:", activeField.name);
+            }
+
+        });
+
+
+        document.addEventListener("mouseup", function() {
+
+            if (!activeField) return;
+
+            const text = window.getSelection().toString().trim();
+
+            if (!text) return;
+
+            activeField.value = text;
+
+            activeField.dispatchEvent(new Event("input", {
+                bubbles: true
+            }));
+            activeField.dispatchEvent(new Event("change", {
+                bubbles: true
+            }));
 
         });
     </script>
