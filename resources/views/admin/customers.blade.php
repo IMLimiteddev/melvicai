@@ -47,7 +47,7 @@
                             </div>
 
                             {{-- Plus Button --}}
-                            <a href="{{ route('admin.add.customer.mapping', 1) }}" wire:navigate
+                            <a href="{{ route('admin.add.customer.mapping',  [1, 'new']) }}" wire:navigate
                                 style="width:48px; height:48px; border-radius:50%; background:#000; color:#fff; text-decoration:none; display:flex; align-items:center; justify-content:center; font-size:22px; transition:all .3s ease;"
                                 onmouseover="this.style.background='#28a745'; this.style.transform='rotate(90deg) scale(1.05)'"
                                 onmouseout="this.style.background='#000'; this.style.transform='rotate(0deg) scale(1)'">
@@ -161,7 +161,7 @@
                         {{-- Bottom Center Button --}}
                         <div style="display:flex; justify-content:center; margin-top:30px;">
 
-                            <a href="{{ route('admin.modify.mapping') }}" wire:navigate
+                            <a href="{{ route('admin.add.customer.mapping',  [1, 'new']) }}" wire:navigate
                                 style="padding:14px 28px; background:#000; color:#fff; border-radius:14px; text-decoration:none; font-size:15px; font-weight:600; transition:all .3s ease;"
                                 onmouseover="this.style.background='#28a745'; this.style.transform='translateY(-2px)'"
                                 onmouseout="this.style.background='#000'; this.style.transform='translateY(0)'">
