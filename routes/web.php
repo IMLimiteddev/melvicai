@@ -60,7 +60,7 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/temp-mapping/{id?}', [RulesController::class, 'tempMapping'])->name('admin.temp_mappings');
     Route::post('/save-mapping/{id?}', [RulesController::class, 'saveMapping'])->name('admin.save.mapping');
 
-    Route::get('/download/output/{filename}', [ManageLogicController::class, 'downloadOutputFile'])
+    Route::get('/download/output/{filename}', [RulesController::class, 'downloadOutputFile'])
     ->where('filename', '.*')
     ->name('admin.download.output');
 

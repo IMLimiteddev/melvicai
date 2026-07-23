@@ -116,6 +116,7 @@ class RulesController extends Controller
         //     // return back()->with('success', 'Mapping prepared and ready to send!');
         // }
 
+        //New rule creation function from shakira
         public function newRule(Request $request)
         {
             try {
@@ -189,7 +190,7 @@ class RulesController extends Controller
                         $originalName
                     )
                     ->post(
-                        'http://31.97.126.130:3333/docs/schworer/new-rule',
+                        'http://76.13.131.17:32775/docs/schworer/new-rule',
                         [
                             'config' => json_encode($config)
                         ]
@@ -225,9 +226,6 @@ class RulesController extends Controller
 
         public function ruleSend(Request $request)
         {
-
-           
-            
             $request->validate([
                 'file' => 'required|file|mimes:pdf,txt,csv,xlsx|max:2048'
             ]);
@@ -420,7 +418,7 @@ class RulesController extends Controller
 
         // public function downloadOutputFile($filename)
         // {
-        //     $url = 'http://31.97.126.130:3333/download/output_file/' . rawurlencode($filename);
+        //     $url = 'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename);
 
         //     $response = Http::timeout(300)->get($url);
 
@@ -438,7 +436,7 @@ class RulesController extends Controller
        public function downloadOutputFile($filename)
         {
             return redirect()->away(
-                'http://31.97.126.130:3333/download/output_file/' . rawurlencode($filename)
+                'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename)
             );
         }
      

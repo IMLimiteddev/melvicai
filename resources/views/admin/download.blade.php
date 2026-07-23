@@ -53,7 +53,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header pb-0">
-                            <h4>Create New Rules.</h4>
+                            {{-- <h4>Create New Rules.</h4> --}}
                             <div
                                 style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
 
