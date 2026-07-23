@@ -38,73 +38,18 @@
                             dd($data);
                         @endphp --}}
 
-                        <form id="mappingForm" action="{{ route('admin.new.rule') }}" enctype="multipart/form-data"
+                        <form id="mappingForm" action="#" enctype="multipart/form-data"
                             method="POST">
                             @csrf
 
-                            <input type="hidden" name="payload" id="payload">
-                            <!-- <input type="text"> -->
+                            
 
 
                             <div style="padding:20px;">
 
-                            <label style="display:block;font-weight:600;margin-bottom:12px;">
-                                Upload Config File
-                            </label>
+                           
 
-                            <div id="dropZone"
-                                onclick="document.getElementById('pdfInput').click();"
-                                style="
-                                    border:2px dashed #198754;
-                                    border-radius:12px;
-                                    background:#f8fff9;
-                                    padding:45px 20px;
-                                    cursor:pointer;
-                                    transition:.3s;
-                                    text-align:center;
-                                ">
-
-                                <div style="font-size:55px;color:#198754;">
-                                    <i class="fa fa-cloud-upload"></i>
-                                </div>
-
-                                <div style="font-size:22px;font-weight:600;color:#198754;margin-top:10px;">
-                                    Drag & Drop your file here
-                                </div>
-
-                                <div style="margin:12px 0;color:#777;">
-                                    or
-                                </div>
-
-                                <button type="button"
-                                    class="btn btn-success"
-                                    onclick="event.stopPropagation();document.getElementById('pdfInput').click();">
-                                    <i class="fa fa-folder-open me-2"></i>
-                                    Browse Device
-                                </button>
-
-                                <input
-                                    type="file"
-                                    id="pdfInput"
-                                    name="file"
-                                    hidden>
-
-                                <div id="selectedFile"
-                                    style="
-                                        display:none;
-                                        margin-top:20px;
-                                        background:#ffffff;
-                                        border:1px solid #198754;
-                                        border-radius:8px;
-                                        padding:12px;
-                                        color:#198754;
-                                        font-weight:600;
-                                    ">
-                                    <i class="fa fa-file-pdf-o me-2"></i>
-                                    <span id="fileName"></span>
-                                </div>
-
-                            </div>
+                           
 
                             <div style="
                                 display:flex;
@@ -114,22 +59,21 @@
                                 flex-wrap:wrap;
                             ">
 
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-desktop me-2"></i>
-                                    Device
+                                <button type="button" class="btn btn-outline-success">
+                                    <i class="fa fa-arrow-left me-2"></i>
+                                    Scan another Pdf
                                 </button>
 
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-cloud me-2"></i>
-                                    SharePoint
+                                <button type="button" class="btn btn-outline-success"
+                                    data-bs-toggle="modal" data-bs-target="#scanResultModal">
+                                    <i class="fa fa-eye me-2"></i>
+                                    Scan result
                                 </button>
 
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-envelope me-2"></i>
-                                    Outlook
+                                <button type="button" class="btn btn-outline-success"
+                                    data-bs-toggle="modal" data-bs-target="#suggestionsResultModal">
+                                    <i class="fa fa-eye me-2"></i>
+                                    Suggestions result
                                 </button>
 
                             </div>
@@ -623,6 +567,113 @@
 
         </div>
 
+    </div>
+
+
+    <!-- Scan Result Modal -->
+    <div class="modal fade" id="scanResultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <i class="fa fa-file-alt me-2"></i>
+                        Scan result
+                    </h4>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <strong>Extracted data</strong>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th width="60">S/N</th>
+                                        <th>Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($scanResult ?? [] as $key => $value)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $key }}</td>
+                                            <td>{{ is_array($value) ? json_encode($value) : $value }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">
+                                                No scan result available yet.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suggestions Result Modal -->
+    <div class="modal fade" id="suggestionsResultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa fa-lightbulb me-2"></i>
+                    Suggestions result
+                </h4>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <strong>Suggested config</strong>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-bordered table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th width="60">S/N</th>
+                                    <th>Field</th>
+                                    <th>Suggested value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($suggestionResult ?? [] as $key => $value)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $key }}</td>
+                                        <td>{{ is_array($value) ? json_encode($value) : $value }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-4">
+                                            No suggestions available yet.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script>

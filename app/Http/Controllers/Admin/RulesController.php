@@ -439,5 +439,31 @@ class RulesController extends Controller
                 'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename)
             );
         }
+
+
+        //the new rule service index page
+
+        public function configIndex()
+        {
+
+         return view('admin.rule-service.index');
+
+        }
+
+        public function scanPdf()
+        {
+
+         return view('admin.rule-service.scan-pdf');
+
+        }
      
+        public function displayScannedResults(Request $request)
+        {
+            $data = $request->input('data');
+            $fileUrl = $request->input('fileUrl');
+
+             $verbs = Verb::all();
+
+            return view('admin.rule-service.display-scanned-results', compact('data', 'fileUrl', 'verbs'));
+        }
 }

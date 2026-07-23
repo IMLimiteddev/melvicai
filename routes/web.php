@@ -88,6 +88,24 @@ Route::prefix('admin/logic-manager')->middleware(['auth', 'verified'])->group(fu
 
 });
 
+
+Route::prefix('admin/rule-service')->middleware(['auth', 'verified'])->group(function () {
+    
+
+
+    Route::get('/index', [RulesController::class, 'configIndex'])
+    ->name('admin.rule-service.index');
+
+    Route::get('/scan-pdf', [RulesController::class, 'scanPdf'])
+    ->name('admin.rule-service.scan-pdf');
+
+    Route::get('/display-scanned-results', [RulesController::class, 'displayScannedResults'])
+    ->name('admin.rule-service.display-scanned-results');
+
+
+
+});
+
 // Route::get('/admin/roles-permissions', Roles::class)
 //     ->name('admin.roles-perm');
 
