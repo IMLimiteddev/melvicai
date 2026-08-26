@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ManageLogicController;
 use App\Livewire\Admin\Roles;
 use App\Http\Controllers\Admin\GmailController;
+use App\Http\Controllers\V1\Admin\ConfigurationController;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/onboard/services', 'onboard.services')->name('onboard.services');
@@ -113,6 +114,13 @@ Route::prefix('admin/rule-service')->middleware(['auth', 'verified'])->group(fun
 
     Route::post('/process-suggested/{id}',[RulesController::class, 'processSuggested']);
 
+
+});
+
+Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(function () {
+    
+    Route::get('/initiate/config', [ConfigurationController::class, 'configInitiate'])
+    ->name('admin.initiate.config');
 
 });
 

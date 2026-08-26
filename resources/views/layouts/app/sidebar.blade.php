@@ -156,6 +156,14 @@
                                             Configurations
                                         </flux:sidebar.item>
 
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.customers') }}" 
+                                            wire:navigate
+                                        >
+                                            Workflows
+                                        </flux:sidebar.item>
+
                                         <flux:sidebar.item 
                                             href="{{ route('admin.verbs.index') }}" 
                                             wire:navigate

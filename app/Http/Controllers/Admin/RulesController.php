@@ -399,7 +399,7 @@ class RulesController extends Controller
 
         public function addCustomerMapping($id = null, $new = null)
         {
-
+// dd('here');
             $data = Mapping::where('id', $id)->first();
 
             $verbs = Verb::all();

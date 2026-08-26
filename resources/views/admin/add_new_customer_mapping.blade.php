@@ -83,13 +83,13 @@
                                     Browse Device
                                 </button>
 
-                                <input
+                                {{-- <input
                                     type="file"
                                     id="pdfInput"
                                     name="file"
-                                    hidden>
+                                    hidden> --}}
 
-                                <div id="selectedFile"
+                                {{-- <div id="selectedFile"
                                     style="
                                         display:none;
                                         margin-top:20px;
@@ -102,6 +102,20 @@
                                     ">
                                     <i class="fa fa-file-pdf-o me-2"></i>
                                     <span id="fileName"></span>
+                                </div> --}}
+
+                                <div id="selectedFile"
+                                    style="
+                                        margin-top:20px;
+                                        background:#ffffff;
+                                        border:1px solid #198754;
+                                        border-radius:8px;
+                                        padding:12px;
+                                        color:#198754;
+                                        font-weight:600;
+                                    ">
+                                    <i class="fa fa-file-pdf-o me-2"></i>
+                                    <span id="fileName">{{ basename($data->file) }}</span>
                                 </div>
 
                             </div>
@@ -114,7 +128,7 @@
                                 flex-wrap:wrap;
                             ">
 
-                                <button type="button"
+                                {{-- <button type="button"
                                     class="btn btn-outline-success">
                                     <i class="fa fa-desktop me-2"></i>
                                     Device
@@ -130,7 +144,7 @@
                                     class="btn btn-outline-success">
                                     <i class="fa fa-envelope me-2"></i>
                                     Outlook
-                                </button>
+                                </button> --}}
 
                             </div>
 
@@ -144,7 +158,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label><strong>Customer</strong></label>
-                                    <input type="text" id="summary_customer" class="form-control"
+                                    <input type="hidden" id="summary_customer" class="form-control"
                                         placeholder="Enter customer name">
                                 </div>
 
@@ -336,7 +350,7 @@
         </div>
 
         <!-- =================== HEADER / BODY SWITCH =================== -->
-        <div class="d-flex justify-content-center my-4">
+        {{-- <div class="d-flex justify-content-center my-4">
 
             <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
 
@@ -367,7 +381,7 @@
 
             </div>
 
-        </div>
+        </div> --}}
 
        
     </div>
@@ -1423,7 +1437,7 @@
     {{-- ----------------------------- --}}
     {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
     {{-- --------------------------- --}}
-    <script>
+    {{-- <script>
         const pdfInput = document.getElementById('pdfInput');
         const pdfPreviewBox = document.getElementById('pdfPreviewBox');
         const pdfViewer = document.getElementById('pdfViewer');
@@ -1536,6 +1550,128 @@
             mappingColumn.classList.remove('col-lg-6');
             mappingColumn.classList.add('col-lg-12');
         });
+    </script> --}}
+
+    <script>
+        const pdfPreviewBox = document.getElementById('pdfPreviewBox');
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pdfFileName = document.getElementById('pdfFileName');
+        const removePdfBtn = document.getElementById('removePdfBtn');
+        const mappingColumn = document.getElementById('mappingColumn');
+
+        // Existing PDF uploaded previously
+        const pdfUrl = "{{ asset('storage/' . $data->file) }}";
+
+        let pdfObjectUrl = null;
+
+
+        // Load existing PDF when the page loads
+        function loadPdf(pdfUrl) {
+
+            pdfViewer.innerHTML = '';
+
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+            loadingTask.promise.then(async function(pdf) {
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+
+                    const page = await pdf.getPage(pageNum);
+
+                    const viewport = page.getViewport({
+                        scale: 1.3
+                    });
+
+                    const pageDiv = document.createElement("div");
+
+                    pageDiv.style.position = "relative";
+                    pageDiv.style.margin = "20px auto";
+                    pageDiv.style.width = viewport.width + "px";
+
+                    const canvas = document.createElement("canvas");
+
+                    const context = canvas.getContext("2d");
+
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    pageDiv.appendChild(canvas);
+
+                    const textLayer = document.createElement("div");
+
+                    textLayer.className = "textLayer";
+
+                    textLayer.style.position = "absolute";
+                    textLayer.style.left = "0";
+                    textLayer.style.top = "0";
+                    textLayer.style.width = canvas.width + "px";
+                    textLayer.style.height = canvas.height + "px";
+
+                    pageDiv.appendChild(textLayer);
+
+                    pdfViewer.appendChild(pageDiv);
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+
+                    const textContent = await page.getTextContent();
+
+                    pdfjsLib.renderTextLayer({
+
+                        textContent,
+
+                        container: textLayer,
+
+                        viewport,
+
+                        textDivs: []
+
+                    });
+
+                }
+
+            }).catch(function(error) {
+
+                console.error('PDF loading error:', error);
+
+                alert('Unable to load the PDF.');
+
+            });
+
+            pdfFileName.textContent = "{{ basename($data->file) }}";
+
+            pdfPreviewBox.style.display = 'block';
+
+            mappingColumn.classList.remove('col-lg-12');
+            mappingColumn.classList.add('col-lg-6');
+        }
+
+
+        // Load the already uploaded PDF
+        loadPdf(pdfUrl);
+
+
+        // Close/remove preview
+        removePdfBtn.addEventListener('click', function() {
+
+            if (pdfObjectUrl) {
+                URL.revokeObjectURL(pdfObjectUrl);
+                pdfObjectUrl = null;
+            }
+
+            pdfViewer.innerHTML = '';
+
+            pdfFileName.textContent = '';
+
+            pdfPreviewBox.style.display = 'none';
+
+            mappingColumn.classList.remove('col-lg-6');
+            mappingColumn.classList.add('col-lg-12');
+
+        });
+
     </script>
 
 
