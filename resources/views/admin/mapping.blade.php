@@ -110,7 +110,4 @@
 
 
     </div>
-
-  
-    
 </x-layouts::app>

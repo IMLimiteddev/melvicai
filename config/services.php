@@ -35,4 +35,22 @@ return [
         ],
     ],
 
+    'rule_engine' => [
+        'base_url' => env('RULE_ENGINE_BASE_URL'),
+    ],
+
+    'gmail' => [
+
+        'client_id' => env('GMAIL_CLIENT_ID'),
+
+        'client_secret' => env('GMAIL_CLIENT_SECRET'),
+
+        'redirect' => env('GMAIL_REDIRECT_URI'),
+
+        'account' => env('GMAIL_ACCOUNT'),
+
+        'output' => env('GMAIL_OUTPUT'),
+
+    ],
+
 ];

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RulesController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ManageLogicController;
 use App\Livewire\Admin\Roles;
+use App\Http\Controllers\Admin\GmailController;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/onboard/services', 'onboard.services')->name('onboard.services');
@@ -99,12 +100,27 @@ Route::prefix('admin/rule-service')->middleware(['auth', 'verified'])->group(fun
     Route::get('/scan-pdf', [RulesController::class, 'scanPdf'])
     ->name('admin.rule-service.scan-pdf');
 
-    Route::get('/display-scanned-results', [RulesController::class, 'displayScannedResults'])
+    Route::get('/display-scanned-results/{id?}', [RulesController::class, 'displayScannedResults'])
     ->name('admin.rule-service.display-scanned-results');
 
+    Route::post('/save-scan-results', [RulesController::class, 'saveScanResults'])
+    ->name('admin.rule-service.save-scan-results');
+
+    Route::post('/admin/create-after-scan/{id?}', [RulesController::class, 'createAfterScan'])->name('admin.create.after.scan');
+
+    Route::get('/admin/use-config-page/{id?}', [RulesController::class, 'useConfigPage'])->name('admin.use.config.page');
+    Route::post('/admin/use-config/{id?}', [RulesController::class, 'useConfig'])->name('admin.use.config');
+
+    Route::post('/process-suggested/{id}',[RulesController::class, 'processSuggested']);
 
 
 });
+
+Route::get('/google/gmail/connect', [GmailController::class, 'connect'])
+    ->name('gmail.connect');
+
+Route::get('/google/gmail/callback', [GmailController::class, 'callback'])
+    ->name('gmail.callback');
 
 // Route::get('/admin/roles-permissions', Roles::class)
 //     ->name('admin.roles-perm');

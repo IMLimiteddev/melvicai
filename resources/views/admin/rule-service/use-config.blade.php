@@ -36,7 +36,7 @@
 
                      
 
-                        <form id="mappingForm" action="{{ route('admin.rule-service.save-scan-results') }}" enctype="multipart/form-data"
+                        <form id="mappingForm" action="{{ route('admin.use.config', ['id' => $id]) }}" enctype="multipart/form-data"
                             method="POST">
                             @csrf
 
@@ -104,40 +104,8 @@
 
                             </div>
 
-                            <div>
-                                <label style="display:block;font-weight:600;margin-top:12px;">
-                                    Customer Name:
-                                </label>
-                                <input class="form-control" type="text" name="customer_name" id="customer" placeholder="Enter customer name" style="margin-top:10px; padding:5px; width:100%; border-radius:5px; border:1px solid #198754;">
-                            </div>
+                          
 
-                            <div style="
-                                display:flex;
-                                gap:15px;
-                                margin-top:20px;
-                                justify-content:center;
-                                flex-wrap:wrap;
-                            ">
-
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-desktop me-2"></i>
-                                    Device
-                                </button>
-
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-cloud me-2"></i>
-                                    SharePoint
-                                </button>
-
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-envelope me-2"></i>
-                                    Outlook
-                                </button>
-
-                            </div>
 
                         </div>
 

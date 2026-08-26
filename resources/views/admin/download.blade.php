@@ -13,14 +13,14 @@
 
     <div class="page-body" id="pageBody">
 
-        <x-stage active="1" />
+        {{-- <x-stage active="1" /> --}}
 
         <div class="container-fluid">
             <div class="page-title">
 
                 <div class="row">
                     <div class="col-xl-4 col-sm-7 box-col-3">
-                        <h3>Review/Download area</h3>
+                        <h3>Warnings/Download area</h3>
                     </div>
                     <div class="col-5 d-none d-xl-block">
                         <!-- Page Sub Header Start-->
@@ -229,20 +229,20 @@
                             {{-- Actions --}}
                             <div class="d-flex justify-content-between mt-4">
 
-                                <a href="" class="btn btn-warning">
+                                {{-- <a href="" class="btn btn-warning">
 
                                     <i class="fa fa-pencil me-2"></i>
 
                                     Re-edit Rules
 
-                                </a>
+                                </a> --}}
 
                                 <a href="{{ route('admin.download.output', ['filename' => $response['Mapped_txt_file'] ?? '']) }}"
                                     class="btn btn-success" download>
 
                                     <i class="fa fa-download me-2"></i>
 
-                                    Download Mapping File
+                                    Download Txt 
 
                                 </a>
 

@@ -38,47 +38,43 @@
                             dd($data);
                         @endphp --}}
 
-                        <form id="mappingForm" action="#" enctype="multipart/form-data"
+                        <form id="mappingForm" action="{{ route('admin.create.after.scan', ['id' => $id] ) }}" enctype="multipart/form-data"
                             method="POST">
                             @csrf
 
-                            
-
+                            <input type="file" id="pdfInput" name="file" hidden>
+                            <input type="hidden" name="payload" id="payload">
 
                             <div style="padding:20px;">
 
-                           
+                                <div style="
+                                        display:flex;
+                                        gap:15px;
+                                        margin-top:20px;
+                                        justify-content:center;
+                                        flex-wrap:wrap;
+                                    ">
 
-                           
+                                    <button type="button" class="btn btn-outline-success">
+                                        <i class="fa fa-arrow-left me-2"></i>
+                                        Scan another Pdf
+                                    </button>
 
-                            <div style="
-                                display:flex;
-                                gap:15px;
-                                margin-top:20px;
-                                justify-content:center;
-                                flex-wrap:wrap;
-                            ">
+                                    <button type="button" class="btn btn-outline-success"
+                                        data-bs-toggle="modal" data-bs-target="#scanResultModal">
+                                        <i class="fa fa-eye me-2"></i>
+                                        Scan result
+                                    </button>
 
-                                <button type="button" class="btn btn-outline-success">
-                                    <i class="fa fa-arrow-left me-2"></i>
-                                    Scan another Pdf
-                                </button>
+                                    <button type="button" class="btn btn-outline-success"
+                                        data-bs-toggle="modal" data-bs-target="#suggestionsResultModal">
+                                        <i class="fa fa-eye me-2"></i>
+                                        Suggestions result
+                                    </button>
 
-                                <button type="button" class="btn btn-outline-success"
-                                    data-bs-toggle="modal" data-bs-target="#scanResultModal">
-                                    <i class="fa fa-eye me-2"></i>
-                                    Scan result
-                                </button>
-
-                                <button type="button" class="btn btn-outline-success"
-                                    data-bs-toggle="modal" data-bs-target="#suggestionsResultModal">
-                                    <i class="fa fa-eye me-2"></i>
-                                    Suggestions result
-                                </button>
+                                </div>
 
                             </div>
-
-                        </div>
 
 
                             <div class="row p-3">
@@ -569,6 +565,10 @@
 
     </div>
 
+    {{-- @php
+        dd($result);
+    @endphp --}}
+
 
     <!-- Scan Result Modal -->
     <div class="modal fade" id="scanResultModal" tabindex="-1" aria-hidden="true">
@@ -582,7 +582,7 @@
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <div class="modal-body">
+                {{-- <div class="modal-body">
                     <div class="card shadow-sm">
                         <div class="card-header">
                             <strong>Extracted data</strong>
@@ -614,7 +614,137 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
+
+                <div class="modal-body">
+
+                @php
+                    $scan = is_string($result->scanned_data) ? json_decode($result->scanned_data, true) : $result->scanned_data;
+
+                    // dd($scan);
+                @endphp
+
+                @if($scan)
+
+                    {{-- Message --}}
+                    <div class="alert alert-success">
+                        {{ $scan['Message'] ?? '' }}
+                    </div>
+
+                    {{-- Summary --}}
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="card border-success">
+                                <div class="card-body text-center">
+                                    <h3 class="mb-0">{{ $scan['Total_fields_found'] ?? 0 }}</h3>
+                                    <small>Total Fields Found</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Header Fields --}}
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            Header Fields
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Field</th>
+                                    <th>Sample Value</th>
+                                    <th>Suggested Condition</th>
+                                    <th>Suggested Then</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach($scan['Header_fields'] ?? [] as $field)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $field['name'] }}</td>
+                                        <td>{{ $field['sample_value'] }}</td>
+                                        <td>{{ $field['suggested_condition'] }}</td>
+                                        <td>{{ $field['suggested_then'] }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Position Fields --}}
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            Position Fields
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Field</th>
+                                    <th>Sample Value</th>
+                                    <th>Suggested Condition</th>
+                                    <th>Suggested Then</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach($scan['Position_fields'] ?? [] as $field)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $field['name'] }}</td>
+                                        <td>{{ $field['sample_value'] }}</td>
+                                        <td>{{ $field['suggested_condition'] }}</td>
+                                        <td>{{ $field['suggested_then'] }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Raw Field Map --}}
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            Raw Extracted Fields
+                        </div>
+
+                        <div class="table-responsive" style="max-height:400px;">
+                            <table class="table table-striped table-bordered mb-0">
+                                <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Extracted Value</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach($scan['Raw_field_map'] ?? [] as $key => $value)
+                                    <tr>
+                                        <td>{{ $key }}</td>
+                                        <td>{{ $value }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                @else
+
+                    <div class="text-center py-5 text-muted">
+                        No scan result available.
+                    </div>
+
+                @endif
+
+            </div>
 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -636,45 +766,470 @@
             </div>
 
             <div class="modal-body">
-                <div class="card shadow-sm">
-                    <div class="card-header">
-                        <strong>Suggested config</strong>
+
+            @php
+                $suggestion = is_string($result->suggested_data)
+                    ? json_decode($result->suggested_data, true)
+                    : $result->suggested_data;
+            @endphp
+
+            @if($suggestion)
+
+                <div class="alert alert-info">
+                    {{ $suggestion['Message'] }}
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Customer</strong><br>
+                        {{ $suggestion['Customer'] }}
                     </div>
-                    <div class="card-body p-0">
+
+                    <div class="col-md-8">
+                        <strong>File</strong><br>
+                        {{ $suggestion['Filename'] }}
+                    </div>
+                </div>
+
+                {{-- Summary --}}
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        Summary
+                    </div>
+
+                    <table class="table table-bordered mb-0">
+                        @foreach($suggestion['Suggested_config']['Summary'] ?? [] as $k=>$v)
+                            <tr>
+                                <th width="250">{{ $k }}</th>
+                                <td>{{ $v }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+
+                {{-- Header Mapping --}}
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        Header Mapping
+                    </div>
+
+                    <div class="table-responsive">
                         <table class="table table-bordered table-hover mb-0">
+
                             <thead>
-                                <tr>
-                                    <th width="60">S/N</th>
-                                    <th>Field</th>
-                                    <th>Suggested value</th>
-                                </tr>
+                            <tr>
+                                <th>Col</th>
+                                <th>Field</th>
+                                <th>If(s)</th>
+                                <th>Else</th>
+                            </tr>
                             </thead>
+
                             <tbody>
-                                @forelse($suggestionResult ?? [] as $key => $value)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $key }}</td>
-                                        <td>{{ is_array($value) ? json_encode($value) : $value }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center text-muted py-4">
-                                            No suggestions available yet.
-                                        </td>
-                                    </tr>
-                                @endforelse
+
+                            @foreach($suggestion['Suggested_config']['Header_Mapping'] ?? [] as $row)
+
+                                <tr>
+
+                                    <td>{{ $row['Col'] }}</td>
+
+                                    <td>{{ $row['Field_name'] }}</td>
+
+                                    <td>
+                                        @foreach($row['Ifs'] as $if)
+                                            <div class="mb-2">
+                                                <strong>If:</strong> {{ $if['If'] }}<br>
+                                                <strong>Then:</strong> {{ $if['Then'] }}
+                                            </div>
+                                        @endforeach
+                                    </td>
+
+                                    <td>{{ $row['Else'] }}</td>
+
+                                </tr>
+
+                            @endforeach
+
                             </tbody>
+
                         </table>
                     </div>
                 </div>
-            </div>
+
+                {{-- Position Mapping --}}
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Position Mapping
+                    </div>
+
+                    @foreach($suggestion['Suggested_config']['Positions_Mapping'] ?? [] as $position)
+
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered table-hover mb-4">
+
+                                <thead>
+
+                                <tr>
+                                    <th>Col</th>
+                                    <th>Field</th>
+                                    <th>If(s)</th>
+                                    <th>Else</th>
+                                </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                @foreach($position['Mapping'] as $map)
+
+                                    <tr>
+
+                                        <td>{{ $map['Col'] }}</td>
+
+                                        <td>{{ $map['Field_name'] }}</td>
+
+                                        <td>
+
+                                            @foreach($map['Ifs'] as $if)
+
+                                                <div class="mb-2">
+                                                    <strong>If:</strong> {{ $if['If'] }}<br>
+                                                    <strong>Then:</strong> {{ $if['Then'] }}
+                                                </div>
+
+                                            @endforeach
+
+                                        </td>
+
+                                        <td>{{ $map['Else'] }}</td>
+
+                                    </tr>
+
+                                @endforeach
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    @endforeach
+
+            @else
+
+                <div class="text-center py-5 text-muted">
+                    No suggestions available.
+                </div>
+
+            @endif
+
+        </div>
 
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-success" onclick="transferSuggestionsToForm()">
+                    <i class="fas fa-exchange-alt"></i> Transfer
+                </button>
             </div>
         </div>
     </div>
-    </div>
+    
+
+
+    <script>
+        const suggestionData = @json(
+            is_string($result->suggested_data)
+                ? json_decode($result->suggested_data, true)
+                : $result->suggested_data
+        );
+
+        // =============================
+        // Parse IF string
+        // Example:
+        // contains 'Bestnr.'
+        // -> operator = contains
+        // -> value = Bestnr.
+        // =============================
+        function parseIf(text) {
+
+            if (!text) return {
+                operator: '',
+                value: ''
+            };
+
+            const match = text.match(/^(.+?)\s+'(.+)'$/);
+
+            if (match) {
+                return {
+                    operator: match[1].trim(),
+                    value: match[2].trim()
+                };
+            }
+
+            return {
+                operator: '',
+                value: text.trim()
+            };
+        }
+
+
+        // =============================
+        // Parse THEN string
+        // Example:
+        // extract number after 'Bestnr.'
+        // -> action = extract number after
+        // -> value = Bestnr.
+        // =============================
+        function parseThen(text) {
+
+            if (!text) {
+                return {
+                    action: '',
+                    value: ''
+                };
+            }
+
+            text = text.trim();
+
+            const firstSpace = text.indexOf(' ');
+
+            // Only one word
+            if (firstSpace === -1) {
+                return {
+                    action: text.toLowerCase(),
+                    value: ''
+                };
+            }
+
+            return {
+                action: text.substring(0, firstSpace).trim().toLowerCase(),
+                value: text.substring(firstSpace + 1).trim()
+            };
+        }
+
+
+        // =============================
+        // Find matching verb in dropdown
+        // =============================
+        function selectVerb(select, searchText) {
+
+            if (!select || !searchText) return;
+
+            searchText = searchText.toLowerCase().trim();
+
+            let found = false;
+
+            Array.from(select.options).forEach(option => {
+
+                const optionText = option.text.toLowerCase().trim();
+                const optionValue = option.value.toLowerCase().trim();
+
+                if (
+                    optionValue === searchText ||
+                    optionText === searchText ||
+                    optionValue.includes(searchText) ||
+                    optionText.includes(searchText)
+                ) {
+                    select.value = option.value;
+                    found = true;
+                }
+
+            });
+
+            if (!found) {
+                console.warn("Verb not found:", searchText);
+            }
+
+            select.dispatchEvent(new Event('change'));
+
+        }
+
+
+        // =============================
+        // Populate IF / THEN
+        // =============================
+        function populateIfThen(row, ifs) {
+
+            if (!ifs || ifs.length === 0) return;
+
+            const addBtn = row.querySelector('.btn-success.btn-sm');
+
+            // Remove additional rows
+            const existing = row.querySelectorAll('.if-then-row');
+
+            for (let i = existing.length - 1; i > 0; i--) {
+                existing[i].remove();
+            }
+
+            ifs.forEach((item, index) => {
+
+                if (index > 0) {
+                    addIfThen(addBtn);
+                }
+
+                const block = row.querySelectorAll('.if-then-row')[index];
+
+                const parsedIf = parseIf(item.If);
+                const parsedThen = parseThen(item.Then);
+
+                // Operator
+                selectVerb(
+                    block.querySelector('.operator'),
+                    parsedIf.operator
+                );
+
+                // IF value
+                block.querySelector('.if').value = parsedIf.value;
+
+                // Action
+                selectVerb(
+                    block.querySelector('.action'),
+                    parsedThen.action
+                );
+
+                // THEN value
+                block.querySelector('.then').value = parsedThen.value;
+
+            });
+
+        }
+
+        // =============================
+        // Main Transfer Function
+        // =============================
+        function transferSuggestionsToForm() {
+
+            if (!suggestionData || !suggestionData.Suggested_config) {
+                alert('No suggestion data found.');
+                return;
+            }
+
+            const config = suggestionData.Suggested_config;
+
+            // =============================
+            // SUMMARY
+            // =============================
+            document.getElementById('summary_customer').value =
+                config.Summary.Customer || '';
+
+            document.getElementById('summary_order_id').value =
+                config.Summary.Order_ID || '';
+
+            // =============================
+            // CLEAR OLD DATA
+            // =============================
+            document.getElementById('headerMappingBody').innerHTML = '';
+            document.getElementById('positionsContainer').innerHTML = '';
+
+            headerIndex = 0;
+            positionIndex = 0;
+
+            // =============================
+            // HEADER MAPPING
+            // =============================
+            config.Header_Mapping.forEach(item => {
+
+                addHeaderRow();
+
+                const rows = document.querySelectorAll(
+                    '#headerMappingBody .header-row'
+                );
+
+                const row = rows[rows.length - 1];
+
+                // Basic fields
+                row.querySelector('.col').value =
+                    item.Col;
+
+                row.querySelector('.field').value =
+                    item.Field_name;
+
+                // IF / THEN
+                populateIfThen(row, item.Ifs);
+
+                // ELSE
+                if (item.Else) {
+
+                    addElseField(
+                        row.querySelector('.btn-warning')
+                    );
+
+                    row.querySelector('.else').value =
+                        item.Else;
+                }
+            });
+
+            // =============================
+            // POSITION MAPPING
+            // =============================
+            config.Positions_Mapping.forEach(position => {
+
+                // Create block
+                addPositionBlock();
+
+                const currentPositionIndex = positionIndex - 1;
+
+                const positionBlock = document.getElementById(
+                    `position_block_${currentPositionIndex}`
+                );
+
+                // Set Position ID
+                positionBlock.querySelector(
+                    "input[name*='Position_ID']"
+                ).value = position.Position_ID;
+
+                // Remove default row
+                document.getElementById(
+                    `position_mapping_body_${currentPositionIndex}`
+                ).innerHTML = '';
+
+                // Add real rows
+                position.Mapping.forEach(mapping => {
+
+                    addPositionRow(currentPositionIndex);
+
+                    const tbody = document.getElementById(
+                        `position_mapping_body_${currentPositionIndex}`
+                    );
+
+                    const row = tbody.lastElementChild;
+
+                    // Basic fields
+                    row.querySelector('.col').value =
+                        mapping.Col;
+
+                    row.querySelector('.field').value =
+                        mapping.Field_name;
+
+                    // IF / THEN
+                    populateIfThen(row, mapping.Ifs);
+
+                    // ELSE
+                    if (mapping.Else) {
+
+                        addElseField(
+                            row.querySelector('.btn-warning')
+                        );
+
+                        row.querySelector('.else').value =
+                            mapping.Else;
+                    }
+                });
+            });
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(
+                document.getElementById('suggestionsResultModal')
+            );
+
+            if (modal) {
+                modal.hide();
+            }
+
+            alert('Suggestion transferred successfully!');
+        }
+    </script>
 
     <script>
         let headerIndex = 0;
@@ -1436,216 +1991,47 @@
     </script>
 
 
-    {{-- ----------------------------- --}}
-    {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
-    {{-- --------------------------- --}}
     <script>
-        const pdfInput = document.getElementById('pdfInput');
-        const pdfPreviewBox = document.getElementById('pdfPreviewBox');
-        const pdfViewer = document.getElementById('pdfViewer');
-        const pdfFileName = document.getElementById('pdfFileName');
-        const removePdfBtn = document.getElementById('removePdfBtn');
-        const mappingColumn = document.getElementById('mappingColumn');
+            document.addEventListener("DOMContentLoaded", function () {
 
-        let pdfObjectUrl = null;
+            const headerSection = document.getElementById("header");
+            const bodySection = document.getElementById("map-body");
 
-        pdfInput.addEventListener('change', function() {
-            const file = this.files[0];
+            const switchHeader = document.getElementById("switchHeader");
+            const switchBody = document.getElementById("switchBody");
 
-            if (!file) {
-                return;
+            function showHeader() {
+                headerSection.style.display = "block";
+                bodySection.style.display = "none";
+
+                headerSection.classList.add("fade", "show");
+                bodySection.classList.remove("show");
             }
 
-            if (file.type !== 'application/pdf') {
-                alert('Please upload only a PDF file.');
-                this.value = '';
-                return;
+            function showBody() {
+                headerSection.style.display = "none";
+                bodySection.style.display = "block";
+
+                bodySection.classList.add("fade", "show");
+                headerSection.classList.remove("show");
             }
 
-            if (pdfObjectUrl) {
-                URL.revokeObjectURL(pdfObjectUrl);
-            }
-
-            pdfObjectUrl = URL.createObjectURL(file);
-
-            pdfViewer.innerHTML = '';
-
-            const loadingTask = pdfjsLib.getDocument(pdfObjectUrl);
-
-            loadingTask.promise.then(async function(pdf) {
-
-                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-
-                    const page = await pdf.getPage(pageNum);
-
-                    const viewport = page.getViewport({
-                        scale: 1.3
-                    });
-
-                    const pageDiv = document.createElement("div");
-
-                    pageDiv.style.position = "relative";
-                    pageDiv.style.margin = "20px auto";
-                    pageDiv.style.width = viewport.width + "px";
-
-                    const canvas = document.createElement("canvas");
-
-                    const context = canvas.getContext("2d");
-
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-
-                    pageDiv.appendChild(canvas);
-
-                    const textLayer = document.createElement("div");
-
-                    textLayer.className = "textLayer";
-
-                    textLayer.style.position = "absolute";
-                    textLayer.style.left = "0";
-                    textLayer.style.top = "0";
-                    textLayer.style.width = canvas.width + "px";
-                    textLayer.style.height = canvas.height + "px";
-
-                    pageDiv.appendChild(textLayer);
-
-                    pdfViewer.appendChild(pageDiv);
-
-                    await page.render({
-                        canvasContext: context,
-                        viewport: viewport
-                    }).promise;
-
-                    const textContent = await page.getTextContent();
-
-                    pdfjsLib.renderTextLayer({
-
-                        textContent,
-
-                        container: textLayer,
-
-                        viewport,
-
-                        textDivs: []
-
-                    });
-
+            switchHeader.addEventListener("change", function () {
+                if (this.checked) {
+                    showHeader();
                 }
-
-            });
-            pdfFileName.textContent = file.name;
-            pdfPreviewBox.style.display = 'block';
-            mappingColumn.classList.remove('col-lg-12');
-            mappingColumn.classList.add('col-lg-6');
-        });
-
-        removePdfBtn.addEventListener('click', function() {
-            if (pdfObjectUrl) {
-                URL.revokeObjectURL(pdfObjectUrl);
-                pdfObjectUrl = null;
-            }
-
-            pdfInput.value = '';
-            pdfViewer.src = '';
-            pdfFileName.textContent = '';
-            pdfPreviewBox.style.display = 'none';
-            mappingColumn.classList.remove('col-lg-6');
-            mappingColumn.classList.add('col-lg-12');
-        });
-    </script>
-
-
-    {{-- ----------------------------- --}}
-    {{-- --- TAB SWITCHING SCRIPT --- --}}
-    {{-- --------------------------- --}}
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const tabs = document.querySelectorAll('.tab-link');
-            const contents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-
-                    const target = this.dataset.tab;
-
-
-                    tabs.forEach(t => {
-                        const tabName = t.dataset.tab;
-
-
-                        t.classList.remove('active');
-
-
-                        const content = document.getElementById(tabName);
-                        if (content) content.style.display = 'none';
-                    });
-
-
-                    this.classList.add('active');
-
-
-                    const activeContent = document.getElementById(target);
-                    if (activeContent) activeContent.style.display = 'block';
-
-                });
             });
 
-        });
+            switchBody.addEventListener("change", function () {
+                if (this.checked) {
+                    showBody();
+                }
+            });
 
-        function togglePosition(id) {
-            const el = document.getElementById(id);
-
-            if (el.style.display === "none") {
-                el.style.display = "block";
-            } else {
-                el.style.display = "none";
-            }
-        }
-    </script> --}}
-
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-    const headerSection = document.getElementById("header");
-    const bodySection = document.getElementById("map-body");
-
-    const switchHeader = document.getElementById("switchHeader");
-    const switchBody = document.getElementById("switchBody");
-
-    function showHeader() {
-        headerSection.style.display = "block";
-        bodySection.style.display = "none";
-
-        headerSection.classList.add("fade", "show");
-        bodySection.classList.remove("show");
-    }
-
-    function showBody() {
-        headerSection.style.display = "none";
-        bodySection.style.display = "block";
-
-        bodySection.classList.add("fade", "show");
-        headerSection.classList.remove("show");
-    }
-
-    switchHeader.addEventListener("change", function () {
-        if (this.checked) {
+            // Initial state
             showHeader();
-        }
-    });
 
-    switchBody.addEventListener("change", function () {
-        if (this.checked) {
-            showBody();
-        }
-    });
-
-    // Initial state
-    showHeader();
-
-});
+        });
 
     </script>
 
@@ -1744,44 +2130,251 @@
     </script>
 
     
-    {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
-    <script>
-        const dropZone = document.getElementById('dropZone');
-        const input = document.getElementById('pdfInput');
+    {{-- <script>
+        const existingPdfUrl = @json($result->file_url ?? null);
 
-        dropZone.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            this.style.background = '#e9f8ef';
-            this.style.borderColor = '#157347';
-        });
+        const pdfPreviewBox = document.getElementById('pdfPreviewBox');
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pdfFileName = document.getElementById('pdfFileName');
+        const removePdfBtn = document.getElementById('removePdfBtn');
+        const mappingColumn = document.getElementById('mappingColumn');
 
-        dropZone.addEventListener('dragleave', function () {
-            this.style.background = '#f8fff9';
-            this.style.borderColor = '#198754';
-        });
+        // ===========================================
+        // Render PDF
+        // ===========================================
+        async function renderPdf(pdfUrl, fileName = "PDF") {
 
-        dropZone.addEventListener('drop', function (e) {
-            e.preventDefault();
+            if (!pdfUrl) return;
 
-            this.style.background = '#f8fff9';
-            this.style.borderColor = '#198754';
+            pdfViewer.innerHTML = "";
 
-            input.files = e.dataTransfer.files;
+            try {
 
-            showSelectedFile();
-        });
+                const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                const pdf = await loadingTask.promise;
 
-        input.addEventListener('change', showSelectedFile);
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
 
-        function showSelectedFile() {
+                    const page = await pdf.getPage(pageNum);
 
-            if (!input.files.length) return;
+                    const viewport = page.getViewport({
+                        scale: 1.3
+                    });
 
-            document.getElementById('selectedFile').style.display = 'block';
+                    const pageDiv = document.createElement("div");
+                    pageDiv.style.position = "relative";
+                    pageDiv.style.margin = "20px auto";
+                    pageDiv.style.width = viewport.width + "px";
 
-            document.getElementById('fileName').innerHTML =
-                input.files[0].name;
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    pageDiv.appendChild(canvas);
+
+                    const textLayer = document.createElement("div");
+                    textLayer.className = "textLayer";
+                    textLayer.style.position = "absolute";
+                    textLayer.style.left = "0";
+                    textLayer.style.top = "0";
+                    textLayer.style.width = canvas.width + "px";
+                    textLayer.style.height = canvas.height + "px";
+
+                    pageDiv.appendChild(textLayer);
+                    pdfViewer.appendChild(pageDiv);
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+
+                    const textContent = await page.getTextContent();
+
+                    pdfjsLib.renderTextLayer({
+                        textContent,
+                        container: textLayer,
+                        viewport,
+                        textDivs: []
+                    });
+                }
+
+                pdfFileName.textContent = fileName;
+                pdfPreviewBox.style.display = "block";
+
+                mappingColumn.classList.remove("col-lg-12");
+                mappingColumn.classList.add("col-lg-6");
+
+            } catch (e) {
+                console.error(e);
+                alert("Unable to load PDF.");
+            }
         }
+
+        // ===========================================
+        // Remove Preview
+        // ===========================================
+        removePdfBtn.addEventListener("click", function () {
+
+            pdfViewer.innerHTML = "";
+            pdfFileName.textContent = "";
+            pdfPreviewBox.style.display = "none";
+
+            mappingColumn.classList.remove("col-lg-6");
+            mappingColumn.classList.add("col-lg-12");
+        });
+
+        // ===========================================
+        // Automatically load the PDF on page load
+        // ===========================================
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (!existingPdfUrl) return;
+
+            const fileName = existingPdfUrl.split("/").pop();
+
+            renderPdf(existingPdfUrl, fileName);
+
+        });
+
+    </script> --}}
+
+
+    <script>
+        const existingPdfUrl = @json($result->file_url ?? null);
+
+        const pdfPreviewBox = document.getElementById('pdfPreviewBox');
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pdfFileName = document.getElementById('pdfFileName');
+        const removePdfBtn = document.getElementById('removePdfBtn');
+        const mappingColumn = document.getElementById('mappingColumn');
+        const pdfInput = document.getElementById('pdfInput');
+
+        // ===========================================
+        // Render PDF
+        // ===========================================
+        async function renderPdf(pdfUrl, fileName = "PDF") {
+
+            if (!pdfUrl) return;
+
+            pdfViewer.innerHTML = "";
+
+            try {
+
+                const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                const pdf = await loadingTask.promise;
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+
+                    const page = await pdf.getPage(pageNum);
+
+                    const viewport = page.getViewport({
+                        scale: 1.3
+                    });
+
+                    const pageDiv = document.createElement("div");
+                    pageDiv.style.position = "relative";
+                    pageDiv.style.margin = "20px auto";
+                    pageDiv.style.width = viewport.width + "px";
+
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    pageDiv.appendChild(canvas);
+
+                    const textLayer = document.createElement("div");
+                    textLayer.className = "textLayer";
+                    textLayer.style.position = "absolute";
+                    textLayer.style.left = "0";
+                    textLayer.style.top = "0";
+                    textLayer.style.width = canvas.width + "px";
+                    textLayer.style.height = canvas.height + "px";
+
+                    pageDiv.appendChild(textLayer);
+                    pdfViewer.appendChild(pageDiv);
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+
+                    const textContent = await page.getTextContent();
+
+                    pdfjsLib.renderTextLayer({
+                        textContent,
+                        container: textLayer,
+                        viewport,
+                        textDivs: []
+                    });
+                }
+
+                pdfFileName.textContent = fileName;
+                pdfPreviewBox.style.display = "block";
+
+                mappingColumn.classList.remove("col-lg-12");
+                mappingColumn.classList.add("col-lg-6");
+
+            } catch (e) {
+                console.error(e);
+                alert("Unable to load PDF.");
+            }
+        }
+
+        // ===========================================
+        // Remove Preview
+        // ===========================================
+        removePdfBtn.addEventListener("click", function () {
+
+            pdfViewer.innerHTML = "";
+            pdfFileName.textContent = "";
+            pdfPreviewBox.style.display = "none";
+
+            mappingColumn.classList.remove("col-lg-6");
+            mappingColumn.classList.add("col-lg-12");
+
+            if (pdfInput) {
+                pdfInput.value = "";
+            }
+        });
+
+        // ===========================================
+        // Automatically load the PDF on page load
+        // ===========================================
+        document.addEventListener("DOMContentLoaded", async function () {
+
+            if (!existingPdfUrl) return;
+
+            const fileName = existingPdfUrl.split("/").pop();
+
+            await renderPdf(existingPdfUrl, fileName);
+
+            // Attach the existing PDF to the hidden file input
+            try {
+
+                const response = await fetch(existingPdfUrl);
+                const blob = await response.blob();
+
+                const file = new File([blob], fileName, {
+                    type: "application/pdf"
+                });
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+
+                if (pdfInput) {
+                    pdfInput.files = dataTransfer.files;
+                }
+
+            } catch (error) {
+                console.error("Unable to attach PDF to form:", error);
+            }
+
+        });
+
     </script>
 
 </x-layouts::app>

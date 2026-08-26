@@ -9,6 +9,9 @@ use App\Models\Mapping;
 use App\Models\TempMappping;
 use Illuminate\Support\Facades\Http;
 use App\Models\Verb;
+use App\Models\ScannedSuggestedResult;
+
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\UploadedFile;
 
@@ -190,7 +193,7 @@ class RulesController extends Controller
                         $originalName
                     )
                     ->post(
-                        'http://76.13.131.17:32775/docs/schworer/new-rule',
+                        'http://76.13.131.17:32775/docs/schworer/new-rule-3',
                         [
                             'config' => json_encode($config)
                         ]
@@ -245,7 +248,7 @@ class RulesController extends Controller
 
             $data = json_decode($request->payload, true);
 
-             dd($data);
+            //  dd($data);
 
             $summaryMapping   = $data['Summary'] ?? [];
             $headerMapping    = $data['Header_Mapping'] ?? [];
@@ -435,6 +438,16 @@ class RulesController extends Controller
 
        public function downloadOutputFile($filename)
         {
+            // dd($filename, $id);
+            // find the scanned suggested result by id and save the filename to the txt_file column
+            // if ($id) {
+            //     $result = ScannedSuggestedResult::findOrFail($id);
+
+            //     $result->txt_file = $filename;
+            //     $result->save();
+            // }
+
+           
             return redirect()->away(
                 'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename)
             );
@@ -457,13 +470,597 @@ class RulesController extends Controller
 
         }
      
-        public function displayScannedResults(Request $request)
+        // public function displayScannedResults(Request $request)
+        // {
+        //     $data = $request->input('data');
+        //     $fileUrl = $request->input('fileUrl');
+
+        //      $verbs = Verb::all();
+
+        //     return view('admin.rule-service.display-scanned-results', compact('data', 'fileUrl', 'verbs'));
+        // }
+
+
+        public function displayScannedResults($id)
         {
-            $data = $request->input('data');
-            $fileUrl = $request->input('fileUrl');
+            $result = ScannedSuggestedResult::findOrFail($id);
 
-             $verbs = Verb::all();
+            $verbs = Verb::all();
+        
+            return view('admin.rule-service.display-scanned-results', [
+                'result' => $result,
+                'verbs' => $verbs,
+                'id'=> $id
+            ]);
+        }
 
-            return view('admin.rule-service.display-scanned-results', compact('data', 'fileUrl', 'verbs'));
+
+
+        //Number one in the scanning process
+        public function saveScanResults(Request $request)
+        {
+
+            // dd($request->all());
+
+            // $pdfPath = public_path('D & M KG-Motor-elero-ja-soft-NHK.pdf');
+
+            $request->validate([
+                // 'file' => 'required|file|mimes:pdf,txt,csv,xlsx|max:2048',
+                'customer_name' => 'nullable|string|max:255',
+            ]);
+
+            $file = $request->file('file');
+
+            $storedPath = $file->store('scans', 'public'); 
+            $fileUrl = Storage::disk('public')->url($storedPath);
+
+            // $txtPath = $file->store('scans', 'public'); 
+            // $txtFileUrl = Storage::disk('public')->url($txtPath);
+
+            $baseUrl = config('services.rule_engine.base_url'); // e.g. http://76.13.131.17:32775
+
+            try {
+              
+                $scanResponse = Http::timeout(300)->attach(
+                        'file', file_get_contents($file->getRealPath()), $file->getClientOriginalName()
+                    )
+                    ->post("{$baseUrl}/docs/schworer/scan-pdf-1")
+                    ->throw();
+
+                $scannedData = $scanResponse->json();
+                
+                // dd($scannedData);
+                
+                $suggestResponse = Http::timeout(300)
+                    ->attach('file', file_get_contents($file->getRealPath()), $file->getClientOriginalName())
+                    ->post("{$baseUrl}/docs/schworer/suggest-config-2", [
+                        'customer_name' => $request->input('customer_name'),
+                    ])
+                    ->throw();
+
+                $suggestedData = $suggestResponse->json();
+
+                // dd($suggestedData);
+
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                Log::error('Rule engine API call failed', [
+                    'error' => $e->getMessage(),
+                    'response' => $e->response?->json(),
+                ]);
+
+                return redirect()
+                    ->route('admin.rule-service.index')
+                    ->with('error', 'Failed to scan file: ' . $e->getMessage());
+            }
+
+            $customerName = $suggestedData['Customer'] ?? $request->input('customer');
+
+            $result = ScannedSuggestedResult::create([
+                'scanned_data'    => $scannedData,
+                'suggested_data'  => $suggestedData,
+                'file_url'        => $fileUrl,
+                'customer_name'   => $customerName,
+                'file_name'       => $file->getClientOriginalName(),
+                // 'txt_file'        => $txtFileUrl,
+            ]);
+
+            return redirect()
+                 ->route('admin.rule-service.display-scanned-results', ['id' => $result->id])
+                ->with('success', 'Scanned results saved successfully!');
+        }
+
+        //Number two in the scanning process
+       public function createAfterScan(Request $request, $id = null)
+        {
+            try {
+
+                $request->validate([
+                    'file' => 'required|file|mimes:pdf',
+                    'payload' => 'required'
+                ]);
+
+                $file = $request->file('file');
+
+                $originalName = $file->getClientOriginalName();
+
+                $config = $request->input('payload');
+
+                if (is_string($config)) {
+                    $config = json_decode($config, true);
+                }
+
+                $response = Http::timeout(300)
+                    ->attach(
+                        'file',
+                        file_get_contents($file->getRealPath()),
+                        $originalName
+                    )
+                    ->post(
+                        'http://76.13.131.17:32775/docs/schworer/new-rule-3',
+                        [
+                            'config' => json_encode($config)
+                        ]
+                    );
+
+                if (!$response->successful()) {
+
+                    dd([
+                        'status' => $response->status(),
+                        'response' => $response->body(),
+                        'json' => $response->json()
+                    ]);
+
+                }
+
+                $data = $response->json();
+
+                $filename = $data['Mapped_txt_file'] ?? null;
+
+                if (!$filename) {
+                    throw new \Exception('Mapped_txt_file was not returned by the API.');
+                }
+
+                $downloadUrl = 'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename);
+
+                /*
+                |--------------------------------------------------------------------------
+                | Download TXT file and save it to Laravel storage
+                |--------------------------------------------------------------------------
+                */
+
+                $txtResponse = Http::timeout(300)->get($downloadUrl);
+
+                if (!$txtResponse->successful()) {
+                    throw new \Exception(
+                        'Failed to download TXT file. Status: ' . $txtResponse->status()
+                    );
+                }
+
+                // Save the file in storage/app/public/scanned/
+                $storagePath = 'scanned/' . $filename;
+
+                Storage::disk('public')->put(
+                    $storagePath,
+                    $txtResponse->body()
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save filename/path to scanned suggested result
+                |--------------------------------------------------------------------------
+                */
+
+                if ($id) {
+                    $result = ScannedSuggestedResult::findOrFail($id);
+
+                    $result->txt_file = $storagePath;
+
+                    $result->save();
+                }
+
+                return view('admin.download', [
+                    'response' => $data,
+                    'originalName' => $originalName,
+                    'id' => $id
+                ]);
+
+            } catch (\Throwable $e) {
+
+                dd([
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]);
+
+            }
+        }
+
+        public function useConfigPage($id= null){
+
+            return view('admin.rule-service.use-config', [
+                'id'=> $id
+            ]);
+
+        }
+
+        public function useConfig(Request $request, $id = null)
+        {
+            try {
+
+                $request->validate([
+                    'file' => 'required|file|mimes:pdf',
+                ]);
+
+                $file = $request->file('file');
+
+                $originalName = $file->getClientOriginalName();
+
+                /*
+                |--------------------------------------------------------------------------
+                | Get suggested configuration
+                |--------------------------------------------------------------------------
+                */
+
+                $result = ScannedSuggestedResult::findOrFail($id);
+
+                $config = $result->suggested_data;
+
+                // suggested_data may be stored as JSON string
+                if (is_string($config)) {
+                    $config = json_decode($config, true);
+                }
+
+                // Make sure decoding worked
+                if (!is_array($config)) {
+                    throw new \Exception(
+                        'Invalid suggested_data. Expected a JSON object.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | IMPORTANT
+                |--------------------------------------------------------------------------
+                | suggested_data contains something like:
+                |
+                | {
+                |     "Message": "...",
+                |     "Customer": "...",
+                |     "Filename": "...",
+                |     "Suggested_config": {
+                |         "Summary": {...},
+                |         "Header_Mapping": [...],
+                |         "Positions_Mapping": [...]
+                |     }
+                | }
+                |
+                | The Python API expects Suggested_config itself.
+                |--------------------------------------------------------------------------
+                */
+
+                if (isset($config['Suggested_config'])) {
+                    $config = $config['Suggested_config'];
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Validate config structure
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    !isset($config['Summary']) ||
+                    !isset($config['Header_Mapping']) ||
+                    !isset($config['Positions_Mapping'])
+                ) {
+                    throw new \Exception(
+                        'Invalid config structure. Summary, Header_Mapping and Positions_Mapping are required.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Send PDF + configuration to processing API
+                |--------------------------------------------------------------------------
+                */
+
+                $response = Http::timeout(300)
+                    ->attach(
+                        'file',
+                        file_get_contents($file->getRealPath()),
+                        $originalName
+                    )
+                    ->post(
+                        'http://76.13.131.17:32775/docs/schworer/new-rule-3',
+                        [
+                            'config' => json_encode(
+                                $config,
+                                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                            )
+                        ]
+                    );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Check API response
+                |--------------------------------------------------------------------------
+                */
+
+                if (!$response->successful()) {
+
+                    dd([
+                        'status' => $response->status(),
+                        'response' => $response->body(),
+                        'json' => $response->json(),
+
+                        // Very useful for checking what was actually sent
+                        'config_sent' => $config,
+                    ]);
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Get API response
+                |--------------------------------------------------------------------------
+                */
+
+                $data = $response->json();
+
+                $filename = $data['Mapped_txt_file'] ?? null;
+
+                if (!$filename) {
+                    throw new \Exception(
+                        'Mapped_txt_file was not returned by the API.'
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Download TXT file
+                |--------------------------------------------------------------------------
+                */
+
+                $downloadUrl =
+                    'http://76.13.131.17:32775/download/output_file/' .
+                    rawurlencode($filename);
+
+                $txtResponse = Http::timeout(300)->get($downloadUrl);
+
+                if (!$txtResponse->successful()) {
+
+                    throw new \Exception(
+                        'Failed to download TXT file. Status: ' .
+                        $txtResponse->status()
+                    );
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save TXT file
+                |--------------------------------------------------------------------------
+                */
+
+                $storagePath = 'scanned/' . $filename;
+
+                Storage::disk('public')->put(
+                    $storagePath,
+                    $txtResponse->body()
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save TXT path to ScannedSuggestedResult
+                |--------------------------------------------------------------------------
+                */
+
+                $result->txt_file = $storagePath;
+                $result->save();
+
+                /*
+                |--------------------------------------------------------------------------
+                | Return download page
+                |--------------------------------------------------------------------------
+                */
+
+                return view('admin.download', [
+                    'response' => $data,
+                    'originalName' => $originalName,
+                    'id' => $id
+                ]);
+
+            } catch (\Throwable $e) {
+
+                dd([
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine(),
+                    'file' => $e->getFile()
+                ]);
+            }
+        }
+
+        public function processSuggested(Request $request, $id)
+        {
+            try {
+
+                $request->validate([
+                    'file' => 'required|file|mimes:pdf',
+                ]);
+
+               
+
+                $result = ScannedSuggestedResult::findOrFail($id);
+
+             
+
+                $config = $result->suggested_data;
+
+                // Decode JSON if stored as string
+                if (is_string($config)) {
+                    $config = json_decode($config, true);
+                }
+
+                if (!is_array($config)) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid suggested_data format.'
+                    ], 422);
+                }
+
+
+                if (isset($config['Suggested_config'])) {
+                    $config = $config['Suggested_config'];
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Validate configuration
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    !isset($config['Summary']) ||
+                    !isset($config['Header_Mapping']) ||
+                    !isset($config['Positions_Mapping'])
+                ) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid configuration structure.',
+                        'required' => [
+                            'Summary',
+                            'Header_Mapping',
+                            'Positions_Mapping'
+                        ]
+                    ], 422);
+                }
+
+             
+                $file = $request->file('file');
+
+                $originalName = $file->getClientOriginalName();
+
+           
+
+                $response = Http::timeout(300)
+                    ->attach(
+                        'file',
+                        file_get_contents($file->getRealPath()),
+                        $originalName
+                    )
+                    ->post(
+                        'http://76.13.131.17:32775/docs/schworer/new-rule-3',
+                        [
+                            'config' => json_encode(
+                                $config,
+                                JSON_UNESCAPED_UNICODE |
+                                JSON_UNESCAPED_SLASHES
+                            )
+                        ]
+                    );
+
+           
+                if (!$response->successful()) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Document processor failed.',
+                        'status' => $response->status(),
+                        'response' => $response->json() ?? $response->body()
+                    ], 502);
+                }
+
+            
+
+                $data = $response->json();
+
+                $filename = $data['Mapped_txt_file'] ?? null;
+
+                if (!$filename) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Mapped_txt_file was not returned by processor.',
+                        'processor_response' => $data
+                    ], 502);
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Download generated TXT
+                |--------------------------------------------------------------------------
+                */
+
+                $downloadUrl =
+                    'http://76.13.131.17:32775/download/output_file/' .
+                    rawurlencode($filename);
+
+                $txtResponse = Http::timeout(300)->get($downloadUrl);
+
+                if (!$txtResponse->successful()) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to download generated TXT file.',
+                        'status' => $txtResponse->status()
+                    ], 502);
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save generated TXT
+                |--------------------------------------------------------------------------
+                */
+
+                $storagePath = 'scanned/' . $filename;
+
+                Storage::disk('public')->put(
+                    $storagePath,
+                    $txtResponse->body()
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update suggested result
+                |--------------------------------------------------------------------------
+                */
+
+                $result->txt_file = $storagePath;
+                $result->save();
+
+           
+                return response()->json([
+                    'success' => true,
+
+                    'message' => 'Document processed successfully.',
+
+                    'id' => $result->id,
+
+                    'original_file' => $originalName,
+
+                    'mapped_file' => $filename,
+
+                    'txt_file' => $storagePath,
+
+                    'download_url' => Storage::disk('public')
+                        ->url($storagePath),
+
+                    /*
+                    * This is useful to the mail processor.
+                    * It contains the actual generated TXT content.
+                    */
+                    'txt_content' => $txtResponse->body(),
+
+                    'processor_response' => $data
+                ], 200);
+
+            } catch (\Throwable $e) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ], 500);
+            }
         }
 }

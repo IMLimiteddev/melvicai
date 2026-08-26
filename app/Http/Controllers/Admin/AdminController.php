@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Mapping;
+use App\Models\ScannedSuggestedResult;
 
 class AdminController extends Controller
 {
@@ -25,8 +26,9 @@ class AdminController extends Controller
     // navigate to the customers page
     public function customers()
     {
-        $customers = Customer::all();
-        return view('admin.customers', compact('customers'));
+        // $customers = Customer::all();
+        $orders = ScannedSuggestedResult::all();
+        return view('admin.customers', compact('orders'));
     }
     
     public function customerSingle($id = null)

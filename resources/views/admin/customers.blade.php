@@ -42,7 +42,7 @@
                                     Configurations
                                 </h5>
                                 <small style="color:#6b7280;">
-                                    Manage customer configurations
+                                    Manage configurations
                                 </small>
                             </div>
 
@@ -70,12 +70,13 @@
                                         <th style="padding:15px; border:none;">Sample PDF</th>
                                         <th style="padding:15px; border:none;">Sample TXT</th>
                                         <th style="padding:15px; border:none; text-align:center;">Action</th>
+                                        <th style="padding:15px; border:none; text-align:center;">Use</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
 
-                                    @foreach ($customers as $c)
+                                    @foreach ($orders as $o)
                                         <tr
                                             style="background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.05); border-radius:12px;">
 
@@ -84,18 +85,18 @@
 
                                                     <div
                                                         style="width:40px; height:40px; border-radius:50%; background:#e6f1fb; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:#185fa5;">
-                                                        {{ $c?->customer_id }}
+                                                        {{ $o?->id }}
                                                     </div>
 
-                                                    <strong>{{ $c?->customer_id }}</strong>
+                                                    <strong>{{ $o?->id }}</strong>
                                                 </div>
                                             </td>
 
                                             <td style="padding:18px; vertical-align:middle;">
-                                                <a href="{{ route('admin.customers.single', $c?->customer_name) }}"
+                                                <a href="{{ route('admin.customers.single', $o?->customer_name) }}"
                                                     wire:navigate
                                                     style="text-decoration:none; color:#111827; font-weight:600;">
-                                                    {{ $c?->customer_name }}
+                                                    {{ $o?->customer_name }}
                                                 </a>
                                             </td>
 
@@ -109,7 +110,7 @@
                                             </td>
 
                                             <td style="padding:18px; vertical-align:middle;">
-                                                <a href="/dash/file_samples/schworer.pdf" target="_blank"
+                                                <a href="{{ $o->file_url }}" target="_blank"
                                                     style="text-decoration:none; color:#dc3545; font-weight:500;">
                                                     <i class="fa fa-file-pdf"></i>
                                                     schworer.pdf
@@ -117,7 +118,7 @@
                                             </td>
 
                                             <td style="padding:18px; vertical-align:middle;">
-                                                <a href="/dash/file_samples/D & M KG-460854501479420_generated_mapping.txt"
+                                                <a href="{{ Storage::url($o->txt_file) }}"
                                                     target="_blank"
                                                     style="text-decoration:none; color:#6c757d; font-weight:500;">
                                                     <i class="fa fa-file-text"></i>
@@ -130,7 +131,7 @@
                                                 <div
                                                     style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
 
-                                                    <a href="{{ route('admin.customers.single', $c?->customer_name) }}"
+                                                    <a href="{{ route('admin.customers.single', $o?->customer_name) }}"
                                                         wire:navigate
                                                         style="padding:10px 16px; background:#000; color:#fff; border-radius:10px; text-decoration:none; font-size:14px; transition:all .3s ease;"
                                                         onmouseover="this.style.background='#28a745'; this.style.transform='translateY(-2px)'"
@@ -138,12 +139,32 @@
                                                         Konfiguration bearbeitan
                                                     </a>
 
-                                                    <a href="{{ route('admin.customers.single', $c?->customer_name) }}"
+                                                    <a href="{{ route('admin.customers.single', $o?->customer_name) }}"
                                                         wire:navigate
                                                         style="padding:10px 16px; background:#000; color:#fff; border-radius:10px; text-decoration:none; font-size:14px; transition:all .3s ease;"
                                                         onmouseover="this.style.background='#28a745'; this.style.transform='translateY(-2px)'"
                                                         onmouseout="this.style.background='#000'; this.style.transform='translateY(0)'">
                                                         Konfiguration kopieren
+                                                    </a>
+
+                                                </div>
+
+                                            </td>
+
+
+                                            <td style="padding:18px; text-align:center; vertical-align:middle;">
+
+                                                <div
+                                                    style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+
+                                                    
+
+                                                    <a href="{{ route('admin.use.config.page', $o?->id) }}"
+                                                        wire:navigate
+                                                        style="padding:10px 16px; background:#000; color:#fff; border-radius:10px; text-decoration:none; font-size:14px; transition:all .3s ease;"
+                                                        onmouseover="this.style.background='#28a745'; this.style.transform='translateY(-2px)'"
+                                                        onmouseout="this.style.background='#000'; this.style.transform='translateY(0)'">
+                                                        Use config
                                                     </a>
 
                                                 </div>
