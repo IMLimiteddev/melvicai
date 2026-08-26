@@ -158,6 +158,41 @@
 
                             <!-- Header -->
 
+
+                             <!-- =================== HEADER / BODY SWITCH =================== -->
+                            <div class="d-flex justify-content-center my-4">
+
+                                <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
+
+                                    <input type="radio"
+                                        class="btn-check"
+                                        name="mappingSection"
+                                        id="switchHeader"
+                                        autocomplete="off"
+                                        checked>
+
+                                    <label class="btn btn-outline-success px-5 py-2"
+                                        for="switchHeader">
+                                        <i class="fa fa-list-alt me-2"></i>
+                                        Header
+                                    </label>
+
+                                    <input type="radio"
+                                        class="btn-check"
+                                        name="mappingSection"
+                                        id="switchBody"
+                                        autocomplete="off">
+
+                                    <label class="btn btn-outline-success px-5 py-2"
+                                        for="switchBody">
+                                        <i class="fa fa-table me-2"></i>
+                                        Body
+                                    </label>
+
+                                </div>
+
+                            </div>
+
                             <div class="row">
                                 <div class="col-lg-6"
                                     style="
@@ -207,7 +242,7 @@
                                             <button type="button" onclick="addHeaderRow()" class="btn btn-success">
 
                                                 <i class="fa fa-plus me-1"></i>
-                                                Add Header
+                                                Add New Rule
 
                                             </button>
 
