@@ -124,6 +124,55 @@
                             </flux:sidebar.group>
 
 
+                            <!-- Settings Dropdown -->
+                            <flux:sidebar.group label="Settings" collapsible>
+
+                                <div x-data="{ open: false }">
+
+                                    <flux:sidebar.item 
+                                        href="javascript:void(0)" 
+                                        @click="open = !open"
+                                        icon="cog"
+                                    >
+                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                                            
+                                            <span>Configurations</span>
+
+                                            <flux:icon 
+                                                name="chevron-down" 
+                                                style="width:16px; transition:0.3s;"
+                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
+                                            />
+                                        </span>
+                                    </flux:sidebar.item>
+
+                                    <div x-show="open" x-transition style="margin-left: 25px;">
+
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.customers') }}" 
+                                            wire:navigate
+                                        >
+                                            Configurations
+                                        </flux:sidebar.item>
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.verbs.index') }}" 
+                                            wire:navigate
+                                        >
+                                            Manage Action/Operators
+                                        </flux:sidebar.item>
+
+                                        
+
+                                    </div>
+
+                                </div>
+
+
+                            </flux:sidebar.group>
+
+
                             <!-- Administration Dropdown -->
                             <flux:sidebar.group label="Administration" collapsible>
 
@@ -256,53 +305,7 @@
 
                             </flux:sidebar.group>
 
-                            <!-- Settings Dropdown -->
-                            <flux:sidebar.group label="Settings" collapsible>
-
-                                <div x-data="{ open: false }">
-
-                                    <flux:sidebar.item 
-                                        href="javascript:void(0)" 
-                                        @click="open = !open"
-                                        icon="cog"
-                                    >
-                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-                                            
-                                            <span>Manage Action/Operators</span>
-
-                                            <flux:icon 
-                                                name="chevron-down" 
-                                                style="width:16px; transition:0.3s;"
-                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
-                                            />
-                                        </span>
-                                    </flux:sidebar.item>
-
-                                    <div x-show="open" x-transition style="margin-left: 25px;">
-
-
-                                        <flux:sidebar.item 
-                                            href="{{ route('admin.customers') }}" 
-                                            wire:navigate
-                                        >
-                                            Configurations
-                                        </flux:sidebar.item>
-
-                                        <flux:sidebar.item 
-                                            href="{{ route('admin.verbs.index') }}" 
-                                            wire:navigate
-                                        >
-                                            Verbs
-                                        </flux:sidebar.item>
-
-                                        
-
-                                    </div>
-
-                                </div>
-
-
-                            </flux:sidebar.group>
+                            
 
                             <!-- Optional: More Dropdown -->
                             <flux:sidebar.group label="Settings" collapsible>
