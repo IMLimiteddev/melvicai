@@ -166,7 +166,7 @@
 
 
                                 <!-- Models (already done) -->
-                                <div x-data="{ open: false }">
+                                {{-- <div x-data="{ open: false }">
 
                                     <flux:sidebar.item 
                                         href="javascript:void(0)" 
@@ -175,7 +175,7 @@
                                     >
                                         <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
                                             
-                                            <span>Customers</span>
+                                            <span>Configurations</span>
 
                                             <flux:icon 
                                                 name="chevron-down" 
@@ -200,7 +200,20 @@
 
                                     </div>
 
-                                </div>
+                                </div> --}}
+
+                            <flux:sidebar.group label="Settings" collapsible>
+
+                                <flux:sidebar.item 
+                                    href="{{ route('admin.customers') }}" 
+                                    icon="cog"
+                                >
+                                    Configurations
+                                </flux:sidebar.item>
+
+                                
+
+                            </flux:sidebar.group>
 
 
                                 <!-- Users -->
