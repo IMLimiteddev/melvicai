@@ -207,18 +207,14 @@
 
                                 </div> --}}
 
-                            <flux:sidebar.group label="Settings" collapsible>
-
+                            {{-- <flux:sidebar.group label="Settings" collapsible>
                                 <flux:sidebar.item 
                                     href="{{ route('admin.customers') }}" 
                                     icon="cog"
                                 >
                                     Configurations
                                 </flux:sidebar.item>
-
-                                
-
-                            </flux:sidebar.group>
+                            </flux:sidebar.group> --}}
 
 
                                 <!-- Users -->
@@ -272,7 +268,7 @@
                                     >
                                         <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
                                             
-                                            <span>Manage Verbs</span>
+                                            <span>Manage Action/Operators</span>
 
                                             <flux:icon 
                                                 name="chevron-down" 
@@ -284,11 +280,19 @@
 
                                     <div x-show="open" x-transition style="margin-left: 25px;">
 
+
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.customers') }}" 
+                                            wire:navigate
+                                        >
+                                            Configurations
+                                        </flux:sidebar.item>
+
                                         <flux:sidebar.item 
                                             href="{{ route('admin.verbs.index') }}" 
                                             wire:navigate
                                         >
-                                            All Verbs
+                                            Verbs
                                         </flux:sidebar.item>
 
                                         
