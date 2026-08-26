@@ -137,7 +137,7 @@
                                     >
                                         <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
                                             
-                                            <span>Roles</span>
+                                            <span>Admin Panel</span>
 
                                             <flux:icon 
                                                 name="chevron-down" 
@@ -153,12 +153,17 @@
                                             href="{{ route('admin.roles-perm') }}" 
                                             wire:navigate
                                         >
-                                            All Roles
+                                            Roles
                                         </flux:sidebar.item>
 
-                                        <flux:sidebar.item href="#">
-                                            Add Role
+                                        <flux:sidebar.item 
+                                            href="{{ route('admin.users') }}" 
+                                            wire:navigate
+                                        >
+                                            Users
                                         </flux:sidebar.item>
+
+                                        
 
                                     </div>
 
@@ -217,7 +222,7 @@
 
 
                                 <!-- Users -->
-                                <div x-data="{ open: false }">
+                                {{-- <div x-data="{ open: false }">
 
                                     <flux:sidebar.item 
                                         href="javascript:void(0)" 
@@ -251,7 +256,7 @@
 
                                     </div>
 
-                                </div>
+                                </div> --}}
 
                             </flux:sidebar.group>
 
