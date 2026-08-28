@@ -24,6 +24,7 @@ return new class extends Migration
             $table->longText('other_outputs_file_path')->nullable();
             $table->string('config_name')->nullable();
             $table->enum('status', ['active', 'inactive', 'draft'])->default('inactive');
+            $table->string('process_stage')->nullable();
             $table->timestamps();
         });
     }

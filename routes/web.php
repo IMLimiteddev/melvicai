@@ -119,8 +119,17 @@ Route::prefix('admin/rule-service')->middleware(['auth', 'verified'])->group(fun
 
 Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(function () {
     
-    Route::get('/initiate/config', [ConfigurationController::class, 'configInitiate'])
+    Route::post('/initiate/config', [ConfigurationController::class, 'configInitiate'])
     ->name('admin.initiate.config');
+
+    Route::get('/direct-process-1/{id?}', [ConfigurationController::class, 'directProcess1'])
+    ->name('admin.direct-process-1');
+
+    Route::post('/direct-process-2/{id?}', [ConfigurationController::class, 'directProcess2'])
+    ->name('admin.direct-process-2');
+
+    Route::get('/final-process/{id?}', [ConfigurationController::class, 'finalProcess'])
+    ->name('admin.final-process');
 
 });
 

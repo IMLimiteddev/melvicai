@@ -5,6 +5,20 @@
             <div class="page-title">
                 <div class="row">
 
+                    @if (session('error'))
+                        <div style="
+                            padding:12px 16px;
+                            margin-bottom:20px;
+                            border-radius:8px;
+                            background:#f8d7da;
+                            color:#842029;
+                            border:1px solid #f5c2c7;
+                        ">
+                            <i class="fa fa-exclamation-circle me-2"></i>
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
 
                     <div class="col-xl-3 col-sm-5 box-col-4">
                         <ol class="breadcrumb">
@@ -312,6 +326,13 @@
         <!-- Modal -->
 
         <div class="modal fade" id="logicManagerModal" tabindex="-1" aria-hidden="true">
+        {{-- <div class="modal fade {{ session('error') ? 'show' : '' }}"
+    id="logicManagerModal"
+    tabindex="-1"
+    aria-hidden="{{ session('error') ? 'false' : 'true' }}"
+    style="{{ session('error') ? 'display:block;' : '' }}"> --}}
+
+
 
             <div class="modal-dialog modal-xl modal-dialog-centered">
 
@@ -359,7 +380,7 @@
                                                     Configuration Name <span class="text-danger">*</span>
                                                 </label>
 
-                                                <input type="text" name="configuration_name" class="form-control"
+                                                <input type="text" name="config_name" class="form-control"
                                                     placeholder="Enter configuration name"
                                                     value="{{ old('configuration_name') }}" required>
 
@@ -379,7 +400,7 @@
                                                     File <span class="text-danger">*</span>
                                                 </label>
 
-                                                <input type="file" name="file" class="form-control"
+                                                <input type="file" name="input_file" class="form-control"
                                                     accept=".pdf,.txt,.csv,.xlsx" required>
 
                                                 <small class="text-muted">
@@ -464,8 +485,8 @@
                                             </button> --}}
 
                                             <button type="submit"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#logicManagerModal"
+                                                {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
                                                 style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
                                                 onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)'"
                                                 onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">

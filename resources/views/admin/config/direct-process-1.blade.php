@@ -11,7 +11,7 @@
         }
     </style>
 
-    <div class="page-body" id="pageBody"  style="padding-top: 120px;">
+    <div class="page-body" id="pageBody" style="padding-top: 120px;">
 
         {{-- <x-stage active="1" /> --}}
 
@@ -19,9 +19,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
+
                     <div class="card">
                         <div class="card-header pb-0">
-                            <h4>Create New Config.</h4>
+                            <h4>Work-area (Create Configuration).</h4>
                             <div
                                 style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
 
@@ -34,171 +35,34 @@
                             </div>
                         </div>
 
-                        {{-- @php
-                            dd($data);
-                        @endphp --}}
-
-                        <form id="mappingForm" action="{{ route('admin.new.rule') }}" enctype="multipart/form-data"
-                            method="POST">
+                        <form id="mappingForm" action="{{ route('admin.direct-process-2', ['id' => $data?->id]) }}"
+                            enctype="multipart/form-data" method="POST">
                             @csrf
 
                             <input type="hidden" name="payload" id="payload">
-                            <!-- <input type="text"> -->
 
+                            <input type="hidden" id="summary_order_id" value="N/A" class="form-control"
+                                placeholder="Enter order ID">
+                            <input type="hidden" id="summary_customer" value={{ $data?->config_name }}
+                                class="form-control" placeholder="Enter customer name">
 
-                            <div style="padding:20px;">
-
-                            <label style="display:block;font-weight:600;margin-bottom:12px;">
-                                Upload Config File
-                            </label>
-
-                            <div id="dropZone"
-                                onclick="document.getElementById('pdfInput').click();"
-                                style="
-                                    border:2px dashed #198754;
-                                    border-radius:12px;
-                                    background:#f8fff9;
-                                    padding:45px 20px;
-                                    cursor:pointer;
-                                    transition:.3s;
-                                    text-align:center;
-                                ">
-
-                                <div style="font-size:55px;color:#198754;">
-                                    <i class="fa fa-cloud-upload"></i>
-                                </div>
-
-                                <div style="font-size:22px;font-weight:600;color:#198754;margin-top:10px;">
-                                    Drag & Drop your file here
-                                </div>
-
-                                <div style="margin:12px 0;color:#777;">
-                                    or
-                                </div>
-
-                                <button type="button"
-                                    class="btn btn-success"
-                                    onclick="event.stopPropagation();document.getElementById('pdfInput').click();">
-                                    <i class="fa fa-folder-open me-2"></i>
-                                    Browse Device
-                                </button>
-
-                                {{-- <input
-                                    type="file"
-                                    id="pdfInput"
-                                    name="file"
-                                    hidden> --}}
-
-                                {{-- <div id="selectedFile"
-                                    style="
-                                        display:none;
-                                        margin-top:20px;
-                                        background:#ffffff;
-                                        border:1px solid #198754;
-                                        border-radius:8px;
-                                        padding:12px;
-                                        color:#198754;
-                                        font-weight:600;
-                                    ">
-                                    <i class="fa fa-file-pdf-o me-2"></i>
-                                    <span id="fileName"></span>
-                                </div> --}}
-
-                                <div id="selectedFile"
-                                    style="
-                                        margin-top:20px;
-                                        background:#ffffff;
-                                        border:1px solid #198754;
-                                        border-radius:8px;
-                                        padding:12px;
-                                        color:#198754;
-                                        font-weight:600;
-                                    ">
-                                    <i class="fa fa-file-pdf-o me-2"></i>
-                                    <span id="fileName">{{ basename($data->file) }}</span>
-                                </div>
-
-                            </div>
-
-                            <div style="
-                                display:flex;
-                                gap:15px;
-                                margin-top:20px;
-                                justify-content:center;
-                                flex-wrap:wrap;
-                            ">
-
-                                {{-- <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-desktop me-2"></i>
-                                    Device
-                                </button>
-
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-cloud me-2"></i>
-                                    SharePoint
-                                </button>
-
-                                <button type="button"
-                                    class="btn btn-outline-success">
-                                    <i class="fa fa-envelope me-2"></i>
-                                    Outlook
-                                </button> --}}
-
-                            </div>
-
-                        </div>
-
-
-                            <div class="row p-3">
-
-                                <label><strong>Work area: Enter the details for the new rule.</strong></label>
-
-
-                                <div class="col-md-6 mb-3">
-                                    <label><strong>Customer</strong></label>
-                                    <input type="hidden" id="summary_customer" class="form-control"
-                                        placeholder="Enter customer name">
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label><strong>Order ID</strong></label>
-                                    <input type="text" id="summary_order_id" class="form-control"
-                                        placeholder="Enter order ID">
-                                </div>
-
-                            </div>
-
-                            <!-- Header -->
-
-
-                             <!-- =================== HEADER / BODY SWITCH =================== -->
+                            <!-- =================== HEADER / BODY SWITCH =================== -->
                             <div class="d-flex justify-content-center my-4">
 
                                 <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
 
-                                    <input type="radio"
-                                        class="btn-check"
-                                        name="mappingSection"
-                                        id="switchHeader"
-                                        autocomplete="off"
-                                        checked>
+                                    <input type="radio" class="btn-check" name="mappingSection" id="switchHeader"
+                                        autocomplete="off" checked>
 
-                                    <label class="btn btn-outline-success px-5 py-2"
-                                        for="switchHeader">
+                                    <label class="btn btn-outline-success px-5 py-2" for="switchHeader">
                                         <i class="fa fa-list-alt me-2"></i>
                                         Header
                                     </label>
 
-                                    <input type="radio"
-                                        class="btn-check"
-                                        name="mappingSection"
-                                        id="switchBody"
+                                    <input type="radio" class="btn-check" name="mappingSection" id="switchBody"
                                         autocomplete="off">
 
-                                    <label class="btn btn-outline-success px-5 py-2"
-                                        for="switchBody">
+                                    <label class="btn btn-outline-success px-5 py-2" for="switchBody">
                                         <i class="fa fa-table me-2"></i>
                                         Body
                                     </label>
@@ -260,11 +124,18 @@
 
                                             </button>
 
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            {{-- <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                                 data-bs-target="#logicManagerModal">
 
                                                 <i class="fa fa-plus me-2"></i>
                                                 Verb
+
+                                            </button> --}}
+
+                                            <button  class="btn btn-success" >
+
+                                                <i class="fa fa-download me-2"></i>
+                                                Save
 
                                             </button>
 
@@ -332,8 +203,14 @@
 
                                     <!-- ================= SUBMIT ================= -->
                                     <div style="padding:20px; text-align:right;">
-                                        <button type="submit" class="btn btn-success">
+                                        <button type="submit" name="action" value="process" class="btn btn-success">
                                             Send New Rule configuration
+                                        </button>
+                                    </div>
+
+                                    <div style="padding:20px; text-align:right;" >
+                                        <button type="submit" name="action" value="save" class="btn btn-success">
+                                            Save
                                         </button>
                                     </div>
 
@@ -341,16 +218,18 @@
                             </div>
 
 
-                        </form>
 
-                        <!-- Container-fluid Ends-->
+
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- =================== HEADER / BODY SWITCH =================== -->
-        {{-- <div class="d-flex justify-content-center my-4">
+    <!-- =================== HEADER / BODY SWITCH =================== -->
+    {{-- <div class="d-flex justify-content-center my-4">
 
             <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
 
@@ -383,8 +262,8 @@
 
         </div> --}}
 
-       
-    </div>
+
+    {{-- </div> --}}
 
     <div class="modal fade" id="logicManagerModal" tabindex="-1" aria-hidden="true">
 
@@ -1316,7 +1195,7 @@
                 Summary: {},
                 Header_Mapping: [],
                 Positions_Mapping: [],
-                
+
             };
 
             payload.Summary = {
@@ -1324,7 +1203,7 @@
                 Order_ID: document.getElementById("summary_order_id").value
             };
 
-            
+
             // HEADER
             document.querySelectorAll(".header-row").forEach(row => {
 
@@ -1362,7 +1241,7 @@
                 });
 
             });
-            
+
 
             // POSITIONS
             let positionsMap = {};
@@ -1411,7 +1290,7 @@
 
                     Else: row.querySelector(".else")?.value || "",
 
-                    
+
 
                 });
 
@@ -1555,12 +1434,12 @@
     <script>
         const pdfPreviewBox = document.getElementById('pdfPreviewBox');
         const pdfViewer = document.getElementById('pdfViewer');
-        const pdfFileName = document.getElementByheadeId('pdfFileName');
+        const pdfFileName = document.getElementById('pdfFileName');
         const removePdfBtn = document.getElementById('removePdfBtn');
         const mappingColumn = document.getElementById('mappingColumn');
 
         // Existing PDF uploaded previously
-        const pdfUrl = @json(asset('storage/' . $config->input_file_path));
+        const pdfUrl = @json(asset('storage/' . $data->input_file_path));
 
         let pdfObjectUrl = null;
 
@@ -1671,7 +1550,6 @@
             mappingColumn.classList.add('col-lg-12');
 
         });
-
     </script>
 
 
@@ -1726,47 +1604,46 @@
 
 
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
-    const headerSection = document.getElementById("header");
-    const bodySection = document.getElementById("map-body");
+            const headerSection = document.getElementById("header");
+            const bodySection = document.getElementById("map-body");
 
-    const switchHeader = document.getElementById("switchHeader");
-    const switchBody = document.getElementById("switchBody");
+            const switchHeader = document.getElementById("switchHeader");
+            const switchBody = document.getElementById("switchBody");
 
-    function showHeader() {
-        headerSection.style.display = "block";
-        bodySection.style.display = "none";
+            function showHeader() {
+                headerSection.style.display = "block";
+                bodySection.style.display = "none";
 
-        headerSection.classList.add("fade", "show");
-        bodySection.classList.remove("show");
-    }
+                headerSection.classList.add("fade", "show");
+                bodySection.classList.remove("show");
+            }
 
-    function showBody() {
-        headerSection.style.display = "none";
-        bodySection.style.display = "block";
+            function showBody() {
+                headerSection.style.display = "none";
+                bodySection.style.display = "block";
 
-        bodySection.classList.add("fade", "show");
-        headerSection.classList.remove("show");
-    }
+                bodySection.classList.add("fade", "show");
+                headerSection.classList.remove("show");
+            }
 
-    switchHeader.addEventListener("change", function () {
-        if (this.checked) {
+            switchHeader.addEventListener("change", function() {
+                if (this.checked) {
+                    showHeader();
+                }
+            });
+
+            switchBody.addEventListener("change", function() {
+                if (this.checked) {
+                    showBody();
+                }
+            });
+
+            // Initial state
             showHeader();
-        }
-    });
 
-    switchBody.addEventListener("change", function () {
-        if (this.checked) {
-            showBody();
-        }
-    });
-
-    // Initial state
-    showHeader();
-
-});
-
+        });
     </script>
 
 
@@ -1863,24 +1740,24 @@
         });
     </script>
 
-    
+
     {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
     <script>
         const dropZone = document.getElementById('dropZone');
         const input = document.getElementById('pdfInput');
 
-        dropZone.addEventListener('dragover', function (e) {
+        dropZone.addEventListener('dragover', function(e) {
             e.preventDefault();
             this.style.background = '#e9f8ef';
             this.style.borderColor = '#157347';
         });
 
-        dropZone.addEventListener('dragleave', function () {
+        dropZone.addEventListener('dragleave', function() {
             this.style.background = '#f8fff9';
             this.style.borderColor = '#198754';
         });
 
-        dropZone.addEventListener('drop', function (e) {
+        dropZone.addEventListener('drop', function(e) {
             e.preventDefault();
 
             this.style.background = '#f8fff9';

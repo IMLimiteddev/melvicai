@@ -399,7 +399,7 @@ class RulesController extends Controller
 
         public function addCustomerMapping($id = null, $new = null)
         {
-// dd('here');
+
             $data = Mapping::where('id', $id)->first();
 
             $verbs = Verb::all();
@@ -408,7 +408,7 @@ class RulesController extends Controller
 
             $data = $data->submitted_json;
 
-             $fileUrl = null;
+            $fileUrl = null;
 
 
 
@@ -437,7 +437,7 @@ class RulesController extends Controller
         // }
 
        public function downloadOutputFile($filename)
-        {
+       {
             // dd($filename, $id);
             // find the scanned suggested result by id and save the filename to the txt_file column
             // if ($id) {
@@ -673,7 +673,7 @@ class RulesController extends Controller
                 ]);
 
             }
-        }
+    }
 
         public function useConfigPage($id= null){
 

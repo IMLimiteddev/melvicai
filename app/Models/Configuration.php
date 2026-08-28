@@ -20,7 +20,8 @@ class Configuration extends Model
     'output_file_path',
     'other_outputs_file_path',
     'input_file_path',
-    'user_id'
+    'user_id',
+    'process_stage'
     ];
 
     protected $casts = [
