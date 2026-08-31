@@ -49,25 +49,88 @@
                             <!-- =================== HEADER / BODY SWITCH =================== -->
                             <div class="d-flex justify-content-center my-4">
 
-                                <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
+                                {{-- <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
+
+                                    <input type="radio" class="btn-check" name="mappingSection" id="switchHeader" autocomplete="off">
+
+                                    <label
+                                        class="btn"
+                                        for="switchHeader"
+                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                        onmouseover="this.style.background='#28a745'"
+                                        onmouseout="if(!document.getElementById('switchHeader').checked)this.style.background='#000'"
+                                    >
+                                        <i class="fa fa-list-alt"></i>
+                                        <span>Header</span>
+                                    </label>
+
+
+                                    <input type="radio" class="btn-check" name="mappingSection" id="switchBody" autocomplete="off">
+
+                                    <label
+                                        class="btn"
+                                        for="switchBody"
+                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                        onmouseover="this.style.background='#28a745'"
+                                        onmouseout="if(!document.getElementById('switchBody').checked)this.style.background='#000'"
+                                    >
+                                        <i class="fa fa-table"></i>
+                                        <span>Body</span>
+                                    </label>
+
+                                    
+
+                                </div> --}}
+
+                                <div class="btn-group shadow-sm" role="group" aria-label="Section Switch"
+                                    style="background:#f1f1f1; padding:4px; border-radius:28px; gap:4px;">
 
                                     <input type="radio" class="btn-check" name="mappingSection" id="switchHeader"
-                                        autocomplete="off" checked>
+                                        autocomplete="off">
 
-                                    <label class="btn btn-outline-success px-5 py-2" for="switchHeader">
-                                        <i class="fa fa-list-alt me-2"></i>
-                                        Header
+                                    <label class="btn" for="switchHeader"
+                                        style="height:42px; min-width:125px; padding:0 20px; border-radius:22px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px; font-weight:500; cursor:pointer; transition:all .25s ease;"
+                                        onmouseover="if(!document.getElementById('switchHeader').checked){this.style.background='#28a745';this.style.color='#000';}"
+                                        onmouseout="if(!document.getElementById('switchHeader').checked){this.style.background='#000';this.style.color='#fff';}">
+                                        <i class="fa fa-list-alt"></i>
+                                        <span>Header</span>
                                     </label>
+
 
                                     <input type="radio" class="btn-check" name="mappingSection" id="switchBody"
                                         autocomplete="off">
 
-                                    <label class="btn btn-outline-success px-5 py-2" for="switchBody">
-                                        <i class="fa fa-table me-2"></i>
-                                        Body
+                                    <label class="btn" for="switchBody"
+                                        style="height:42px; min-width:125px; padding:0 20px; border-radius:22px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px; font-weight:500; cursor:pointer; transition:all .25s ease;"
+                                        onmouseover="if(!document.getElementById('switchBody').checked){this.style.background='#28a745';this.style.color='#000';}"
+                                        onmouseout="if(!document.getElementById('switchBody').checked){this.style.background='#000';this.style.color='#fff';}">
+                                        <i class="fa fa-table"></i>
+                                        <span>Body</span>
                                     </label>
 
                                 </div>
+
+                                <script>
+                                    document.querySelectorAll('input[name="mappingSection"]').forEach(function (radio) {
+
+                                        radio.addEventListener('change', function () {
+
+                                            document.querySelectorAll('label[for^="switch"]').forEach(function (label) {
+
+                                                if (document.getElementById(label.htmlFor).checked) {
+                                                    label.style.background = '#28a745';
+                                                    label.style.color = '#000';
+                                                } else {
+                                                    label.style.background = '#000';
+                                                    label.style.color = '#fff';
+                                                }
+
+                                            });
+
+                                        });
+
+                                    });
+                                </script>
 
                             </div>
 
@@ -89,9 +152,22 @@
 
                                             <strong id="pdfFileName" style="color:#222;"></strong>
 
-                                            <button type="button" id="removePdfBtn"
+                                            {{-- <button type="button" id="removePdfBtn"
                                                 style="background:#dc3545; color:#fff; border:none; padding:7px 12px; border-radius:6px; cursor:pointer;">
                                                 Delete PDF
+                                            </button> --}}
+
+                                            <button type="button" id="removePdfBtn" {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-trash plus-icon" style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Delete</span>
+
                                             </button>
                                         </div>
 
@@ -117,10 +193,23 @@
 
                                         <div class="d-flex justify-content-between align-items-center mb-3">
 
-                                            <button type="button" onclick="addHeaderRow()" class="btn btn-success">
+                                            {{-- <button type="button" onclick="addHeaderRow()" class="btn btn-success">
 
                                                 <i class="fa fa-plus me-1"></i>
                                                 Add New Rule
+
+                                            </button> --}}
+
+                                            <button type="button" onclick="addHeaderRow()" {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-plus plus-icon" style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Add NEW Header</span>
 
                                             </button>
 
@@ -132,10 +221,24 @@
 
                                             </button> --}}
 
-                                            <button  class="btn btn-success" >
+                                            {{-- <button class="btn btn-success">
 
                                                 <i class="fa fa-download me-2"></i>
                                                 Save
+
+                                            </button> --}}
+
+                                            <button type="submit" name="action" value="save" {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(360deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-download plus-icon"
+                                                    style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Save</span>
 
                                             </button>
 
@@ -178,18 +281,40 @@
 
                                         <div class="d-flex justify-content-between align-items-center mb-3">
 
-                                            <button type="button" onclick="addPositionBlock()" class="btn btn-success">
+                                            {{-- <button type="button" onclick="addPositionBlock()"
+                                                class="btn btn-success">
 
                                                 <i class="fa fa-plus me-1"></i>
                                                 Add Position
 
+                                            </button> --}}
+
+                                            <button type="button" onclick="addPositionBlock()" {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-plus plus-icon"
+                                                    style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Add NEW Position</span>
+
                                             </button>
 
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                                data-bs-target="#logicManagerModal">
+                                            <button type="submit" name="action" value="save"
+                                                {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(360deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
 
-                                                <i class="fa fa-plus me-2"></i>
-                                                Verb
+                                                <i class="fa fa-download plus-icon"
+                                                    style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Save</span>
 
                                             </button>
 
@@ -203,16 +328,31 @@
 
                                     <!-- ================= SUBMIT ================= -->
                                     <div style="padding:20px; text-align:right;">
-                                        <button type="submit" name="action" value="process" class="btn btn-success">
-                                            Send New Rule configuration
+
+
+
+                                        <button type="submit" name="action" value="process" {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                            style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                            onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(270deg) scale(1.15)'"
+                                            onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                            <i class="fa fa-send plus-icon" style="transition:transform .3s ease;">
+                                            </i>
+
+                                            <span>Configure</span>
+
                                         </button>
+
+
                                     </div>
 
-                                    <div style="padding:20px; text-align:right;" >
-                                        <button type="submit" name="action" value="save" class="btn btn-success">
+                                    {{-- <div style="padding:20px; text-align:right;">
+                                        <button type="submit" name="action" value="save"
+                                            class="btn btn-success">
                                             Save
                                         </button>
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                             </div>
@@ -1780,5 +1920,553 @@
                 input.files[0].name;
         }
     </script>
+
+
+    <script>
+        const draftStatus = @json($data->status);
+
+        const draftConfiguredData = @json(is_string($data->configured_data) ? json_decode($data->configured_data, true) : $data->configured_data);
+
+
+        function draftParseIf(text, operatorSelect) {
+
+            if (!text) {
+                return {
+                    field: '',
+                    operator: '',
+                    value: ''
+                };
+            }
+
+            text = String(text).trim();
+
+            if (!operatorSelect) {
+                return {
+                    field: text,
+                    operator: '',
+                    value: ''
+                };
+            }
+
+            const operators = Array.from(
+                    operatorSelect.options
+                )
+                .map(option => ({
+                    text: option.text.trim(),
+                    value: option.value.trim()
+                }))
+                .filter(option => option.text.length > 0)
+                .sort((a, b) => b.text.length - a.text.length);
+
+
+            for (const operator of operators) {
+
+                const escapedOperator =
+                    operator.text.replace(
+                        /[.*+?^${}()|[\]\\]/g,
+                        '\\$&'
+                    );
+
+                const regex = new RegExp(
+                    '\\s+' +
+                    escapedOperator +
+                    '\\s+',
+                    'i'
+                );
+
+                const match =
+                    text.match(regex);
+
+
+                if (!match) {
+                    continue;
+                }
+
+
+                const index =
+                    match.index;
+
+
+                const field =
+                    text.substring(
+                        0,
+                        index
+                    ).trim();
+
+
+                const value =
+                    text.substring(
+                        index +
+                        match[0].length
+                    ).trim();
+
+
+                return {
+                    field: field,
+                    operator: operator.value ||
+                        operator.text,
+                    value: value
+                };
+            }
+
+
+            return {
+                field: text,
+                operator: '',
+                value: ''
+            };
+        }
+
+
+        function draftParseThen(text) {
+
+            if (!text) {
+                return {
+                    action: '',
+                    value: ''
+                };
+            }
+
+            text = text.trim();
+
+            const firstSpace =
+                text.indexOf(' ');
+
+            if (firstSpace === -1) {
+                return {
+                    action: text.toLowerCase(),
+                    value: ''
+                };
+            }
+
+            return {
+                action: text.substring(
+                        0,
+                        firstSpace
+                    )
+                    .trim()
+                    .toLowerCase(),
+
+                value: text.substring(
+                        firstSpace + 1
+                    )
+                    .trim()
+            };
+        }
+
+
+        function draftSelectVerb(
+            select,
+            searchText
+        ) {
+
+            if (!select || !searchText) {
+                return;
+            }
+
+            searchText =
+                searchText
+                .toLowerCase()
+                .trim();
+
+            let found = false;
+
+            Array.from(
+                select.options
+            ).forEach(option => {
+
+                const optionText =
+                    option.text
+                    .toLowerCase()
+                    .trim();
+
+                const optionValue =
+                    option.value
+                    .toLowerCase()
+                    .trim();
+
+                if (
+                    optionValue === searchText ||
+                    optionText === searchText ||
+                    optionValue.includes(searchText) ||
+                    optionText.includes(searchText)
+                ) {
+                    select.value =
+                        option.value;
+
+                    found = true;
+                }
+            });
+
+
+            if (!found) {
+                console.warn(
+                    'Verb not found:',
+                    searchText
+                );
+            }
+
+
+            select.dispatchEvent(
+                new Event('change')
+            );
+        }
+
+
+        function draftPopulateIfThen(
+            row,
+            ifs
+        ) {
+
+            if (
+                !ifs ||
+                ifs.length === 0
+            ) {
+                return;
+            }
+
+
+            const addBtn =
+                row.querySelector(
+                    '.btn-success.btn-sm'
+                );
+
+
+            const existing =
+                row.querySelectorAll(
+                    '.if-then-row'
+                );
+
+
+            for (
+                let i = existing.length - 1; i > 0; i--
+            ) {
+                existing[i].remove();
+            }
+
+
+            ifs.forEach(
+                (item, index) => {
+
+                    if (index > 0) {
+                        addIfThen(addBtn);
+                    }
+
+
+                    const block =
+                        row.querySelectorAll(
+                            '.if-then-row'
+                        )[index];
+
+
+                    if (!block) {
+                        return;
+                    }
+
+
+                    const operatorSelect =
+                        block.querySelector(
+                            '.operator'
+                        );
+
+
+                    /*
+                     * Example:
+                     *
+                     * Dorfwiesen Doesn't Contain ddd
+                     *
+                     * becomes:
+                     *
+                     * field    = Dorfwiesen
+                     * operator = Doesn't Contain
+                     * value    = ddd
+                     */
+                    const parsedIf =
+                        draftParseIf(
+                            item.If,
+                            operatorSelect
+                        );
+
+
+                    const ifInput =
+                        block.querySelector(
+                            '.if'
+                        );
+
+
+                    if (ifInput) {
+                        ifInput.value =
+                            parsedIf.value;
+                    }
+
+
+                    draftSelectVerb(
+                        operatorSelect,
+                        parsedIf.operator
+                    );
+
+
+                    /*
+                     * The value after the IF operator
+                     * belongs in the .then input.
+                     */
+                    const thenInput =
+                        block.querySelector(
+                            '.then'
+                        );
+
+
+                    if (thenInput) {
+                        thenInput.value =
+                            parsedIf.value;
+                    }
+
+
+                    /*
+                     * If there is an actual THEN/action
+                     * stored separately, populate it here.
+                     */
+                    if (item.Then) {
+
+                        const parsedThen =
+                            draftParseThen(
+                                item.Then
+                            );
+
+
+                        draftSelectVerb(
+                            block.querySelector(
+                                '.action'
+                            ),
+                            parsedThen.action
+                        );
+
+
+                        /*
+                         * Only overwrite .then with the
+                         * actual THEN value when the saved
+                         * THEN contains a real action.
+                         */
+                        if (
+                            parsedThen.action &&
+                            parsedThen.value
+                        ) {
+                            thenInput.value =
+                                parsedThen.value;
+                        }
+                    }
+
+                }
+            );
+        }
+
+
+        function displayDraftResult() {
+
+            if (draftStatus !== 'draft') {
+                return;
+            }
+
+
+            if (!draftConfiguredData) {
+
+                // alert(
+                //     'No configured data found.'
+                // );
+
+                return;
+            }
+
+
+            const config =
+                draftConfiguredData;
+
+
+            document.getElementById(
+                    'summary_customer'
+                ).value =
+                config.Summary?.Customer || '';
+
+
+            document.getElementById(
+                    'summary_order_id'
+                ).value =
+                config.Summary?.Order_ID || '';
+
+
+            document.getElementById(
+                'headerMappingBody'
+            ).innerHTML = '';
+
+
+            document.getElementById(
+                'positionsContainer'
+            ).innerHTML = '';
+
+
+            headerIndex = 0;
+            positionIndex = 0;
+
+
+            (config.Header_Mapping || [])
+            .forEach(item => {
+
+                addHeaderRow();
+
+
+                const rows =
+                    document.querySelectorAll(
+                        '#headerMappingBody .header-row'
+                    );
+
+
+                const row =
+                    rows[rows.length - 1];
+
+
+                row.querySelector('.col').value =
+                    item.Col;
+
+
+                row.querySelector('.field').value =
+                    item.Field_name;
+
+
+                draftPopulateIfThen(
+                    row,
+                    item.Ifs
+                );
+
+
+                if (item.Else) {
+
+                    addElseField(
+                        row.querySelector(
+                            '.btn-warning'
+                        )
+                    );
+
+
+                    row.querySelector(
+                            '.else'
+                        ).value =
+                        item.Else;
+                }
+
+            });
+
+
+            (config.Positions_Mapping || [])
+            .forEach(position => {
+
+                addPositionBlock();
+
+
+                const currentPositionIndex =
+                    positionIndex - 1;
+
+
+                const positionBlock =
+                    document.getElementById(
+                        `position_block_${currentPositionIndex}`
+                    );
+
+
+                positionBlock.querySelector(
+                        "input[name*='Position_ID']"
+                    ).value =
+                    position.Position_ID;
+
+
+                document.getElementById(
+                    `position_mapping_body_${currentPositionIndex}`
+                ).innerHTML = '';
+
+
+                (position.Mapping || [])
+                .forEach(mapping => {
+
+                    addPositionRow(
+                        currentPositionIndex
+                    );
+
+
+                    const tbody =
+                        document.getElementById(
+                            `position_mapping_body_${currentPositionIndex}`
+                        );
+
+
+                    const row =
+                        tbody.lastElementChild;
+
+
+                    row.querySelector('.col').value =
+                        mapping.Col;
+
+
+                    row.querySelector('.field').value =
+                        mapping.Field_name;
+
+
+                    draftPopulateIfThen(
+                        row,
+                        mapping.Ifs
+                    );
+
+
+                    if (mapping.Else) {
+
+                        addElseField(
+                            row.querySelector(
+                                '.btn-warning'
+                            )
+                        );
+
+
+                        row.querySelector(
+                                '.else'
+                            ).value =
+                            mapping.Else;
+                    }
+
+                });
+
+            });
+
+
+            const modal =
+                bootstrap.Modal.getInstance(
+                    document.getElementById(
+                        'suggestionsResultModal'
+                    )
+                );
+
+
+            if (modal) {
+                modal.hide();
+            }
+
+        }
+
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function() {
+
+                if (draftStatus === 'draft') {
+                    displayDraftResult();
+                }
+
+            }
+        );
+    </script>
+
+
+
+
+
+
+
 
 </x-layouts::app>

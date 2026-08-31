@@ -407,7 +407,7 @@ class ConfigurationController extends Controller
 
             $config->update([
                     'configured_data'   => $payload,
-                    'status'            => 'inactive',
+                    'status'            => 'draft',
                     'process_stage'     => 'Saved not processed yet.'
                 ]);
                 

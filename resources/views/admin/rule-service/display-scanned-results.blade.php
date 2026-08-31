@@ -936,7 +936,6 @@
     </div>
     
 
-
     <script>
         const suggestionData = @json(
             is_string($result->suggested_data)
