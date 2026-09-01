@@ -111,11 +111,11 @@
                                 </div>
 
                                 <script>
-                                    document.querySelectorAll('input[name="mappingSection"]').forEach(function (radio) {
+                                    document.querySelectorAll('input[name="mappingSection"]').forEach(function(radio) {
 
-                                        radio.addEventListener('change', function () {
+                                        radio.addEventListener('change', function() {
 
-                                            document.querySelectorAll('label[for^="switch"]').forEach(function (label) {
+                                            document.querySelectorAll('label[for^="switch"]').forEach(function(label) {
 
                                                 if (document.getElementById(label.htmlFor).checked) {
                                                     label.style.background = '#28a745';
@@ -189,44 +189,15 @@
 
                                 <div class="col-lg-12" id="mappingColumn">
 
+
+                                    {{-- // This is the Header Mapping Section --}}
                                     <div class="card-body tab-content active" id="header">
 
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex justify-content-end align-items-center mb-3">
 
-                                            {{-- <button type="button" onclick="addHeaderRow()" class="btn btn-success">
+                                            {{-- ADD a new header here --}}
 
-                                                <i class="fa fa-plus me-1"></i>
-                                                Add New Rule
 
-                                            </button> --}}
-
-                                            <button type="button" onclick="addHeaderRow()" {{-- data-bs-toggle="modal"
-                                                data-bs-target="#logicManagerModal" --}}
-                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
-                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)'"
-                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
-
-                                                <i class="fa fa-plus plus-icon" style="transition:transform .3s ease;">
-                                                </i>
-
-                                                <span>Add NEW Header</span>
-
-                                            </button>
-
-                                            {{-- <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                                data-bs-target="#logicManagerModal">
-
-                                                <i class="fa fa-plus me-2"></i>
-                                                Verb
-
-                                            </button> --}}
-
-                                            {{-- <button class="btn btn-success">
-
-                                                <i class="fa fa-download me-2"></i>
-                                                Save
-
-                                            </button> --}}
 
                                             <button type="submit" name="action" value="save" {{-- data-bs-toggle="modal"
                                                 data-bs-target="#logicManagerModal" --}}
@@ -272,24 +243,16 @@
 
                                             </table>
 
+
+
+
+
                                         </div>
+                                        {{-- //End buttons --}}
+                                        <div class="d-flex justify-content-between"
+                                            style="padding:20px; text-align:right;">
 
-                                    </div>
-
-
-                                    <div class="card-body tab-content" id="map-body" style="display:none;">
-
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-
-                                            {{-- <button type="button" onclick="addPositionBlock()"
-                                                class="btn btn-success">
-
-                                                <i class="fa fa-plus me-1"></i>
-                                                Add Position
-
-                                            </button> --}}
-
-                                            <button type="button" onclick="addPositionBlock()" {{-- data-bs-toggle="modal"
+                                            <button type="button" onclick="addHeaderRow()" {{-- data-bs-toggle="modal"
                                                 data-bs-target="#logicManagerModal" --}}
                                                 style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
                                                 onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)'"
@@ -299,9 +262,47 @@
                                                     style="transition:transform .3s ease;">
                                                 </i>
 
-                                                <span>Add NEW Position</span>
+                                                {{-- <span></span> --}}
 
                                             </button>
+
+
+
+
+                                            <button type="submit" name="action" value="process"
+                                                {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(270deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-send plus-icon"
+                                                    style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Configure</span>
+
+                                            </button>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    {{-- // This is the Body Mapping Section --}}
+                                    <div class="card-body tab-content" id="map-body" style="display:none;">
+
+                                        <div class="d-flex justify-content-end align-items-center mb-3">
+
+                                            {{-- <button type="button" onclick="addPositionBlock()"
+                                                class="btn btn-success">
+
+                                                <i class="fa fa-plus me-1"></i>
+                                                Add Position
+
+                                            </button> --}}
+
+
 
                                             <button type="submit" name="action" value="save"
                                                 {{-- data-bs-toggle="modal"
@@ -322,30 +323,49 @@
 
                                         <div id="positionsContainer"></div>
 
+
+                                        <div class="d-flex justify-content-between"
+                                            style="padding:20px; text-align:right;">
+
+                                            <button type="button" onclick="addPositionBlock()" {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-plus plus-icon"
+                                                    style="transition:transform .3s ease;">
+                                                </i>
+
+                                                {{-- <span>Add NEW Position</span> --}}
+
+                                            </button>
+
+
+                                            <button type="submit" name="action" value="process"
+                                                {{-- data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal" --}}
+                                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                                onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(270deg) scale(1.15)'"
+                                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                                <i class="fa fa-send plus-icon"
+                                                    style="transition:transform .3s ease;">
+                                                </i>
+
+                                                <span>Configure</span>
+
+                                            </button>
+
+
+                                        </div>
+
                                     </div>
 
 
 
                                     <!-- ================= SUBMIT ================= -->
-                                    <div style="padding:20px; text-align:right;">
 
-
-
-                                        <button type="submit" name="action" value="process" {{-- data-bs-toggle="modal"
-                                                data-bs-target="#logicManagerModal" --}}
-                                            style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
-                                            onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(270deg) scale(1.15)'"
-                                            onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
-
-                                            <i class="fa fa-send plus-icon" style="transition:transform .3s ease;">
-                                            </i>
-
-                                            <span>Configure</span>
-
-                                        </button>
-
-
-                                    </div>
 
                                     {{-- <div style="padding:20px; text-align:right;">
                                         <button type="submit" name="action" value="save"
@@ -716,9 +736,18 @@
                             style="max-width:250px;">
 
                         <div>
+                            
+
                             <button type="button" onclick="addPositionRow(${currentPositionIndex})"
-                                style="background:#28a745;color:#fff;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;">
-                                + Add Row
+                                            style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                            onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(270deg) scale(1.15)'"
+                                            onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                            <i class="fa fa-plus plus-icon" style="transition:transform .3s ease;">
+                                            </i>
+
+                                            <span>Add row</span>
+
                             </button>
 
                             
@@ -791,7 +820,7 @@
 
                             </div>
 
-                            <input
+                            <input 
                                 class="form-control field"
                                 name="Positions_Mapping[${posIndex}][Mapping][${rowIndex}][Field]"
                                 placeholder="Field to extract">
@@ -832,8 +861,6 @@
 
                                         <div class="col-auto">
 
-                                           
-
                                             <div class="form-control-plaintext fw-bold">
                                                 IF
                                             </div>
@@ -842,10 +869,16 @@
 
                                         <div class="col-auto">
 
-                                           
-
-                                            <div class="form-control-plaintext fw-bold">
+                                            <label class="form-label fw-bold mb-1">
                                                 FIELD
+                                            </label>
+
+                                            <div>
+                                                <span 
+                                                
+                                                class="other_field" style="background:#f8f9fa;border:1px solid #dee2e6;padding:8px;border-radius:4px;">
+                                                    The field value displayed here
+                                                </span>
                                             </div>
 
                                         </div>
@@ -1037,6 +1070,7 @@
 
                                 <div class="if-then-row gap-2 mb-3"
                                     style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
+                                    <hr>
 
                                     <div style="font-weight:600;color:#444;margin-bottom:8px;">
                                         IF (Condition)
@@ -1061,19 +1095,33 @@
                                     </div>
                                     <div class="row g-3 align-items-end">
 
+                                       
                                         <div class="col-auto">
-
-                                           
 
                                             <div class="form-control-plaintext fw-bold">
                                                 IF
                                             </div>
 
-                                             <div class="form-control-plaintext fw-bold">
+                                        </div>
+                                             
+
+                                        <div class="col-auto">
+
+                                            <label class="form-label fw-bold mb-1">
                                                 FIELD
+                                            </label>
+
+                                            <div>
+                                                <span 
+                                                
+                                                class="other_field" style="background:#f8f9fa;border:1px solid #dee2e6;padding:8px;border-radius:4px;">
+                                                    The field value displayed here
+                                                </span>
                                             </div>
 
                                         </div>
+
+                                      
 
                                         <div class="col-md-3">
 
@@ -1102,6 +1150,8 @@
                                         </div>
 
                                     </div>
+
+                                    <hr>
 
                                     <div style="font-weight:600;color:#444;margin:15px 0 8px;">
                                         THEN (Action)
@@ -1166,16 +1216,7 @@
 
                                     </div>
 
-                                    <div class="text-end mt-3">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="removeIfThen(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-
-                                    </div>
+                                    <hr>
 
                                 </div>
 
@@ -1183,19 +1224,39 @@
 
                             <div class="d-flex gap-2 mt-3">
 
-                                <button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    onclick="addIfThen(this)">
-                                    + IF/THEN
+                                
+
+                                <button type="button"  onclick="addIfThen(this)"
+                                               
+                                    style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                    onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                    onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                    <i class="fa fa-plus plus-icon"
+                                        style="transition:transform .3s ease;">
+                                    </i>
+                                    
+                                    IF/THEN
+
+
                                 </button>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-warning btn-sm"
-                                    onclick="addElseField(this)">
-                                    + Else
+                                <button type="button"  onclick="addElseField(this)"
+                                               
+                                    style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                    onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                    onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                    <i class="fa fa-plus plus-icon"
+                                        style="transition:transform .3s ease;">
+                                    </i>
+                                    
+                                    ELSE
+
+
                                 </button>
+
+                               
 
                             </div>
 
@@ -1205,11 +1266,18 @@
 
                         <td style="width:110px;vertical-align:top;">
 
-                            <button
-                                type="button"
-                                onclick="this.closest('tr').remove()"
-                                class="btn btn-danger btn-sm w-100">
-                                <i class="fas fa-trash"></i>
+                            
+
+                             <button type="button"  onclick="this.closest('tr').remove()"
+                                               
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
                             </button>
 
                         </td>
@@ -1233,10 +1301,26 @@
                     <div style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
                         <div style="font-weight:600;color:#444;margin-bottom:8px;">
-                            IF (Condition)
+                            Or (you can add more follow up conditions to the above IF/THEN conditions.)
                         </div>
 
-                        <div class="d-flex gap-2 align-items-center">
+                        <div class="d-flex gap-2 align-items-center mb-3">
+
+                            <div class="col-auto">
+
+                                <div class="form-control-plaintext fw-bold">
+                                    OR IF
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span 
+                                
+                                class="" style="background:#f8f9fa;border:1px solid #dee2e6;padding:8px;border-radius:4px;">
+                                    FIELD
+                                </span>
+                            </div>
 
                             <select class="form-control operator" style="max-width:180px;">
                                 @foreach ($verbs->where('type', 'Operator') as $verb)
@@ -1250,11 +1334,19 @@
 
                         </div>
 
-                        <div style="font-weight:600;color:#444;margin:15px 0 8px;">
-                            THEN (Action)
-                        </div>
+                        
+
+                            
 
                         <div class="d-flex gap-2 align-items-center">
+
+                            <div class="col-auto">
+
+                                <div class="form-control-plaintext fw-bold">
+                                    THEN
+                                </div>
+
+                            </div>
 
                             <select class="form-control action" style="max-width:180px;">
                                 @foreach ($verbs->where('type', 'Action') as $verb)
@@ -1268,13 +1360,19 @@
 
                         </div>
 
-                        <div class="text-end mt-3">
+                        <div class="d-flex justify-content-end mt-3">
 
-                            <button
-                                type="button"
-                                class="btn btn-danger btn-sm"
-                                onclick="removeIfThen(this)">
-                                <i class="fas fa-trash"></i>
+                            
+                            <button type="button"  onclick="removeIfThen(this)"
+                                               
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
                             </button>
 
                         </div>
@@ -1309,18 +1407,40 @@
             }
 
             container.innerHTML = `
-                    <div class="d-flex gap-2 mt-2">
 
-                        <input
-                            class="form-control else"
-                            placeholder="Else">
+                    <div style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
-                        <button
-                            type="button"
-                            class="btn btn-danger btn-sm"
-                            onclick="this.parentElement.remove()">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div style="font-weight:600;color:#444;margin-bottom:8px;">
+                            Else (This acts as a fallback if none of the IF/THEN conditions are met.)
+                        </div>
+
+                        <div class="gap-2 mt-2">
+
+
+                            <input
+                                class="form-control else"
+                                placeholder="Else">
+
+
+
+                            <div class="d-flex justify-content-end mt-3">
+
+                                
+                                <button type="button"  onclick="this.parentElement.remove()"
+                                                
+                                    style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                    onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                    onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                    <i class="fa fa-trash plus-icon"
+                                        style="transition:transform .3s ease;">
+                                    </i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
                 `;
@@ -1787,7 +1907,7 @@
     </script>
 
 
-    {{-- -The inline edit script- --}}
+    {{-- - Verb manager The inline edit script- --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -1843,6 +1963,7 @@
         });
     </script>
 
+    {{-- Display higlighted feild on the input feild --}}
     <script>
         let activeField = null;
 
@@ -1855,6 +1976,16 @@
                 activeField = e.target;
 
                 console.log("Active:", activeField.name);
+
+                const row = e.target.closest("tr");
+
+                if (!row) return;
+
+                const fieldDisplay = row.querySelector(".other_field");
+
+                if (!fieldDisplay) return;
+
+                fieldDisplay.textContent = e.target.value;
             }
 
         });
@@ -1870,9 +2001,20 @@
 
             activeField.value = text;
 
+            const row = activeField.closest("tr");
+
+            if (row) {
+                const fieldDisplay = row.querySelector(".other_field");
+
+                if (fieldDisplay) {
+                    fieldDisplay.textContent = text;
+                }
+            }
+
             activeField.dispatchEvent(new Event("input", {
                 bubbles: true
             }));
+
             activeField.dispatchEvent(new Event("change", {
                 bubbles: true
             }));
@@ -1922,6 +2064,7 @@
     </script>
 
 
+    {{-- This is the save as draft function --}}
     <script>
         const draftStatus = @json($data->status);
 
@@ -2461,12 +2604,5 @@
             }
         );
     </script>
-
-
-
-
-
-
-
 
 </x-layouts::app>
