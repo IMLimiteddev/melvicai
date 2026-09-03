@@ -11,7 +11,50 @@
         }
     </style>
 
-    <div class="page-body" id="pageBody" style="padding-top: 120px;">
+    <div class="page-body" id="pageBody" style="padding-top: 1px;">
+
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+
+                    @if (session('error'))
+                        <div style="
+                            padding:12px 16px;
+                            margin-bottom:20px;
+                            border-radius:8px;
+                            background:#f8d7da;
+                            color:#842029;
+                            border:1px solid #f5c2c7;
+                        ">
+                            <i class="fa fa-exclamation-circle me-2"></i>
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+
+                    <div class="col-xl-3 col-sm-5 box-col-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ url()->previous() }}" wire:navigate aria-label="Go back to file builder"
+                                    title="Go back">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Configurations</li>
+                            <li class="breadcrumb-item active">Direct Process</li>
+                        </ol>
+                    </div>
+                    <div class="col-5 d-none d-xl-block">
+
+                    </div>
+
+                    {{-- <div class="col-xl-4 col-sm-7 box-col-3">
+                        <h3>Manage Configuration</h3>
+                    </div> --}}
+
+                </div>
+            </div>
+        </div>
 
         {{-- <x-stage active="1" /> --}}
 
@@ -48,39 +91,6 @@
 
                             <!-- =================== HEADER / BODY SWITCH =================== -->
                             <div class="d-flex justify-content-center my-4">
-
-                                {{-- <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
-
-                                    <input type="radio" class="btn-check" name="mappingSection" id="switchHeader" autocomplete="off">
-
-                                    <label
-                                        class="btn"
-                                        for="switchHeader"
-                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
-                                        onmouseover="this.style.background='#28a745'"
-                                        onmouseout="if(!document.getElementById('switchHeader').checked)this.style.background='#000'"
-                                    >
-                                        <i class="fa fa-list-alt"></i>
-                                        <span>Header</span>
-                                    </label>
-
-
-                                    <input type="radio" class="btn-check" name="mappingSection" id="switchBody" autocomplete="off">
-
-                                    <label
-                                        class="btn"
-                                        for="switchBody"
-                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
-                                        onmouseover="this.style.background='#28a745'"
-                                        onmouseout="if(!document.getElementById('switchBody').checked)this.style.background='#000'"
-                                    >
-                                        <i class="fa fa-table"></i>
-                                        <span>Body</span>
-                                    </label>
-
-                                    
-
-                                </div> --}}
 
                                 <div class="btn-group shadow-sm" role="group" aria-label="Section Switch"
                                     style="background:#f1f1f1; padding:4px; border-radius:28px; gap:4px;">
@@ -152,13 +162,7 @@
 
                                             <strong id="pdfFileName" style="color:#222;"></strong>
 
-                                            {{-- <button type="button" id="removePdfBtn"
-                                                style="background:#dc3545; color:#fff; border:none; padding:7px 12px; border-radius:6px; cursor:pointer;">
-                                                Delete PDF
-                                            </button> --}}
-
-                                            <button type="button" id="removePdfBtn" {{-- data-bs-toggle="modal"
-                                                data-bs-target="#logicManagerModal" --}}
+                                            {{-- <button type="button" id="removePdfBtn" 
                                                 style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
                                                 onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
                                                 onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
@@ -168,12 +172,9 @@
 
                                                 <span>Delete</span>
 
-                                            </button>
+                                            </button> --}}
                                         </div>
 
-                                        {{-- <iframe id="pdfViewer" src=""
-                                            style="width:100%; height:1000px; border:1px solid #ccc; border-radius:8px; background:#fff;">
-                                        </iframe> --}}
 
                                         <div id="pdfViewer"
                                             style="
@@ -242,12 +243,8 @@
                                                 </tbody>
 
                                             </table>
-
-
-
-
-
                                         </div>
+
                                         {{-- //End buttons --}}
                                         <div class="d-flex justify-content-between"
                                             style="padding:20px; text-align:right;">
@@ -294,16 +291,7 @@
 
                                         <div class="d-flex justify-content-end align-items-center mb-3">
 
-                                            {{-- <button type="button" onclick="addPositionBlock()"
-                                                class="btn btn-success">
-
-                                                <i class="fa fa-plus me-1"></i>
-                                                Add Position
-
-                                            </button> --}}
-
-
-
+                                           
                                             <button type="submit" name="action" value="save"
                                                 {{-- data-bs-toggle="modal"
                                                 data-bs-target="#logicManagerModal" --}}
@@ -362,68 +350,15 @@
 
                                     </div>
 
-
-
-                                    <!-- ================= SUBMIT ================= -->
-
-
-                                    {{-- <div style="padding:20px; text-align:right;">
-                                        <button type="submit" name="action" value="save"
-                                            class="btn btn-success">
-                                            Save
-                                        </button>
-                                    </div> --}}
-
                                 </div>
                             </div>
 
-
-
-
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- =================== HEADER / BODY SWITCH =================== -->
-    {{-- <div class="d-flex justify-content-center my-4">
-
-            <div class="btn-group shadow-sm" role="group" aria-label="Section Switch">
-
-                <input type="radio"
-                    class="btn-check"
-                    name="mappingSection"
-                    id="switchHeader"
-                    autocomplete="off"
-                    checked>
-
-                <label class="btn btn-outline-success px-5 py-2"
-                    for="switchHeader">
-                    <i class="fa fa-list-alt me-2"></i>
-                    Header
-                </label>
-
-                <input type="radio"
-                    class="btn-check"
-                    name="mappingSection"
-                    id="switchBody"
-                    autocomplete="off">
-
-                <label class="btn btn-outline-success px-5 py-2"
-                    for="switchBody">
-                    <i class="fa fa-table me-2"></i>
-                    Body
-                </label>
-
-            </div>
-
-        </div> --}}
-
-
-    {{-- </div> --}}
 
     <div class="modal fade" id="logicManagerModal" tabindex="-1" aria-hidden="true">
 
@@ -713,6 +648,7 @@
 
     </div>
 
+    
     <script>
         let headerIndex = 0;
         let positionIndex = 0;
@@ -834,6 +770,7 @@
                                 <div class="if-then-row gap-2 mb-3"
                                     style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
+                                    <hr>
                                     <div style="font-weight:600;color:#444;margin-bottom:8px;">
                                         IF (Condition)
                                     </div>
@@ -913,6 +850,9 @@
 
                                     </div>
 
+                                    <hr>
+
+
                                     <div style="font-weight:600;color:#444;margin:15px 0 8px;">
                                         THEN (Action)
                                     </div>
@@ -980,16 +920,7 @@
 
                                     </div>
 
-                                    <div class="text-end mt-3">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="removeIfThen(this)">
-                                           <i class="fas fa-trash"></i>
-                                        </button>
-
-                                    </div>
+                                    <hr>
 
                                 </div>
 
@@ -997,21 +928,39 @@
 
                             <div class="d-flex gap-2 mt-3">
 
-                                <button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    onclick="addIfThen(this)">
-                                    + IF/THEN
-                                </button>
+                                    <button type="button"  onclick="addIfThen(this)"
+                                                
+                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                        onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                        onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
 
-                                <button
-                                    type="button"
-                                    class="btn btn-warning btn-sm"
-                                    onclick="addElseField(this)">
-                                    + Else
-                                </button>
+                                        <i class="fa fa-plus plus-icon"
+                                            style="transition:transform .3s ease;">
+                                        </i>
+                                        
+                                        IF/THEN
 
-                            </div>
+
+                                    </button>
+
+                                    <button type="button"  onclick="addElseField(this)"
+                                                
+                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                        onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                        onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                        <i class="fa fa-plus plus-icon"
+                                            style="transition:transform .3s ease;">
+                                        </i>
+                                        
+                                        ELSE
+
+
+                                    </button>
+
+                                
+
+                                </div>
 
                             <div class="else-container mt-3"></div>
 
@@ -1019,11 +968,16 @@
 
                         <td style="width:110px;vertical-align:top;">
 
-                            <button
-                                type="button"
-                                onclick="this.closest('tr').remove()"
-                                class="btn btn-danger btn-sm w-100">
-                                <i class="fas fa-trash"></i>
+                            <button type="button"  onclick="this.closest('tr').remove()"
+                                               
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
                             </button>
 
                         </td>
@@ -1408,43 +1362,41 @@
 
             container.innerHTML = `
 
-                    <div style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
+                <div class="else-block" style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
-                        <div style="font-weight:600;color:#444;margin-bottom:8px;">
-                            Else (This acts as a fallback if none of the IF/THEN conditions are met.)
-                        </div>
+                    <div style="font-weight:600;color:#444;margin-bottom:8px;">
+                        Else (This acts as a fallback if none of the IF/THEN conditions are met.)
+                    </div>
 
-                        <div class="gap-2 mt-2">
+                    <div class="gap-2 mt-2">
 
+                        <input
+                            class="form-control else"
+                            placeholder="Else">
 
-                            <input
-                                class="form-control else"
-                                placeholder="Else">
+                        <div class="d-flex justify-content-end mt-3">
 
+                            <button
+                                type="button"
+                                onclick="this.closest('.else-block').remove()"
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
 
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
 
-                            <div class="d-flex justify-content-end mt-3">
-
-                                
-                                <button type="button"  onclick="this.parentElement.remove()"
-                                                
-                                    style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
-                                    onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
-                                    onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
-
-                                    <i class="fa fa-trash plus-icon"
-                                        style="transition:transform .3s ease;">
-                                    </i>
-
-                                </button>
-
-                            </div>
+                            </button>
 
                         </div>
 
                     </div>
-                `;
+
+                </div>
+            `;
         }
+
     </script>
 
     {{-- payload script --}}
@@ -1572,125 +1524,7 @@
             "{{ asset('pdfjs/pdf.worker.js') }}";
     </script>
 
-
-    {{-- ----------------------------- --}}
-    {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
-    {{-- --------------------------- --}}
-    {{-- <script>
-        const pdfInput = document.getElementById('pdfInput');
-        const pdfPreviewBox = document.getElementById('pdfPreviewBox');
-        const pdfViewer = document.getElementById('pdfViewer');
-        const pdfFileName = document.getElementById('pdfFileName');
-        const removePdfBtn = document.getElementById('removePdfBtn');
-        const mappingColumn = document.getElementById('mappingColumn');
-
-        let pdfObjectUrl = null;
-
-        pdfInput.addEventListener('change', function() {
-            const file = this.files[0];
-
-            if (!file) {
-                return;
-            }
-
-            if (file.type !== 'application/pdf') {
-                alert('Please upload only a PDF file.');
-                this.value = '';
-                return;
-            }
-
-            if (pdfObjectUrl) {
-                URL.revokeObjectURL(pdfObjectUrl);
-            }
-
-            pdfObjectUrl = URL.createObjectURL(file);
-
-            pdfViewer.innerHTML = '';
-
-            const loadingTask = pdfjsLib.getDocument(pdfObjectUrl);
-
-            loadingTask.promise.then(async function(pdf) {
-
-                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-
-                    const page = await pdf.getPage(pageNum);
-
-                    const viewport = page.getViewport({
-                        scale: 1.3
-                    });
-
-                    const pageDiv = document.createElement("div");
-
-                    pageDiv.style.position = "relative";
-                    pageDiv.style.margin = "20px auto";
-                    pageDiv.style.width = viewport.width + "px";
-
-                    const canvas = document.createElement("canvas");
-
-                    const context = canvas.getContext("2d");
-
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-
-                    pageDiv.appendChild(canvas);
-
-                    const textLayer = document.createElement("div");
-
-                    textLayer.className = "textLayer";
-
-                    textLayer.style.position = "absolute";
-                    textLayer.style.left = "0";
-                    textLayer.style.top = "0";
-                    textLayer.style.width = canvas.width + "px";
-                    textLayer.style.height = canvas.height + "px";
-
-                    pageDiv.appendChild(textLayer);
-
-                    pdfViewer.appendChild(pageDiv);
-
-                    await page.render({
-                        canvasContext: context,
-                        viewport: viewport
-                    }).promise;
-
-                    const textContent = await page.getTextContent();
-
-                    pdfjsLib.renderTextLayer({
-
-                        textContent,
-
-                        container: textLayer,
-
-                        viewport,
-
-                        textDivs: []
-
-                    });
-
-                }
-
-            });
-            pdfFileName.textContent = file.name;
-            pdfPreviewBox.style.display = 'block';
-            mappingColumn.classList.remove('col-lg-12');
-            mappingColumn.classList.add('col-lg-6');
-        });
-
-        removePdfBtn.addEventListener('click', function() {
-            if (pdfObjectUrl) {
-                URL.revokeObjectURL(pdfObjectUrl);
-                pdfObjectUrl = null;
-            }
-
-            pdfInput.value = '';
-            pdfViewer.src = '';
-            pdfFileName.textContent = '';
-            pdfPreviewBox.style.display = 'none';
-            mappingColumn.classList.remove('col-lg-6');
-            mappingColumn.classList.add('col-lg-12');
-        });
-    </script> --}}
-
+     {{--- PDF UPLOAD PREVIEW SCRIPT --}}
     <script>
         const pdfPreviewBox = document.getElementById('pdfPreviewBox');
         const pdfViewer = document.getElementById('pdfViewer');
@@ -1812,57 +1646,7 @@
         });
     </script>
 
-
-    {{-- ----------------------------- --}}
-    {{-- --- TAB SWITCHING SCRIPT --- --}}
-    {{-- --------------------------- --}}
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const tabs = document.querySelectorAll('.tab-link');
-            const contents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-
-                    const target = this.dataset.tab;
-
-
-                    tabs.forEach(t => {
-                        const tabName = t.dataset.tab;
-
-
-                        t.classList.remove('active');
-
-
-                        const content = document.getElementById(tabName);
-                        if (content) content.style.display = 'none';
-                    });
-
-
-                    this.classList.add('active');
-
-
-                    const activeContent = document.getElementById(target);
-                    if (activeContent) activeContent.style.display = 'block';
-
-                });
-            });
-
-        });
-
-        function togglePosition(id) {
-            const el = document.getElementById(id);
-
-            if (el.style.display === "none") {
-                el.style.display = "block";
-            } else {
-                el.style.display = "none";
-            }
-        }
-    </script> --}}
-
-
+     {{---- TAB SWITCHING SCRIPT ----}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -1906,8 +1690,7 @@
         });
     </script>
 
-
-    {{-- - Verb manager The inline edit script- --}}
+     {{-- - Verb manager The inline edit script- --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -1963,7 +1746,7 @@
         });
     </script>
 
-    {{-- Display higlighted feild on the input feild --}}
+     {{-- Display higlighted feild on the input feild --}}
     <script>
         let activeField = null;
 
@@ -2022,8 +1805,7 @@
         });
     </script>
 
-
-    {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
+     {{-- --- PDF UPLOAD PREVIEW SCRIPT --- --}}
     <script>
         const dropZone = document.getElementById('dropZone');
         const input = document.getElementById('pdfInput');
@@ -2063,13 +1845,34 @@
         }
     </script>
 
-
-    {{-- This is the save as draft function --}}
+     {{-- This is the save as draft function --}}
     <script>
+
         const draftStatus = @json($data->status);
 
-        const draftConfiguredData = @json(is_string($data->configured_data) ? json_decode($data->configured_data, true) : $data->configured_data);
+        const draftConfiguredData = @json(
+            is_string($data->configured_data)
+                ? json_decode($data->configured_data, true)
+                : $data->configured_data
+        );
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Parse IF
+        |--------------------------------------------------------------------------
+        |
+        | Example:
+        |
+        | "KD contains 12"
+        |
+        | becomes:
+        |
+        | field    = KD
+        | operator = contains
+        | value    = 12
+        |
+        */
 
         function draftParseIf(text, operatorSelect) {
 
@@ -2083,6 +1886,7 @@
 
             text = String(text).trim();
 
+
             if (!operatorSelect) {
                 return {
                     field: text,
@@ -2091,15 +1895,16 @@
                 };
             }
 
+
             const operators = Array.from(
-                    operatorSelect.options
-                )
-                .map(option => ({
-                    text: option.text.trim(),
-                    value: option.value.trim()
-                }))
-                .filter(option => option.text.length > 0)
-                .sort((a, b) => b.text.length - a.text.length);
+                operatorSelect.options
+            )
+            .map(option => ({
+                text: option.text.trim(),
+                value: option.value.trim()
+            }))
+            .filter(option => option.text.length > 0)
+            .sort((a, b) => b.text.length - a.text.length);
 
 
             for (const operator of operators) {
@@ -2110,6 +1915,7 @@
                         '\\$&'
                     );
 
+
                 const regex = new RegExp(
                     '\\s+' +
                     escapedOperator +
@@ -2117,8 +1923,8 @@
                     'i'
                 );
 
-                const match =
-                    text.match(regex);
+
+                const match = text.match(regex);
 
 
                 if (!match) {
@@ -2126,8 +1932,7 @@
                 }
 
 
-                const index =
-                    match.index;
+                const index = match.index;
 
 
                 const field =
@@ -2139,15 +1944,13 @@
 
                 const value =
                     text.substring(
-                        index +
-                        match[0].length
+                        index + match[0].length
                     ).trim();
 
 
                 return {
                     field: field,
-                    operator: operator.value ||
-                        operator.text,
+                    operator: operator.value || operator.text,
                     value: value
                 };
             }
@@ -2161,6 +1964,22 @@
         }
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Parse THEN
+        |--------------------------------------------------------------------------
+        |
+        | Example:
+        |
+        | "add 12"
+        |
+        | becomes:
+        |
+        | action = add
+        | value  = 12
+        |
+        */
+
         function draftParseThen(text) {
 
             if (!text) {
@@ -2170,10 +1989,13 @@
                 };
             }
 
-            text = text.trim();
+
+            text = String(text).trim();
+
 
             const firstSpace =
                 text.indexOf(' ');
+
 
             if (firstSpace === -1) {
                 return {
@@ -2182,21 +2004,30 @@
                 };
             }
 
+
             return {
-                action: text.substring(
+                action:
+                    text.substring(
                         0,
                         firstSpace
                     )
                     .trim()
                     .toLowerCase(),
 
-                value: text.substring(
+                value:
+                    text.substring(
                         firstSpace + 1
                     )
                     .trim()
             };
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Select verb
+        |--------------------------------------------------------------------------
+        */
 
         function draftSelectVerb(
             select,
@@ -2207,12 +2038,15 @@
                 return;
             }
 
+
             searchText =
-                searchText
+                String(searchText)
                 .toLowerCase()
                 .trim();
 
+
             let found = false;
+
 
             Array.from(
                 select.options
@@ -2223,10 +2057,12 @@
                     .toLowerCase()
                     .trim();
 
+
                 const optionValue =
                     option.value
                     .toLowerCase()
                     .trim();
+
 
                 if (
                     optionValue === searchText ||
@@ -2234,17 +2070,19 @@
                     optionValue.includes(searchText) ||
                     optionText.includes(searchText)
                 ) {
+
                     select.value =
                         option.value;
 
                     found = true;
                 }
+
             });
 
 
             if (!found) {
                 console.warn(
-                    'Verb not found:',
+                    'Draft verb not found:',
                     searchText
                 );
             }
@@ -2256,6 +2094,12 @@
         }
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Populate ALL IF / THEN blocks
+        |--------------------------------------------------------------------------
+        */
+
         function draftPopulateIfThen(
             row,
             ifs
@@ -2263,42 +2107,122 @@
 
             if (
                 !ifs ||
+                !Array.isArray(ifs) ||
                 ifs.length === 0
             ) {
                 return;
             }
 
 
-            const addBtn =
+            /*
+            |--------------------------------------------------------------------------
+            | IMPORTANT
+            |--------------------------------------------------------------------------
+            |
+            | Your addIfThen button does NOT have
+            | .btn-success or .btn-sm.
+            |
+            | We therefore find it using its onclick.
+            |
+            */
+
+            const addIfButton =
                 row.querySelector(
-                    '.btn-success.btn-sm'
+                    'button[onclick^="addIfThen"]'
                 );
 
 
-            const existing =
-                row.querySelectorAll(
-                    '.if-then-row'
+            if (!addIfButton) {
+
+                console.warn(
+                    'Draft: add IF/THEN button not found'
                 );
 
-
-            for (
-                let i = existing.length - 1; i > 0; i--
-            ) {
-                existing[i].remove();
+                return;
             }
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | Make sure we have exactly the number
+            | of IF/THEN blocks required.
+            |--------------------------------------------------------------------------
+            */
+
+            let blocks =
+                row.querySelectorAll(
+                    '.ifs-container .if-then-row'
+                );
+
+
+            /*
+            | The first row already exists because
+            | addHeaderRow() / addPositionRow()
+            | creates it automatically.
+            |
+            | Add additional rows when necessary.
+            */
+
+            while (
+                blocks.length < ifs.length
+            ) {
+
+                addIfThen(addIfButton);
+
+
+                blocks =
+                    row.querySelectorAll(
+                        '.ifs-container .if-then-row'
+                    );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Remove extra rows if there happen to
+            | be more than the saved IFs.
+            |--------------------------------------------------------------------------
+            */
+
+            while (
+                blocks.length > ifs.length
+            ) {
+
+                const lastBlock =
+                    blocks[blocks.length - 1];
+
+
+                /*
+                | Do not remove the first block.
+                */
+
+                if (blocks.length <= 1) {
+                    break;
+                }
+
+
+                lastBlock.remove();
+
+
+                blocks =
+                    row.querySelectorAll(
+                        '.ifs-container .if-then-row'
+                    );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Populate every saved IF
+            |--------------------------------------------------------------------------
+            */
 
             ifs.forEach(
                 (item, index) => {
 
-                    if (index > 0) {
-                        addIfThen(addBtn);
-                    }
-
-
                     const block =
                         row.querySelectorAll(
-                            '.if-then-row'
+                            '.ifs-container .if-then-row'
                         )[index];
 
 
@@ -2307,27 +2231,15 @@
                     }
 
 
+                    /*
+                    |--------------------------------------------------------------------------
+                    | IF
+                    |--------------------------------------------------------------------------
+                    */
+
                     const operatorSelect =
                         block.querySelector(
                             '.operator'
-                        );
-
-
-                    /*
-                     * Example:
-                     *
-                     * Dorfwiesen Doesn't Contain ddd
-                     *
-                     * becomes:
-                     *
-                     * field    = Dorfwiesen
-                     * operator = Doesn't Contain
-                     * value    = ddd
-                     */
-                    const parsedIf =
-                        draftParseIf(
-                            item.If,
-                            operatorSelect
                         );
 
 
@@ -2337,38 +2249,107 @@
                         );
 
 
+                    const parsedIf =
+                        draftParseIf(
+                            item.If,
+                            operatorSelect
+                        );
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | FIELD
+                    |--------------------------------------------------------------------------
+                    |
+                    | The FIELD is displayed using
+                    | .other_field in the first row.
+                    |
+                    | In your dynamically-created OR row,
+                    | the span currently has no class.
+                    |
+                    | We therefore handle both.
+                    |--------------------------------------------------------------------------
+                    */
+
+                    let fieldDisplay =
+                        block.querySelector(
+                            '.other_field'
+                        );
+
+
+                    /*
+                    | For dynamically-created OR IF rows,
+                    | the FIELD span does not have
+                    | .other_field.
+                    |
+                    | Find the span in the IF section.
+                    */
+
+                    if (!fieldDisplay) {
+
+                        const possibleSpans =
+                            block.querySelectorAll(
+                                'span'
+                            );
+
+
+                        if (
+                            possibleSpans.length > 0
+                        ) {
+
+                            fieldDisplay =
+                                possibleSpans[0];
+                        }
+                    }
+
+
+                    if (fieldDisplay) {
+
+                        fieldDisplay.textContent =
+                            parsedIf.field;
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | OPERATOR
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (operatorSelect) {
+
+                        draftSelectVerb(
+                            operatorSelect,
+                            parsedIf.operator
+                        );
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | IF VALUE
+                    |--------------------------------------------------------------------------
+                    */
+
                     if (ifInput) {
+
                         ifInput.value =
                             parsedIf.value;
                     }
 
 
-                    draftSelectVerb(
-                        operatorSelect,
-                        parsedIf.operator
-                    );
-
-
                     /*
-                     * The value after the IF operator
-                     * belongs in the .then input.
-                     */
+                    |--------------------------------------------------------------------------
+                    | THEN
+                    |--------------------------------------------------------------------------
+                    */
+
                     const thenInput =
                         block.querySelector(
                             '.then'
                         );
 
 
-                    if (thenInput) {
-                        thenInput.value =
-                            parsedIf.value;
-                    }
-
-
-                    /*
-                     * If there is an actual THEN/action
-                     * stored separately, populate it here.
-                     */
                     if (item.Then) {
 
                         const parsedThen =
@@ -2377,25 +2358,31 @@
                             );
 
 
-                        draftSelectVerb(
+                        const actionSelect =
                             block.querySelector(
                                 '.action'
-                            ),
-                            parsedThen.action
-                        );
+                            );
 
 
-                        /*
-                         * Only overwrite .then with the
-                         * actual THEN value when the saved
-                         * THEN contains a real action.
-                         */
-                        if (
-                            parsedThen.action &&
-                            parsedThen.value
-                        ) {
+                        if (actionSelect) {
+
+                            draftSelectVerb(
+                                actionSelect,
+                                parsedThen.action
+                            );
+                        }
+
+
+                        if (thenInput) {
+
                             thenInput.value =
                                 parsedThen.value;
+                        }
+
+                    } else {
+
+                        if (thenInput) {
+                            thenInput.value = '';
                         }
                     }
 
@@ -2404,62 +2391,118 @@
         }
 
 
-        function displayDraftResult() {
+        /*
+        |--------------------------------------------------------------------------
+        | Populate ELSE
+        |--------------------------------------------------------------------------
+        */
 
-            if (draftStatus !== 'draft') {
+        function draftPopulateElse(
+            row,
+            elseValue
+        ) {
+
+            if (
+                elseValue === undefined ||
+                elseValue === null ||
+                String(elseValue).trim() === ''
+            ) {
                 return;
             }
 
 
-            if (!draftConfiguredData) {
+            /*
+            | Your ELSE button does not have
+            | .btn-warning.
+            |
+            | Find it using onclick.
+            */
 
-                // alert(
-                //     'No configured data found.'
-                // );
+            const elseButton =
+                row.querySelector(
+                    'button[onclick^="addElseField"]'
+                );
+
+
+            if (!elseButton) {
+
+                console.warn(
+                    'Draft: ELSE button not found'
+                );
 
                 return;
             }
 
 
-            const config =
-                draftConfiguredData;
+            /*
+            | Create the ELSE field.
+            */
+
+            addElseField(
+                elseButton
+            );
 
 
-            document.getElementById(
-                    'summary_customer'
-                ).value =
-                config.Summary?.Customer || '';
+            /*
+            | Now find the generated input.
+            */
+
+            const elseInput =
+                row.querySelector(
+                    '.else'
+                );
 
 
-            document.getElementById(
-                    'summary_order_id'
-                ).value =
-                config.Summary?.Order_ID || '';
+            if (elseInput) {
+
+                elseInput.value =
+                    elseValue;
+            }
+        }
 
 
-            document.getElementById(
-                'headerMappingBody'
-            ).innerHTML = '';
+        /*
+        |--------------------------------------------------------------------------
+        | Populate Header Mapping
+        |--------------------------------------------------------------------------
+        */
+
+        function draftPopulateHeaderMapping(
+            config
+        ) {
+
+            const tbody =
+                document.getElementById(
+                    'headerMappingBody'
+                );
 
 
-            document.getElementById(
-                'positionsContainer'
-            ).innerHTML = '';
+            if (!tbody) {
+                return;
+            }
+
+
+            tbody.innerHTML = '';
 
 
             headerIndex = 0;
-            positionIndex = 0;
 
 
-            (config.Header_Mapping || [])
-            .forEach(item => {
+            (
+                config.Header_Mapping || []
+            ).forEach(item => {
+
+                /*
+                | This creates the first
+                | IF/THEN block automatically.
+                */
 
                 addHeaderRow();
 
 
                 const rows =
-                    document.querySelectorAll(
-                        '#headerMappingBody .header-row'
+                    tbody.querySelectorAll(
+                        '.header-row'
                     );
 
 
@@ -2467,40 +2510,111 @@
                     rows[rows.length - 1];
 
 
-                row.querySelector('.col').value =
-                    item.Col;
+                if (!row) {
+                    return;
+                }
 
 
-                row.querySelector('.field').value =
-                    item.Field_name;
+                /*
+                |--------------------------------------------------------------------------
+                | Column
+                |--------------------------------------------------------------------------
+                */
 
-
-                draftPopulateIfThen(
-                    row,
-                    item.Ifs
-                );
-
-
-                if (item.Else) {
-
-                    addElseField(
-                        row.querySelector(
-                            '.btn-warning'
-                        )
+                const col =
+                    row.querySelector(
+                        '.col'
                     );
 
 
-                    row.querySelector(
-                            '.else'
-                        ).value =
-                        item.Else;
+                if (col) {
+
+                    col.value =
+                        item.Col ?? '';
                 }
 
+
+                /*
+                |--------------------------------------------------------------------------
+                | Field
+                |--------------------------------------------------------------------------
+                */
+
+                const field =
+                    row.querySelector(
+                        '.field'
+                    );
+
+
+                if (field) {
+
+                    field.value =
+                        item.Field_name || '';
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | ALL IF/THEN CONDITIONS
+                |--------------------------------------------------------------------------
+                */
+
+                draftPopulateIfThen(
+                    row,
+                    item.Ifs || []
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | ELSE
+                |--------------------------------------------------------------------------
+                */
+
+                draftPopulateElse(
+                    row,
+                    item.Else
+                );
+
             });
+        }
 
 
-            (config.Positions_Mapping || [])
-            .forEach(position => {
+        /*
+        |--------------------------------------------------------------------------
+        | Populate Position Mapping
+        |--------------------------------------------------------------------------
+        */
+
+        function draftPopulatePositions(
+            config
+        ) {
+
+            const container =
+                document.getElementById(
+                    'positionsContainer'
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            container.innerHTML = '';
+
+
+            positionIndex = 0;
+
+
+            (
+                config.Positions_Mapping || []
+            ).forEach(position => {
+
+                /*
+                | Creates the position block
+                | and its first mapping row.
+                */
 
                 addPositionBlock();
 
@@ -2515,94 +2629,304 @@
                     );
 
 
-                positionBlock.querySelector(
+                if (!positionBlock) {
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Position ID
+                |--------------------------------------------------------------------------
+                */
+
+                const positionId =
+                    positionBlock.querySelector(
                         "input[name*='Position_ID']"
-                    ).value =
-                    position.Position_ID;
-
-
-                document.getElementById(
-                    `position_mapping_body_${currentPositionIndex}`
-                ).innerHTML = '';
-
-
-                (position.Mapping || [])
-                .forEach(mapping => {
-
-                    addPositionRow(
-                        currentPositionIndex
                     );
 
 
-                    const tbody =
-                        document.getElementById(
-                            `position_mapping_body_${currentPositionIndex}`
-                        );
+                if (positionId) {
+
+                    positionId.value =
+                        position.Position_ID || '';
+                }
 
 
-                    const row =
-                        tbody.lastElementChild;
+                /*
+                |--------------------------------------------------------------------------
+                | Position mapping body
+                |--------------------------------------------------------------------------
+                */
 
-
-                    row.querySelector('.col').value =
-                        mapping.Col;
-
-
-                    row.querySelector('.field').value =
-                        mapping.Field_name;
-
-
-                    draftPopulateIfThen(
-                        row,
-                        mapping.Ifs
-                    );
-
-
-                    if (mapping.Else) {
-
-                        addElseField(
-                            row.querySelector(
-                                '.btn-warning'
-                            )
-                        );
-
-
-                        row.querySelector(
-                                '.else'
-                            ).value =
-                            mapping.Else;
-                    }
-
-                });
-
-            });
-
-
-            const modal =
-                bootstrap.Modal.getInstance(
+                const tbody =
                     document.getElementById(
-                        'suggestionsResultModal'
-                    )
+                        `position_mapping_body_${currentPositionIndex}`
+                    );
+
+
+                if (!tbody) {
+                    return;
+                }
+
+
+                /*
+                | addPositionBlock() automatically
+                | creates one row.
+                |
+                | We keep that row for the first
+                | saved Mapping.
+                */
+
+                const mappings =
+                    position.Mapping || [];
+
+
+                if (mappings.length === 0) {
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Populate first mapping row
+                |--------------------------------------------------------------------------
+                */
+
+                mappings.forEach(
+                    (mapping, mappingIndex) => {
+
+                        /*
+                        | First row already exists.
+                        | Additional rows must be created.
+                        */
+
+                        if (
+                            mappingIndex > 0
+                        ) {
+
+                            addPositionRow(
+                                currentPositionIndex
+                            );
+                        }
+
+
+                        const rows =
+                            tbody.querySelectorAll(
+                                '.position-row'
+                            );
+
+
+                        const row =
+                            rows[
+                                rows.length - 1
+                            ];
+
+
+                        if (!row) {
+                            return;
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Column
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const col =
+                            row.querySelector(
+                                '.col'
+                            );
+
+
+                        if (col) {
+
+                            col.value =
+                                mapping.Col ?? '';
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Field
+                        |--------------------------------------------------------------------------
+                        */
+
+                        const field =
+                            row.querySelector(
+                                '.field'
+                            );
+
+
+                        if (field) {
+
+                            field.value =
+                                mapping.Field_name || '';
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | ALL IF/THEN CONDITIONS
+                        |--------------------------------------------------------------------------
+                        */
+
+                        draftPopulateIfThen(
+                            row,
+                            mapping.Ifs || []
+                        );
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | ELSE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        draftPopulateElse(
+                            row,
+                            mapping.Else
+                        );
+
+                    }
+                );
+            });
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MAIN DRAFT DISPLAY
+        |--------------------------------------------------------------------------
+        */
+
+        function displayDraftResult() {
+
+            /*
+            | Only run for drafts.
+            */
+
+            if (
+                draftStatus !== 'draft'
+            ) {
+                return;
+            }
+
+
+            if (!draftConfiguredData) {
+                return;
+            }
+
+
+            const config =
+                draftConfiguredData;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SUMMARY
+            |--------------------------------------------------------------------------
+            */
+
+            const customer =
+                document.getElementById(
+                    'summary_customer'
                 );
 
 
-            if (modal) {
-                modal.hide();
+            if (customer) {
+
+                customer.value =
+                    config.Summary?.Customer || '';
             }
 
+
+            const orderId =
+                document.getElementById(
+                    'summary_order_id'
+                );
+
+
+            if (orderId) {
+
+                orderId.value =
+                    config.Summary?.Order_ID || '';
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | HEADER
+            |--------------------------------------------------------------------------
+            */
+
+            draftPopulateHeaderMapping(
+                config
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | POSITIONS
+            |--------------------------------------------------------------------------
+            */
+
+            draftPopulatePositions(
+                config
+            );
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Close suggestions modal
+            |--------------------------------------------------------------------------
+            */
+
+            const modalElement =
+                document.getElementById(
+                    'suggestionsResultModal'
+                );
+
+
+            if (modalElement) {
+
+                const modal =
+                    bootstrap.Modal.getInstance(
+                        modalElement
+                    );
+
+
+                if (modal) {
+                    modal.hide();
+                }
+            }
         }
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | RUN DRAFT DISPLAY
+        |--------------------------------------------------------------------------
+        */
 
         document.addEventListener(
             'DOMContentLoaded',
             function() {
 
-                if (draftStatus === 'draft') {
+                if (
+                    draftStatus === 'draft'
+                ) {
+
                     displayDraftResult();
                 }
 
             }
         );
+
     </script>
+
+
+
 
 </x-layouts::app>

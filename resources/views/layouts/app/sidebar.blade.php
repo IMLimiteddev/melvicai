@@ -123,60 +123,66 @@
 
                             </flux:sidebar.group>
 
+                            <flux:sidebar.group label="Configuration" collapsible>
 
-                            <!-- Settings Dropdown -->
-                            <flux:sidebar.group label="Settings" collapsible>
+                                <div x-data="{ open: {{ request()->routeIs(
+                                    'admin.index.config',
+                                    'admin.initiate.config',
+                                    'admin.direct-process-1',
+                                    'admin.direct-process-2',
+                                    'admin.final-process',
+                                    'admin.verbs.index'
+                                ) ? 'true' : 'false' }} }">
 
-                                <div x-data="{ open: false }">
-
-                                    <flux:sidebar.item 
-                                        href="javascript:void(0)" 
+                                    <flux:sidebar.item
+                                        href="javascript:void(0)"
                                         @click="open = !open"
                                         icon="cog"
                                     >
+
                                         <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-                                            
+
                                             <span>Configurations</span>
 
-                                            <flux:icon 
-                                                name="chevron-down" 
+                                            <flux:icon
+                                                name="chevron-down"
                                                 style="width:16px; transition:0.3s;"
                                                 x-bind:style="open ? 'transform:rotate(180deg)' : ''"
                                             />
+
                                         </span>
+
                                     </flux:sidebar.item>
 
-                                    <div x-show="open" x-transition style="margin-left: 25px;">
 
+                                    <div x-show="open" x-transition style="margin-left:25px;">
 
-                                        <flux:sidebar.item 
-                                            href="{{ route('admin.customers') }}" 
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.index.config') }}"
                                             wire:navigate
                                         >
                                             Configurations
                                         </flux:sidebar.item>
 
 
-                                        <flux:sidebar.item 
-                                            href="{{ route('admin.customers') }}" 
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.index.config') }}"
                                             wire:navigate
                                         >
                                             Workflows
                                         </flux:sidebar.item>
 
-                                        <flux:sidebar.item 
-                                            href="{{ route('admin.verbs.index') }}" 
+
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.verbs.index') }}"
                                             wire:navigate
                                         >
                                             Manage Action/Operators
                                         </flux:sidebar.item>
 
-                                        
-
                                     </div>
 
                                 </div>
-
 
                             </flux:sidebar.group>
 
@@ -250,7 +256,7 @@
                                     <div x-show="open" x-transition style="margin-left: 25px;">
 
                                         <flux:sidebar.item 
-                                            href="{{ route('admin.customers') }}" 
+                                            href="{{ route('admin.index.config') }}" 
                                             wire:navigate
                                         >
                                             All Customers
@@ -266,7 +272,7 @@
 
                             {{-- <flux:sidebar.group label="Settings" collapsible>
                                 <flux:sidebar.item 
-                                    href="{{ route('admin.customers') }}" 
+                                    href="{{ route('admin.index.config') }}" 
                                     icon="cog"
                                 >
                                     Configurations

@@ -451,7 +451,7 @@ class RulesController extends Controller
             return redirect()->away(
                 'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename)
             );
-        }
+    }
 
 
         //the new rule service index page
@@ -570,7 +570,8 @@ class RulesController extends Controller
         }
 
         //Number two in the scanning process
-       public function createAfterScan(Request $request, $id = null)
+      
+        public function createAfterScan(Request $request, $id = null)
         {
             try {
 
@@ -673,7 +674,7 @@ class RulesController extends Controller
                 ]);
 
             }
-    }
+        }
 
         public function useConfigPage($id= null){
 

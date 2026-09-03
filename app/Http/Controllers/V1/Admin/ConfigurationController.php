@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class ConfigurationController extends Controller
 {
-    public function configIndex()
+    public function indexConfig()
     {
         
         $configs = Configuration::all();
@@ -21,8 +21,6 @@ class ConfigurationController extends Controller
 
     public function configInitiate(Request $request)
     {
-
-
 
         $request->validate([
             'user_id' => [
@@ -68,7 +66,7 @@ class ConfigurationController extends Controller
         if ($request->action === 'scan') {
 
             return redirect()->route(
-                'admin.configurations.scan',
+                'admin.scan-process-1',
                 $configuration->id
             );
 
@@ -91,6 +89,7 @@ class ConfigurationController extends Controller
     {
         $config = Configuration::findOrFail($id);
 
+        $verbs = Verb::all();
    
         $storedPath = $config->input_file_path;
 
@@ -156,24 +155,37 @@ class ConfigurationController extends Controller
                 'response'         => $e->response?->json(),
             ]);
 
-            return redirect()
-                ->route('admin.rule-service.index')
-                ->with(
-                    'error',
-                    'Failed to process file: ' . $e->getMessage()
-                );
+            return back()
+                    ->with(
+                        'error',
+                        'Failed to process file: ' . $e->getMessage()
+                    );
         }
 
 
         return redirect()
             ->route(
-                'admin.configurations.display-scanned-results',
+                'admin.scan-process-display',
                 ['id' => $config->id]
             )
             ->with(
                 'success',
                 'Scanned results saved successfully!'
             );
+    }
+
+    // Display scanned results
+    public function scanProcessDisplay(Request $request, $id = null)
+    {
+        $config = Configuration::findOrFail($id);
+
+        $verbs = Verb::all();
+
+        return view('admin.config.scan-process-display', [
+            'result' => $config,
+            'verbs' => $verbs,
+            'id' => $config->id,
+        ]);
     }
 
     // Scan before process Stage 2
@@ -450,6 +462,8 @@ class ConfigurationController extends Controller
 
             $filename = $data['Mapped_txt_file'] ?? null;
 
+            // dd($filename);
+
             if (!$filename) {
 
                 throw new \Exception(
@@ -500,7 +514,9 @@ class ConfigurationController extends Controller
                 'validation_data'   => $data['Validation_Warnings'],
                 'output_file_path'  => $storagePath,
                 'status'            => 'active',
-                'process_stage'   => 'Directly Processed and Saved.'
+                'process_stage'     => 'Directly Processed and Saved.',
+                'filename'          => $filename,
+
             ]);
 
 
@@ -533,7 +549,7 @@ class ConfigurationController extends Controller
             );
         }
     }
-    //
+    
 
     //Final page
     public function finalProcess($id = null){

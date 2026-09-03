@@ -1,248 +1,213 @@
 <x-layouts::app :title="__('Models')">
+
     <style>
-        .tab-link.active {
-            color: #0d6efd;
-            border-bottom: 2px solid #E94E1B;
-            padding-bottom: 5px;
+        .tab-link {
+            color: #444;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 24px;
+            transition: all .3s ease;
         }
 
         .tab-link:hover {
-            opacity: 0.7;
+            background: #f1f1f1;
+            color: #000;
+        }
+
+        .tab-link.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .our-btn {
+            height: 48px;
+            padding: 0 18px;
+            border-radius: 24px;
+            background: #000;
+            color: #fff;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .3s ease, transform .2s ease;
+        }
+
+        .our-btn:hover {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .our-btn i {
+            transition: transform .3s ease;
+        }
+
+        .our-btn:hover i {
+            transform: scale(1.15);
         }
     </style>
 
     <div class="page-body" id="pageBody">
 
-        {{-- <x-stage active="1" /> --}}
-
         <div class="container-fluid">
+
             <div class="page-title">
-
                 <div class="row">
+
                     <div class="col-xl-4 col-sm-7 box-col-3">
-                        <h3>Warnings/Download area</h3>
+                        <h3>Warnings/Download Area</h3>
                     </div>
-                    <div class="col-5 d-none d-xl-block">
-                        <!-- Page Sub Header Start-->
-                        <div class="left-header main-sub-header p-0">
 
-                            <div class="left-menu-header">
-
-                                <ul class="header-left"
-                                    style="display:flex; gap:20px; list-style:none; margin:0; padding:10px 0;">
-
-
-
-                                    <li>
-
-                                    </li>
-                                </ul>
-
-                            </div>
-
-
-                        </div>
-                    </div>
                 </div>
             </div>
+
         </div>
 
-        <!-- Container-fluid starts-->
+
         <div class="container-fluid">
+
             <div class="row">
+
                 <div class="col-sm-12">
+
                     <div class="card">
-                        <div class="card-header pb-0">
-                            {{-- <h4>Create New Rules.</h4> --}}
-                            <div
-                                style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
-
-                                <!-- RIGHT: Eye Icon -->
-                                <div class="m-5">
-                                    <a href="" title="view file">
-
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
 
                         <div class="card-body">
 
-                            {{-- Success --}}
-                            <div class="alert alert-success">
+                            {{-- ========================= --}}
+                            {{-- TABS --}}
+                            {{-- ========================= --}}
 
-                                <h5 class="mb-1">
-                                    <i class="fa fa-check-circle me-2"></i>
-                                    {{ $response['Message'] ?? 'Rule generated successfully.' }}
-                                </h5>
+                            <div
+                                style="
+                                    display:flex;
+                                    justify-content:center;
+                                    align-items:center;
+                                    gap:15px;
+                                    margin-bottom:30px;
+                                    flex-wrap:wrap;
+                                "
+                            >
 
-                            </div>
+                                {{-- TAB 1 --}}
+                                <a
+                                    href="#"
+                                    class="tab-link active"
+                                    onclick="return false;"
+                                >
+                                    Validation Rule
+                                </a>
 
-                            {{-- Summary --}}
-                            <div class="row mb-4">
 
-                                <div class="col-md-4">
+                                {{-- TAB 2 --}}
+                                <a
+                                    href="{{ route('admin.download.output', ['filename' => $originalName ?? '']) }}"
+                                    target="_blank"
+                                    class="tab-link"
+                                >
+                                    Processed File
+                                </a>
 
-                                    <div class="card border">
 
-                                        <div class="card-body">
-
-                                            <small class="text-muted">Customer</small>
-
-                                            <h6 class="mt-2 mb-0">
-                                                {{ $response['Submitted_config_json']['Summary']['Customer'] ?? '-' }}
-                                            </h6>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-4">
-
-                                    <div class="card border">
-
-                                        <div class="card-body">
-
-                                            <small class="text-muted">
-                                                Processed PDF
-                                            </small>
-
-                                            <h6 class="mt-2 mb-0">
-                                                {{ $response['Processed_file'] ?? '-' }}
-                                            </h6>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-4">
-
-                                    <div class="card border">
-
-                                        <div class="card-body">
-
-                                            <small class="text-muted">
-                                                Saved Configuration
-                                            </small>
-
-                                            <h6 class="mt-2 mb-0">
-                                                {{ $response['Saved_config_file'] ?? '-' }}
-                                            </h6>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
+                                {{-- TAB 3 --}}
+                                <a
+                                    href="#"
+                                    class="tab-link"
+                                    onclick="return false;"
+                                >
+                                    Other
+                                </a>
 
                             </div>
 
-                            {{-- Validation Warnings --}}
-                            <div class="card">
 
-                                <div class="card-header pb-0">
+                            {{-- ========================= --}}
+                            {{-- TAB CONTENT --}}
+                            {{-- ========================= --}}
 
-                                    <h5>
+                            <div
+                                style="
+                                    border:1px solid #dee2e6;
+                                    border-radius:8px;
+                                    padding:25px;
+                                    background:#fafafa;
+                                "
+                            >
 
-                                        Validation Results
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        align-items:center;
+                                        gap:15px;
+                                        flex-wrap:wrap;
+                                    "
+                                >
 
-                                        <span class="badge bg-warning text-dark ms-2">
+                                    <div>
 
-                                            {{ count($response['Validation_Warnings'] ?? []) }}
+                                        <h5 style="margin-bottom:5px;">
+                                            Validation Rule
+                                        </h5>
 
-                                        </span>
+                                        <p
+                                            class="text-muted mb-0"
+                                        >
+                                            View the validation results generated for this configuration.
+                                        </p>
 
-                                    </h5>
+                                    </div>
 
-                                </div>
 
-                                <div class="card-body">
+                                    {{-- VALIDATION BUTTON --}}
 
-                                    @forelse($response['Validation_Warnings'] ?? [] as $warning)
-                                        <div
-                                            class="alert {{ $warning['severity'] == 'warning' ? 'alert-warning' : 'alert-info' }} mb-3">
+                                    <button
+                                        type="button"
+                                        class="our-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#validationModal"
+                                        onmouseover="this.querySelector('i').style.transform='rotate(10deg) scale(1.15)'"
+                                        onmouseout="this.querySelector('i').style.transform='rotate(0deg) scale(1)'"
+                                    >
 
-                                            <div class="d-flex justify-content-between">
+                                        <i
+                                            class="fa fa-shield-alt"
+                                        ></i>
 
-                                                <strong>
+                                        View Validation Rule
 
-                                                    {{ strtoupper($warning['severity']) }}
-
-                                                </strong>
-
-                                                <span class="text-muted">
-
-                                                    {{ $warning['section'] }}
-
-                                                </span>
-
-                                            </div>
-
-                                            <hr>
-
-                                            <p class="mb-2">
-
-                                                <strong>Location:</strong>
-
-                                                {{ $warning['location'] }}
-
-                                            </p>
-
-                                            <p class="mb-2">
-
-                                                <strong>Issue:</strong>
-
-                                                {{ $warning['message'] }}
-
-                                            </p>
-
-                                            <p class="mb-0">
-
-                                                <strong>Suggestion:</strong>
-
-                                                {{ $warning['suggestion'] }}
-
-                                            </p>
-
-                                        </div>
-
-                                    @empty
-
-                                        <div class="alert alert-success mb-0">
-
-                                            <i class="fa fa-check-circle me-2"></i>
-
-                                            No validation warnings were found.
-
-                                        </div>
-                                    @endforelse
+                                    </button>
 
                                 </div>
 
                             </div>
 
-                            {{-- Actions --}}
-                            <div class="d-flex justify-content-between mt-4">
 
-                                {{-- <a href="" class="btn btn-warning">
+                            {{-- ========================= --}}
+                            {{-- DOWNLOAD BUTTON --}}
+                            {{-- ========================= --}}
 
-                                    <i class="fa fa-pencil me-2"></i>
+                            <div
+                                style="
+                                    display:flex;
+                                    justify-content:flex-end;
+                                    margin-top:20px;
+                                "
+                            >
 
-                                    Re-edit Rules
+                                <a
+                                    href="{{ route('admin.download.output', ['filename' => $originalName ?? '']) }}"
+                                    target="_blank"
+                                    class="our-btn"
+                                    title="Open processed file"
+                                >
 
-                                </a> --}}
+                                    <i class="fa fa-eye"></i>
 
-                                <a href="{{ route('admin.download.output', ['filename' => $response['Mapped_txt_file'] ?? '']) }}"
-                                    class="btn btn-success" download>
-
-                                    <i class="fa fa-download me-2"></i>
-
-                                    Download Txt 
+                                    View File
 
                                 </a>
 
@@ -250,11 +215,128 @@
 
                         </div>
 
-
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
+    </div>
+
+
+    {{-- ================================================= --}}
+    {{-- VALIDATION MODAL --}}
+    {{-- ================================================= --}}
+
+    <div
+        class="modal fade"
+        id="validationModal"
+        tabindex="-1"
+        aria-labelledby="validationModalLabel"
+        aria-hidden="true"
+    >
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5
+                        class="modal-title"
+                        id="validationModalLabel"
+                    >
+                        Validation Rule
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    @forelse($response['Validation_Warnings'] ?? [] as $warning)
+
+                        <div
+                            class="alert {{ $warning['severity'] == 'warning' ? 'alert-warning' : 'alert-info' }} mb-3"
+                        >
+
+                            <div
+                                class="d-flex justify-content-between"
+                            >
+
+                                <strong>
+                                    {{ strtoupper($warning['severity']) }}
+                                </strong>
+
+                                <span class="text-muted">
+                                    {{ $warning['section'] }}
+                                </span>
+
+                            </div>
+
+                            <hr>
+
+                            <p class="mb-2">
+                                <strong>Location:</strong>
+                                {{ $warning['location'] }}
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Issue:</strong>
+                                {{ $warning['message'] }}
+                            </p>
+
+                            <p class="mb-0">
+                                <strong>Suggestion:</strong>
+                                {{ $warning['suggestion'] }}
+                            </p>
+
+                        </div>
+
+                    @empty
+
+                        <div class="alert alert-success mb-0">
+
+                            <i class="fa fa-check-circle me-2"></i>
+
+                            No validation warnings were found.
+
+                        </div>
+
+                    @endforelse
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="our-btn"
+                        data-bs-dismiss="modal"
+                    >
+
+                        <i class="fa fa-times"></i>
+
+                        Close
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </x-layouts::app>

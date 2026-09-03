@@ -119,8 +119,20 @@ Route::prefix('admin/rule-service')->middleware(['auth', 'verified'])->group(fun
 
 Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(function () {
     
+    Route::get('/index/config', [ConfigurationController::class, 'indexConfig'])
+    ->name('admin.index.config');
+
     Route::post('/initiate/config', [ConfigurationController::class, 'configInitiate'])
     ->name('admin.initiate.config');
+
+    Route::get('/scan-process-1/{id?}', [ConfigurationController::class, 'scanProcess1'])
+    ->name('admin.scan-process-1');
+    
+    Route::get('/scan-process-display/{id?}', [ConfigurationController::class, 'scanProcessDisplay'])
+    ->name('admin.scan-process-display');
+
+    Route::get('/scan-process-2/{id?}', [ConfigurationController::class, 'scanProcess2'])
+    ->name('admin.scan-process-2');
 
     Route::get('/direct-process-1/{id?}', [ConfigurationController::class, 'directProcess1'])
     ->name('admin.direct-process-1');
@@ -130,6 +142,9 @@ Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(f
 
     Route::get('/final-process/{id?}', [ConfigurationController::class, 'finalProcess'])
     ->name('admin.final-process');
+
+    Route::get('/single/config', [ConfigurationController::class, 'singleConfig'])
+    ->name('admin.configs.single');
 
 });
 
