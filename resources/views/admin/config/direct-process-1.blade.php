@@ -48,9 +48,7 @@
 
                     </div>
 
-                    {{-- <div class="col-xl-4 col-sm-7 box-col-3">
-                        <h3>Manage Configuration</h3>
-                    </div> --}}
+                 
 
                 </div>
             </div>
@@ -64,18 +62,40 @@
                 <div class="col-sm-12">
 
                     <div class="card">
-                        <div class="card-header pb-0">
-                            <h4>Work-area (Create Configuration).</h4>
-                            <div
-                                style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
+                         <div class="card-header"
+                            style="background:#fff;border:0;padding:24px 30px 20px;display:flex;align-items:center;justify-content:center;position:relative;">
 
-                                <!-- RIGHT: Eye Icon -->
-                                <div class="m-5">
-                                    <a href="" title="view file">
+                            <div style="text-align:center;">
 
-                                    </a>
+                                <div
+                                    style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:6px;">
+                                    Configuration
                                 </div>
+
+                                <h4 style="margin:0;font-size:25px;font-weight:700;color:#222;letter-spacing:-0.3px;">
+                                    Create Directly 
+                                </h4>
+
+                                <div
+                                    style="width:45px;height:3px;background:#AEF09D;border-radius:10px;margin:10px auto 0;">
+                                </div>
+
                             </div>
+
+                            <!-- RIGHT: Eye Icon -->
+                            <div style="position:absolute;left:30px;top:50%;transform:translateY(-50%);">
+
+                                <a href="{{ url()->previous() }}" wire:navigate aria-label="Go back to file builder" title="Go back"
+                                    style="width:44px;height:44px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .3s ease;"
+                                    onmouseover="this.style.background='#28a745';this.style.transform='scale(1.08)'"
+                                    onmouseout="this.style.background='#000';this.style.transform='scale(1)'">
+
+                                    <i class="fas fa-arrow-left" style="font-size:16px;"></i>
+
+                                </a>
+
+                            </div>
+
                         </div>
 
                         <form id="mappingForm" action="{{ route('admin.direct-process-2', ['id' => $data?->id]) }}"
@@ -1055,6 +1075,7 @@
                                             <div class="form-control-plaintext fw-bold">
                                                 IF
                                             </div>
+                                            
 
                                         </div>
                                              
@@ -1210,8 +1231,6 @@
 
                                 </button>
 
-                               
-
                             </div>
 
                             <div class="else-container mt-3"></div>
@@ -1287,10 +1306,6 @@
                                 placeholder="Enter value">
 
                         </div>
-
-                        
-
-                            
 
                         <div class="d-flex gap-2 align-items-center">
 

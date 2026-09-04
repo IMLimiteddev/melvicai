@@ -11,32 +11,96 @@
         }
     </style>
 
-    <div class="page-body" id="pageBody" style="padding-top: 120px;">
+    <div class="page-body" id="pageBody" style="padding-top: 1px;">
 
         {{-- <x-stage active="1" /> --}}
+
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="row">
+
+                    @if (session('error'))
+                        <div
+                            style="
+                            padding:12px 16px;
+                            margin-bottom:20px;
+                            border-radius:8px;
+                            background:#f8d7da;
+                            color:#842029;
+                            border:1px solid #f5c2c7;
+                        ">
+                            <i class="fa fa-exclamation-circle me-2"></i>
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+
+                    <div class="col-xl-3 col-sm-5 box-col-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ url()->previous() }}" wire:navigate aria-label="Go back to file builder"
+                                    title="Go back">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">Configurations</li>
+                            <li class="breadcrumb-item active">Scan Process</li>
+                        </ol>
+                    </div>
+                    <div class="col-5 d-none d-xl-block">
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
 
         <!-- Container-fluid starts-->
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-header pb-0">
-                            <h4>Create New Config.</h4>
-                            <div
-                                style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
+                        <div class="card-header"
+                            style="background:#fff;border:0;padding:24px 30px 20px;display:flex;align-items:center;justify-content:center;position:relative;">
 
-                                <!-- RIGHT: Eye Icon -->
-                                <div class="m-5">
-                                    <a href="" title="view file">
+                            <div style="text-align:center;">
 
-                                    </a>
+                                <div
+                                    style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:6px;">
+                                    Configuration
                                 </div>
+
+                                <h4 style="margin:0;font-size:25px;font-weight:700;color:#222;letter-spacing:-0.3px;">
+                                    Edit Scan/Suggested Results
+                                </h4>
+
+                                <div
+                                    style="width:45px;height:3px;background:#AEF09D;border-radius:10px;margin:10px auto 0;">
+                                </div>
+
                             </div>
+
+                            <!-- RIGHT: Eye Icon -->
+                            <div style="position:absolute;left:30px;top:50%;transform:translateY(-50%);">
+
+                                <a href="{{ url()->previous() }}" wire:navigate aria-label="Go back to file builder" title="Go back"
+                                    style="width:44px;height:44px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .3s ease;"
+                                    onmouseover="this.style.background='#28a745';this.style.transform='scale(1.08)'"
+                                    onmouseout="this.style.background='#000';this.style.transform='scale(1)'">
+
+                                    <i class="fas fa-arrow-left" style="font-size:16px;"></i>
+
+                                </a>
+
+                            </div>
+
                         </div>
 
 
 
-                        <form id="mappingForm" action="{{ route('admin.create.after.scan', ['id' => $id]) }}"
+                        <form id="mappingForm" action="{{ route('admin.scan-process-2', ['id' => $result?->id]) }}"
                             enctype="multipart/form-data" method="POST">
                             @csrf
 
@@ -156,10 +220,10 @@
 
                                             <strong id="pdfFileName" style="color:#222;"></strong>
 
-                                            {{-- <button type="button" id="removePdfBtn"
-                                                style="background:#dc3545; color:#fff; border:none; padding:7px 12px; border-radius:6px; cursor:pointer;">
+                                            <button type="button" id="removePdfBtn"
+                                                style="background:#ffffff00; color:#ffffff00; border:none; padding:7px 12px; border-radius:6px; cursor:pointer;">
                                                 Delete PDF
-                                            </button> --}}
+                                            </button>
                                         </div>
 
                                         <div id="pdfViewer"
@@ -180,7 +244,8 @@
 
                                         <div class="d-flex justify-content-end align-items-center mb-3">
 
-                                            <button type="submit" name="action" value="save" {{-- data-bs-toggle="modal"
+                                            <button type="submit" name="action" value="save"
+                                                {{-- data-bs-toggle="modal"
                                                 data-bs-target="#logicManagerModal" --}}
                                                 style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
                                                 onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(360deg) scale(1.15)'"
@@ -1031,18 +1096,36 @@
     </div>
 
 
-    {{--suggestion Script--}}
+    {{-- suggestion Script --}}
     <script>
         const suggestionData = @json(is_string($result->suggested_data) ? json_decode($result->suggested_data, true) : $result->suggested_data);
 
+
+        // =============================
+        // Parse IF
+        // =============================
         function parseIf(text) {
 
-            if (!text) return {
-                operator: '',
-                value: ''
-            };
+            if (!text) {
+                return {
+                    operator: '',
+                    value: ''
+                };
+            }
 
-            const match = text.match(/^(.+?)\s+'(.+)'$/);
+            text = String(text).trim();
+
+            /*
+             * Expected format:
+             *
+             * Operator 'Value'
+             *
+             * Example:
+             * Contains 'Dorfwiesen'
+             *
+             * Keep the operator separate from the actual value.
+             */
+            const match = text.match(/^(.+?)\s+'([^']*)'$/);
 
             if (match) {
                 return {
@@ -1051,13 +1134,20 @@
                 };
             }
 
+            /*
+             * If the suggestion is already structured differently,
+             * do not send the entire string to selectVerb().
+             */
             return {
                 operator: '',
-                value: text.trim()
+                value: text
             };
         }
 
 
+        // =============================
+        // Parse THEN
+        // =============================
         function parseThen(text) {
 
             if (!text) {
@@ -1067,11 +1157,10 @@
                 };
             }
 
-            text = text.trim();
+            text = String(text).trim();
 
             const firstSpace = text.indexOf(' ');
 
-            // Only one word
             if (firstSpace === -1) {
                 return {
                     action: text.toLowerCase(),
@@ -1091,22 +1180,25 @@
         // =============================
         function selectVerb(select, searchText) {
 
-            if (!select || !searchText) return;
+            if (!select || !searchText) {
+                return false;
+            }
 
-            searchText = searchText.toLowerCase().trim();
+            searchText = String(searchText).toLowerCase().trim();
 
             let found = false;
 
             Array.from(select.options).forEach(option => {
 
-                const optionText = option.text.toLowerCase().trim();
-                const optionValue = option.value.toLowerCase().trim();
+                const optionText =
+                    String(option.text || '').toLowerCase().trim();
+
+                const optionValue =
+                    String(option.value || '').toLowerCase().trim();
 
                 if (
                     optionValue === searchText ||
-                    optionText === searchText ||
-                    optionValue.includes(searchText) ||
-                    optionText.includes(searchText)
+                    optionText === searchText
                 ) {
                     select.value = option.value;
                     found = true;
@@ -1114,12 +1206,49 @@
 
             });
 
+            /*
+             * Only use partial matching if exact matching failed.
+             */
             if (!found) {
-                console.warn("Verb not found:", searchText);
+
+                Array.from(select.options).forEach(option => {
+
+                    const optionText =
+                        String(option.text || '').toLowerCase().trim();
+
+                    const optionValue =
+                        String(option.value || '').toLowerCase().trim();
+
+                    if (
+                        optionValue.includes(searchText) ||
+                        optionText.includes(searchText)
+                    ) {
+                        select.value = option.value;
+                        found = true;
+                    }
+
+                });
             }
 
-            select.dispatchEvent(new Event('change'));
+            if (!found) {
+                console.warn(
+                    'Verb not found:',
+                    searchText,
+                    'Available options:',
+                    Array.from(select.options).map(option => ({
+                        text: option.text,
+                        value: option.value
+                    }))
+                );
 
+                return false;
+            }
+
+            select.dispatchEvent(new Event('change', {
+                bubbles: true
+            }));
+
+            return true;
         }
 
 
@@ -1128,183 +1257,472 @@
         // =============================
         function populateIfThen(row, ifs) {
 
-            if (!ifs || ifs.length === 0) return;
+            if (!row || !ifs || !Array.isArray(ifs) || ifs.length === 0) {
+                return;
+            }
 
             const addBtn = row.querySelector('.btn-success.btn-sm');
 
-            // Remove additional rows
             const existing = row.querySelectorAll('.if-then-row');
 
+            /*
+             * Keep the first IF/THEN row.
+             * Remove additional rows.
+             */
             for (let i = existing.length - 1; i > 0; i--) {
                 existing[i].remove();
             }
 
             ifs.forEach((item, index) => {
 
+                /*
+                 * Add another IF/THEN row when needed.
+                 */
                 if (index > 0) {
-                    addIfThen(addBtn);
+
+                    if (addBtn) {
+                        addIfThen(addBtn);
+                    } else {
+                        console.warn(
+                            'Could not find Add IF button for row:',
+                            row
+                        );
+
+                        return;
+                    }
                 }
 
-                const block = row.querySelectorAll('.if-then-row')[index];
+                const blocks = row.querySelectorAll('.if-then-row');
 
+                const block = blocks[index];
+
+                if (!block) {
+                    console.warn(
+                        'IF/THEN block not found at index:',
+                        index
+                    );
+
+                    return;
+                }
+
+
+                // =============================
+                // Parse IF
+                // =============================
                 const parsedIf = parseIf(item.If);
-                const parsedThen = parseThen(item.Then);
 
+
+                // =============================
                 // Operator
-                selectVerb(
-                    block.querySelector('.operator'),
-                    parsedIf.operator
-                );
+                // =============================
+                const operatorSelect =
+                    block.querySelector('.operator');
 
+                if (operatorSelect && parsedIf.operator) {
+
+                    selectVerb(
+                        operatorSelect,
+                        parsedIf.operator
+                    );
+                }
+
+
+                // =============================
                 // IF value
-                block.querySelector('.if').value = parsedIf.value;
+                // =============================
+                const ifInput =
+                    block.querySelector('.if');
 
+                if (ifInput) {
+
+                    ifInput.value =
+                        parsedIf.value || '';
+                }
+
+
+                // =============================
+                // Parse THEN
+                // =============================
+                const parsedThen =
+                    parseThen(item.Then);
+
+
+                // =============================
                 // Action
-                selectVerb(
-                    block.querySelector('.action'),
-                    parsedThen.action
-                );
+                // =============================
+                const actionSelect =
+                    block.querySelector('.action');
 
+                if (actionSelect && parsedThen.action) {
+
+                    selectVerb(
+                        actionSelect,
+                        parsedThen.action
+                    );
+                }
+
+
+                // =============================
                 // THEN value
-                block.querySelector('.then').value = parsedThen.value;
+                // =============================
+                const thenInput =
+                    block.querySelector('.then');
+
+                if (thenInput) {
+
+                    thenInput.value =
+                        parsedThen.value || '';
+                }
 
             });
 
         }
+
 
         // =============================
         // Main Transfer Function
         // =============================
         function transferSuggestionsToForm() {
 
-            if (!suggestionData || !suggestionData.Suggested_config) {
+            if (
+                !suggestionData ||
+                !suggestionData.Suggested_config
+            ) {
                 alert('No suggestion data found.');
                 return;
             }
 
-            const config = suggestionData.Suggested_config;
+            const config =
+                suggestionData.Suggested_config;
+
 
             // =============================
             // SUMMARY
             // =============================
-            document.getElementById('summary_customer').value =
-                config.Summary.Customer || '';
+            const summaryCustomer =
+                document.getElementById('summary_customer');
 
-            document.getElementById('summary_order_id').value =
-                config.Summary.Order_ID || '';
+            const summaryOrderId =
+                document.getElementById('summary_order_id');
+
+            if (summaryCustomer) {
+                summaryCustomer.value =
+                    config.Summary?.Customer || '';
+            }
+
+            if (summaryOrderId) {
+                summaryOrderId.value =
+                    config.Summary?.Order_ID || '';
+            }
+
 
             // =============================
             // CLEAR OLD DATA
             // =============================
-            document.getElementById('headerMappingBody').innerHTML = '';
-            document.getElementById('positionsContainer').innerHTML = '';
+            const headerBody =
+                document.getElementById('headerMappingBody');
+
+            const positionsContainer =
+                document.getElementById('positionsContainer');
+
+            if (headerBody) {
+                headerBody.innerHTML = '';
+            }
+
+            if (positionsContainer) {
+                positionsContainer.innerHTML = '';
+            }
 
             headerIndex = 0;
             positionIndex = 0;
 
+
             // =============================
             // HEADER MAPPING
             // =============================
-            config.Header_Mapping.forEach(item => {
+            (config.Header_Mapping || []).forEach(item => {
 
                 addHeaderRow();
 
-                const rows = document.querySelectorAll(
-                    '#headerMappingBody .header-row'
-                );
-
-                const row = rows[rows.length - 1];
-
-                // Basic fields
-                row.querySelector('.col').value =
-                    item.Col;
-
-                row.querySelector('.field').value =
-                    item.Field_name;
-
-                // IF / THEN
-                populateIfThen(row, item.Ifs);
-
-                // ELSE
-                if (item.Else) {
-
-                    addElseField(
-                        row.querySelector('.btn-warning')
+                const rows =
+                    document.querySelectorAll(
+                        '#headerMappingBody .header-row'
                     );
 
-                    row.querySelector('.else').value =
-                        item.Else;
+                const row =
+                    rows[rows.length - 1];
+
+                if (!row) {
+                    console.warn(
+                        'Header row could not be created.'
+                    );
+
+                    return;
                 }
+
+
+                // =============================
+                // Basic fields
+                // =============================
+                const colInput =
+                    row.querySelector('.col');
+
+                const fieldInput =
+                    row.querySelector('.field');
+
+                const otherField =
+                    row.querySelector('.other_field');
+
+                if (colInput) {
+                    colInput.value =
+                        item.Col || '';
+                }
+
+
+                if (fieldInput) {
+                    fieldInput.value =
+                        item.Field_name || '';
+                }
+
+                if (otherField) {
+                    otherField.textContent =
+                        item.Field_name || '';
+                }
+
+
+                // =============================
+                // IF / THEN
+                // =============================
+                populateIfThen(
+                    row,
+                    item.Ifs || []
+                );
+
+
+                // =============================
+                // ELSE
+                // =============================
+                if (
+                    item.Else !== null &&
+                    item.Else !== undefined &&
+                    String(item.Else).trim() !== ''
+                ) {
+
+                    /*
+                     * Find the actual ELSE button inside
+                     * this row.
+                     */
+                    const elseButton =
+                        row.querySelector('.btn-warning');
+
+                    if (elseButton) {
+
+                        addElseField(elseButton);
+
+                        const elseInput =
+                            row.querySelector('.else');
+
+                        if (elseInput) {
+                            elseInput.value =
+                                item.Else;
+                        }
+
+                    } else {
+
+                        console.warn(
+                            'ELSE button not found for header row.'
+                        );
+                    }
+                }
+
             });
+
 
             // =============================
             // POSITION MAPPING
             // =============================
-            config.Positions_Mapping.forEach(position => {
+            (config.Positions_Mapping || []).forEach(position => {
 
-                // Create block
+                // Create position block
                 addPositionBlock();
 
-                const currentPositionIndex = positionIndex - 1;
+                const currentPositionIndex =
+                    positionIndex - 1;
 
-                const positionBlock = document.getElementById(
-                    `position_block_${currentPositionIndex}`
-                );
+                const positionBlock =
+                    document.getElementById(
+                        `position_block_${currentPositionIndex}`
+                    );
 
-                // Set Position ID
-                positionBlock.querySelector(
-                    "input[name*='Position_ID']"
-                ).value = position.Position_ID;
+                if (!positionBlock) {
 
-                // Remove default row
-                document.getElementById(
-                    `position_mapping_body_${currentPositionIndex}`
-                ).innerHTML = '';
+                    console.warn(
+                        'Position block not found:',
+                        currentPositionIndex
+                    );
 
-                // Add real rows
-                position.Mapping.forEach(mapping => {
+                    return;
+                }
 
-                    addPositionRow(currentPositionIndex);
 
-                    const tbody = document.getElementById(
+                // =============================
+                // Position ID
+                // =============================
+                const positionIdInput =
+                    positionBlock.querySelector(
+                        "input[name*='Position_ID']"
+                    );
+
+                if (positionIdInput) {
+
+                    positionIdInput.value =
+                        position.Position_ID || '';
+                }
+
+
+                // =============================
+                // Clear default mapping row
+                // =============================
+                const tbody =
+                    document.getElementById(
                         `position_mapping_body_${currentPositionIndex}`
                     );
 
-                    const row = tbody.lastElementChild;
+                if (!tbody) {
 
-                    // Basic fields
-                    row.querySelector('.col').value =
-                        mapping.Col;
+                    console.warn(
+                        'Position mapping body not found:',
+                        currentPositionIndex
+                    );
 
-                    row.querySelector('.field').value =
-                        mapping.Field_name;
+                    return;
+                }
 
-                    // IF / THEN
-                    populateIfThen(row, mapping.Ifs);
+                tbody.innerHTML = '';
 
-                    // ELSE
-                    if (mapping.Else) {
 
-                        addElseField(
-                            row.querySelector('.btn-warning')
+                // =============================
+                // Mapping rows
+                // =============================
+                (position.Mapping || []).forEach(mapping => {
+
+                    addPositionRow(
+                        currentPositionIndex
+                    );
+
+                    const row =
+                        tbody.lastElementChild;
+
+                    if (!row) {
+
+                        console.warn(
+                            'Position mapping row could not be created.'
                         );
 
-                        row.querySelector('.else').value =
-                            mapping.Else;
+                        return;
                     }
+
+
+                    // =============================
+                    // Basic fields
+                    // =============================
+                    const colInput =
+                        row.querySelector('.col');
+
+                    const fieldInput =
+                        row.querySelector('.field');
+
+                    const otherField =
+                        row.querySelector('.other_field');
+
+                    if (otherField) {
+                        otherField.textContent =
+                            mapping.Field_name || '';
+                    }
+
+                    if (colInput) {
+                        colInput.value =
+                            mapping.Col || '';
+                    }
+
+                    if (fieldInput) {
+                        fieldInput.value =
+                            mapping.Field_name || '';
+                    }
+
+
+                    // =============================
+                    // IF / THEN
+                    // =============================
+                    populateIfThen(
+                        row,
+                        mapping.Ifs || []
+                    );
+
+
+                    // =============================
+                    // ELSE
+                    // =============================
+                    if (
+                        mapping.Else !== null &&
+                        mapping.Else !== undefined &&
+                        String(mapping.Else).trim() !== ''
+                    ) {
+
+                        const elseButton =
+                            row.querySelector('.btn-warning');
+
+                        if (elseButton) {
+
+                            addElseField(
+                                elseButton
+                            );
+
+                            const elseInput =
+                                row.querySelector('.else');
+
+                            if (elseInput) {
+                                elseInput.value =
+                                    mapping.Else;
+                            }
+
+                        } else {
+
+                            console.warn(
+                                'ELSE button not found for position row.'
+                            );
+                        }
+                    }
+
                 });
+
             });
 
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(
-                document.getElementById('suggestionsResultModal')
-            );
 
-            if (modal) {
-                modal.hide();
+            // =============================
+            // Close modal
+            // =============================
+            const modalElement =
+                document.getElementById(
+                    'suggestionsResultModal'
+                );
+
+            if (modalElement) {
+
+                const modal =
+                    bootstrap.Modal.getInstance(
+                        modalElement
+                    );
+
+                if (modal) {
+                    modal.hide();
+                }
             }
 
-            alert('Suggestion transferred successfully!');
+
+            alert(
+                'Suggestion transferred successfully!'
+            );
         }
     </script>
 
@@ -1428,6 +1846,7 @@
                                 <div class="if-then-row gap-2 mb-3"
                                     style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
+                                    <hr>
                                     <div style="font-weight:600;color:#444;margin-bottom:8px;">
                                         IF (Condition)
                                     </div>
@@ -1465,10 +1884,16 @@
 
                                         <div class="col-auto">
 
-                                           
-
                                             <div class="form-control-plaintext fw-bold">
                                                 FIELD
+                                            </div>
+
+                                            <div>
+                                                <span 
+                                                
+                                                class="other_field" style="background:#f8f9fa;border:1px solid #dee2e6;padding:8px;border-radius:4px;">
+                                                    The field value displayed here
+                                                </span>
                                             </div>
 
                                         </div>
@@ -1569,17 +1994,7 @@
                                         </div>
 
                                     </div>
-
-                                    <div class="text-end mt-3">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="removeIfThen(this)">
-                                           <i class="fas fa-trash"></i>
-                                        </button>
-
-                                    </div>
+                                    <hr>
 
                                 </div>
 
@@ -1587,19 +2002,35 @@
 
                             <div class="d-flex gap-2 mt-3">
 
-                                <button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    onclick="addIfThen(this)">
-                                    + IF/THEN
-                                </button>
+                                    <button type="button"  onclick="addIfThen(this)"
+                                                
+                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                        onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                        onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
 
-                                <button
-                                    type="button"
-                                    class="btn btn-warning btn-sm"
-                                    onclick="addElseField(this)">
-                                    + Else
-                                </button>
+                                        <i class="fa fa-plus plus-icon"
+                                            style="transition:transform .3s ease;">
+                                        </i>
+                                        
+                                        IF/THEN
+
+
+                                    </button>
+
+                                    <button type="button"  onclick="addElseField(this)"
+                                                
+                                        style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                        onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                        onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                        <i class="fa fa-plus plus-icon"
+                                            style="transition:transform .3s ease;">
+                                        </i>
+                                        
+                                        ELSE
+
+
+                                    </button>
 
                             </div>
 
@@ -1609,11 +2040,16 @@
 
                         <td style="width:110px;vertical-align:top;">
 
-                            <button
-                                type="button"
-                                onclick="this.closest('tr').remove()"
-                                class="btn btn-danger btn-sm w-100">
-                                <i class="fas fa-trash"></i>
+                             <button type="button"  onclick="this.closest('tr').remove()"
+                                               
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
                             </button>
 
                         </td>
@@ -1692,8 +2128,23 @@
                                                 IF
                                             </div>
 
-                                             <div class="form-control-plaintext fw-bold">
+
+                                        </div>
+
+
+                                        <div class="col-auto">
+
+                                            <label class="form-label fw-bold mb-1">
                                                 FIELD
+                                            </label>
+
+
+                                             <div>
+                                                <span 
+                                                
+                                                class="other_field" style="background:#f8f9fa;border:1px solid #dee2e6;padding:8px;border-radius:4px;">
+                                                    The field value displayed here
+                                                </span>
                                             </div>
 
                                         </div>
@@ -1725,6 +2176,8 @@
                                         </div>
 
                                     </div>
+
+                                    <hr>
 
                                     <div style="font-weight:600;color:#444;margin:15px 0 8px;">
                                         THEN (Action)
@@ -1788,17 +2241,10 @@
                                         </div>
 
                                     </div>
+                                    
+                                    <hr>
 
-                                    <div class="text-end mt-3">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="removeIfThen(this)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-
-                                    </div>
+                                 
 
                                 </div>
 
@@ -1806,18 +2252,34 @@
 
                             <div class="d-flex gap-2 mt-3">
 
-                                <button
-                                    type="button"
-                                    class="btn btn-success btn-sm"
-                                    onclick="addIfThen(this)">
-                                    + IF/THEN
+                               <button type="button"  onclick="addIfThen(this)"
+                                               
+                                    style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                    onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                    onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                    <i class="fa fa-plus plus-icon"
+                                        style="transition:transform .3s ease;">
+                                    </i>
+                                    
+                                    IF/THEN
+
+
                                 </button>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-warning btn-sm"
-                                    onclick="addElseField(this)">
-                                    + Else
+                                <button type="button"  onclick="addElseField(this)"
+                                               
+                                    style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                    onmouseover="this.style.background='#28a745'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                    onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                    <i class="fa fa-plus plus-icon"
+                                        style="transition:transform .3s ease;">
+                                    </i>
+                                    
+                                    ELSE
+
+
                                 </button>
 
                             </div>
@@ -1828,11 +2290,16 @@
 
                         <td style="width:110px;vertical-align:top;">
 
-                            <button
-                                type="button"
-                                onclick="this.closest('tr').remove()"
-                                class="btn btn-danger btn-sm w-100">
-                                <i class="fas fa-trash"></i>
+                            <button type="button"  onclick="this.closest('tr').remove()"
+                                               
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
                             </button>
 
                         </td>
@@ -1856,10 +2323,26 @@
                     <div style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
 
                         <div style="font-weight:600;color:#444;margin-bottom:8px;">
-                            IF (Condition)
+                            Or (you can add more follow up conditions to the above IF/THEN conditions.)
                         </div>
 
-                        <div class="d-flex gap-2 align-items-center">
+                        <div class="d-flex gap-2 align-items-center mb-3">
+
+                            <div class="col-auto">
+
+                                <div class="form-control-plaintext fw-bold">
+                                    OR IF
+                                </div>
+
+                            </div>
+
+                            <div>
+                                <span 
+                                
+                                class="" style="background:#f8f9fa;border:1px solid #dee2e6;padding:8px;border-radius:4px;">
+                                    FIELD
+                                </span>
+                            </div>
 
                             <select class="form-control operator" style="max-width:180px;">
                                 @foreach ($verbs->where('type', 'Operator') as $verb)
@@ -1873,11 +2356,15 @@
 
                         </div>
 
-                        <div style="font-weight:600;color:#444;margin:15px 0 8px;">
-                            THEN (Action)
-                        </div>
-
                         <div class="d-flex gap-2 align-items-center">
+
+                            <div class="col-auto">
+
+                                <div class="form-control-plaintext fw-bold">
+                                    THEN
+                                </div>
+
+                            </div>
 
                             <select class="form-control action" style="max-width:180px;">
                                 @foreach ($verbs->where('type', 'Action') as $verb)
@@ -1891,13 +2378,19 @@
 
                         </div>
 
-                        <div class="text-end mt-3">
+                        <div class="d-flex justify-content-end mt-3">
 
-                            <button
-                                type="button"
-                                class="btn btn-danger btn-sm"
-                                onclick="removeIfThen(this)">
-                                <i class="fas fa-trash"></i>
+                            
+                            <button type="button"  onclick="removeIfThen(this)"
+                                               
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
                             </button>
 
                         </div>
@@ -1932,20 +2425,38 @@
             }
 
             container.innerHTML = `
-                    <div class="d-flex gap-2 mt-2">
+                <div class="else-block" style="border:1px solid #dee2e6;border-radius:8px;padding:15px;background:#fafafa;">
+
+                    <div style="font-weight:600;color:#444;margin-bottom:8px;">
+                        Else (This acts as a fallback if none of the IF/THEN conditions are met.)
+                    </div>
+
+                    <div class="gap-2 mt-2">
 
                         <input
                             class="form-control else"
                             placeholder="Else">
 
-                        <button
-                            type="button"
-                            class="btn btn-danger btn-sm"
-                            onclick="this.parentElement.remove()">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="d-flex justify-content-end mt-3">
+
+                            <button
+                                type="button"
+                                onclick="this.closest('.else-block').remove()"
+                                style="height:48px; padding:0 18px; border-radius:24px; background:#000; color:#fff; border:none; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; cursor:pointer; transition:background .3s ease;"
+                                onmouseover="this.style.background='#dc3545'; this.querySelector('.plus-icon').style.transform='rotate(180deg) scale(1.15)'"
+                                onmouseout="this.style.background='#000'; this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)'">
+
+                                <i class="fa fa-trash plus-icon"
+                                    style="transition:transform .3s ease;">
+                                </i>
+
+                            </button>
+
+                        </div>
 
                     </div>
+
+                </div>
                 `;
         }
     </script>
@@ -2120,7 +2631,7 @@
     </script>
 
 
-    {{-- -The inline edit script- --}}
+    {{-- - Verb manager The inline edit script- --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -2176,6 +2687,8 @@
         });
     </script>
 
+
+    {{-- Display higlighted feild on the input feild --}}
     <script>
         let activeField = null;
 
@@ -2188,6 +2701,16 @@
                 activeField = e.target;
 
                 console.log("Active:", activeField.name);
+
+                const row = e.target.closest("tr");
+
+                if (!row) return;
+
+                const fieldDisplay = row.querySelector(".other_field");
+
+                if (!fieldDisplay) return;
+
+                fieldDisplay.textContent = e.target.value;
             }
 
         });
@@ -2202,6 +2725,16 @@
             if (!text) return;
 
             activeField.value = text;
+
+            const row = activeField.closest("tr");
+
+            if (row) {
+                const fieldDisplay = row.querySelector(".other_field");
+
+                if (fieldDisplay) {
+                    fieldDisplay.textContent = text;
+                }
+            }
 
             activeField.dispatchEvent(new Event("input", {
                 bubbles: true
@@ -2350,6 +2883,846 @@
             }
 
         });
+    </script>
+
+
+    {{-- This is the save as draft function --}}
+    <script>
+        const draftStatus = @json($result->status);
+
+        const draftConfiguredData = @json(is_string($result->configured_data) ? json_decode($result->configured_data, true) : $result->configured_data);
+
+
+
+        function draftParseIf(text, operatorSelect) {
+
+            if (!text) {
+                return {
+                    field: '',
+                    operator: '',
+                    value: ''
+                };
+            }
+
+            text = String(text).trim();
+
+
+            if (!operatorSelect) {
+                return {
+                    field: text,
+                    operator: '',
+                    value: ''
+                };
+            }
+
+
+            const operators = Array.from(
+                    operatorSelect.options
+                )
+                .map(option => ({
+                    text: option.text.trim(),
+                    value: option.value.trim()
+                }))
+                .filter(option => option.text.length > 0)
+                .sort((a, b) => b.text.length - a.text.length);
+
+
+            for (const operator of operators) {
+
+                const escapedOperator =
+                    operator.text.replace(
+                        /[.*+?^${}()|[\]\\]/g,
+                        '\\$&'
+                    );
+
+
+                const regex = new RegExp(
+                    '\\s+' +
+                    escapedOperator +
+                    '\\s+',
+                    'i'
+                );
+
+
+                const match = text.match(regex);
+
+
+                if (!match) {
+                    continue;
+                }
+
+
+                const index = match.index;
+
+
+                const field =
+                    text.substring(
+                        0,
+                        index
+                    ).trim();
+
+
+                const value =
+                    text.substring(
+                        index + match[0].length
+                    ).trim();
+
+
+                return {
+                    field: field,
+                    operator: operator.value || operator.text,
+                    value: value
+                };
+            }
+
+
+            return {
+                field: text,
+                operator: '',
+                value: ''
+            };
+        }
+
+
+
+
+        function draftParseThen(text) {
+
+            if (!text) {
+                return {
+                    action: '',
+                    value: ''
+                };
+            }
+
+
+            text = String(text).trim();
+
+
+            const firstSpace =
+                text.indexOf(' ');
+
+
+            if (firstSpace === -1) {
+                return {
+                    action: text.toLowerCase(),
+                    value: ''
+                };
+            }
+
+
+            return {
+                action: text.substring(
+                        0,
+                        firstSpace
+                    )
+                    .trim()
+                    .toLowerCase(),
+
+                value: text.substring(
+                        firstSpace + 1
+                    )
+                    .trim()
+            };
+        }
+
+
+
+        function draftSelectVerb(
+            select,
+            searchText
+        ) {
+
+            if (!select || !searchText) {
+                return;
+            }
+
+
+            searchText =
+                String(searchText)
+                .toLowerCase()
+                .trim();
+
+
+            let found = false;
+
+
+            Array.from(
+                select.options
+            ).forEach(option => {
+
+                const optionText =
+                    option.text
+                    .toLowerCase()
+                    .trim();
+
+
+                const optionValue =
+                    option.value
+                    .toLowerCase()
+                    .trim();
+
+
+                if (
+                    optionValue === searchText ||
+                    optionText === searchText ||
+                    optionValue.includes(searchText) ||
+                    optionText.includes(searchText)
+                ) {
+
+                    select.value =
+                        option.value;
+
+                    found = true;
+                }
+
+            });
+
+
+            if (!found) {
+                console.warn(
+                    'Draft verb not found:',
+                    searchText
+                );
+            }
+
+
+            select.dispatchEvent(
+                new Event('change')
+            );
+        }
+
+
+
+
+        function draftPopulateIfThen(
+            row,
+            ifs
+        ) {
+
+            if (
+                !ifs ||
+                !Array.isArray(ifs) ||
+                ifs.length === 0
+            ) {
+                return;
+            }
+
+
+
+
+            const addIfButton =
+                row.querySelector(
+                    'button[onclick^="addIfThen"]'
+                );
+
+
+            if (!addIfButton) {
+
+                console.warn(
+                    'Draft: add IF/THEN button not found'
+                );
+
+                return;
+            }
+
+
+
+            let blocks =
+                row.querySelectorAll(
+                    '.ifs-container .if-then-row'
+                );
+
+
+
+
+            while (
+                blocks.length < ifs.length
+            ) {
+
+                addIfThen(addIfButton);
+
+
+                blocks =
+                    row.querySelectorAll(
+                        '.ifs-container .if-then-row'
+                    );
+            }
+
+
+            while (
+                blocks.length > ifs.length
+            ) {
+
+                const lastBlock =
+                    blocks[blocks.length - 1];
+
+
+                if (blocks.length <= 1) {
+                    break;
+                }
+
+
+                lastBlock.remove();
+
+
+                blocks =
+                    row.querySelectorAll(
+                        '.ifs-container .if-then-row'
+                    );
+            }
+
+
+
+
+            ifs.forEach(
+                (item, index) => {
+
+                    const block =
+                        row.querySelectorAll(
+                            '.ifs-container .if-then-row'
+                        )[index];
+
+
+                    if (!block) {
+                        return;
+                    }
+
+
+
+
+                    const operatorSelect =
+                        block.querySelector(
+                            '.operator'
+                        );
+
+
+                    const ifInput =
+                        block.querySelector(
+                            '.if'
+                        );
+
+
+                    const parsedIf =
+                        draftParseIf(
+                            item.If,
+                            operatorSelect
+                        );
+
+
+
+
+                    let fieldDisplay =
+                        block.querySelector(
+                            '.other_field'
+                        );
+
+
+
+
+                    if (!fieldDisplay) {
+
+                        const possibleSpans =
+                            block.querySelectorAll(
+                                'span'
+                            );
+
+
+                        if (
+                            possibleSpans.length > 0
+                        ) {
+
+                            fieldDisplay =
+                                possibleSpans[0];
+                        }
+                    }
+
+
+                    if (fieldDisplay) {
+
+                        fieldDisplay.textContent =
+                            parsedIf.field;
+                    }
+
+
+
+                    if (operatorSelect) {
+
+                        draftSelectVerb(
+                            operatorSelect,
+                            parsedIf.operator
+                        );
+                    }
+
+
+
+
+                    if (ifInput) {
+
+                        ifInput.value =
+                            parsedIf.value;
+                    }
+
+
+
+
+                    const thenInput =
+                        block.querySelector(
+                            '.then'
+                        );
+
+
+                    if (item.Then) {
+
+                        const parsedThen =
+                            draftParseThen(
+                                item.Then
+                            );
+
+
+                        const actionSelect =
+                            block.querySelector(
+                                '.action'
+                            );
+
+
+                        if (actionSelect) {
+
+                            draftSelectVerb(
+                                actionSelect,
+                                parsedThen.action
+                            );
+                        }
+
+
+                        if (thenInput) {
+
+                            thenInput.value =
+                                parsedThen.value;
+                        }
+
+                    } else {
+
+                        if (thenInput) {
+                            thenInput.value = '';
+                        }
+                    }
+
+                }
+            );
+        }
+
+
+
+
+        function draftPopulateElse(
+            row,
+            elseValue
+        ) {
+
+            if (
+                elseValue === undefined ||
+                elseValue === null ||
+                String(elseValue).trim() === ''
+            ) {
+                return;
+            }
+
+
+
+
+            const elseButton =
+                row.querySelector(
+                    'button[onclick^="addElseField"]'
+                );
+
+
+            if (!elseButton) {
+
+                console.warn(
+                    'Draft: ELSE button not found'
+                );
+
+                return;
+            }
+
+
+
+            addElseField(
+                elseButton
+            );
+
+
+
+
+            const elseInput =
+                row.querySelector(
+                    '.else'
+                );
+
+
+            if (elseInput) {
+
+                elseInput.value =
+                    elseValue;
+            }
+        }
+
+
+
+
+        function draftPopulateHeaderMapping(
+            config
+        ) {
+
+            const tbody =
+                document.getElementById(
+                    'headerMappingBody'
+                );
+
+
+            if (!tbody) {
+                return;
+            }
+
+
+            tbody.innerHTML = '';
+
+
+            headerIndex = 0;
+
+
+            (
+                config.Header_Mapping || []
+            ).forEach(item => {
+
+                addHeaderRow();
+
+
+                const rows =
+                    tbody.querySelectorAll(
+                        '.header-row'
+                    );
+
+
+                const row =
+                    rows[rows.length - 1];
+
+
+                if (!row) {
+                    return;
+                }
+
+
+
+
+                const col =
+                    row.querySelector(
+                        '.col'
+                    );
+
+
+                if (col) {
+
+                    col.value =
+                        item.Col ?? '';
+                }
+
+
+
+
+                const field =
+                    row.querySelector(
+                        '.field'
+                    );
+
+
+                if (field) {
+
+                    field.value =
+                        item.Field_name || '';
+                }
+
+
+
+                draftPopulateIfThen(
+                    row,
+                    item.Ifs || []
+                );
+
+
+
+
+                draftPopulateElse(
+                    row,
+                    item.Else
+                );
+
+            });
+        }
+
+
+
+
+        function draftPopulatePositions(
+            config
+        ) {
+
+            const container =
+                document.getElementById(
+                    'positionsContainer'
+                );
+
+
+            if (!container) {
+                return;
+            }
+
+
+            container.innerHTML = '';
+
+
+            positionIndex = 0;
+
+
+            (
+                config.Positions_Mapping || []
+            ).forEach(position => {
+
+
+
+                addPositionBlock();
+
+
+                const currentPositionIndex =
+                    positionIndex - 1;
+
+
+                const positionBlock =
+                    document.getElementById(
+                        `position_block_${currentPositionIndex}`
+                    );
+
+
+                if (!positionBlock) {
+                    return;
+                }
+
+
+
+                const positionId =
+                    positionBlock.querySelector(
+                        "input[name*='Position_ID']"
+                    );
+
+
+                if (positionId) {
+
+                    positionId.value =
+                        position.Position_ID || '';
+                }
+
+
+
+
+                const tbody =
+                    document.getElementById(
+                        `position_mapping_body_${currentPositionIndex}`
+                    );
+
+
+                if (!tbody) {
+                    return;
+                }
+
+
+
+
+                const mappings =
+                    position.Mapping || [];
+
+
+                if (mappings.length === 0) {
+                    return;
+                }
+
+
+
+
+                mappings.forEach(
+                    (mapping, mappingIndex) => {
+
+
+
+                        if (
+                            mappingIndex > 0
+                        ) {
+
+                            addPositionRow(
+                                currentPositionIndex
+                            );
+                        }
+
+
+                        const rows =
+                            tbody.querySelectorAll(
+                                '.position-row'
+                            );
+
+
+                        const row =
+                            rows[
+                                rows.length - 1
+                            ];
+
+
+                        if (!row) {
+                            return;
+                        }
+
+
+
+
+                        const col =
+                            row.querySelector(
+                                '.col'
+                            );
+
+
+                        if (col) {
+
+                            col.value =
+                                mapping.Col ?? '';
+                        }
+
+
+
+
+                        const field =
+                            row.querySelector(
+                                '.field'
+                            );
+
+
+                        if (field) {
+
+                            field.value =
+                                mapping.Field_name || '';
+                        }
+
+
+
+                        draftPopulateIfThen(
+                            row,
+                            mapping.Ifs || []
+                        );
+
+
+
+                        draftPopulateElse(
+                            row,
+                            mapping.Else
+                        );
+
+                    }
+                );
+            });
+        }
+
+
+
+        function displayDraftResult() {
+
+            if (
+                draftStatus !== 'draft'
+            ) {
+                return;
+            }
+
+
+            if (!draftConfiguredData) {
+                return;
+            }
+
+
+            const config =
+                draftConfiguredData;
+
+
+            const customer =
+                document.getElementById(
+                    'summary_customer'
+                );
+
+
+            if (customer) {
+
+                customer.value =
+                    config.Summary?.Customer || '';
+            }
+
+
+            const orderId =
+                document.getElementById(
+                    'summary_order_id'
+                );
+
+
+            if (orderId) {
+
+                orderId.value =
+                    config.Summary?.Order_ID || '';
+            }
+
+
+
+            draftPopulateHeaderMapping(
+                config
+            );
+
+
+
+
+            draftPopulatePositions(
+                config
+            );
+
+
+
+            const modalElement =
+                document.getElementById(
+                    'suggestionsResultModal'
+                );
+
+
+            if (modalElement) {
+
+                const modal =
+                    bootstrap.Modal.getInstance(
+                        modalElement
+                    );
+
+
+                if (modal) {
+                    modal.hide();
+                }
+            }
+        }
+
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function() {
+
+                if (
+                    draftStatus === 'draft'
+                ) {
+
+                    displayDraftResult();
+                }
+
+            }
+        );
     </script>
 
 </x-layouts::app>

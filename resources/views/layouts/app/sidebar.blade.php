@@ -166,7 +166,52 @@
 
 
                                         <flux:sidebar.item
-                                            href="{{ route('admin.index.config') }}"
+                                            href="{{ route('admin.verbs.index') }}"
+                                            wire:navigate
+                                        >
+                                            Manage Action/Operators
+                                        </flux:sidebar.item>
+
+                                    </div>
+
+                                </div>
+
+                            </flux:sidebar.group>
+
+
+                            <flux:sidebar.group label="Workflows" collapsible>
+
+                                <div x-data="{ open: {{ request()->routeIs(
+                                    'admin.index.workflow',
+                                    'admin.manage.connectors'
+                                    
+                                ) ? 'true' : 'false' }} }">
+
+                                    <flux:sidebar.item
+                                        href="javascript:void(0)"
+                                        @click="open = !open"
+                                        icon="cog"
+                                    >
+
+                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+
+                                            <span>Workflows</span>
+
+                                            <flux:icon
+                                                name="chevron-down"
+                                                style="width:16px; transition:0.3s;"
+                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
+                                            />
+
+                                        </span>
+
+                                    </flux:sidebar.item>
+
+
+                                    <div x-show="open" x-transition style="margin-left:25px;">
+
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.index.workflow') }}"
                                             wire:navigate
                                         >
                                             Workflows
@@ -174,10 +219,10 @@
 
 
                                         <flux:sidebar.item
-                                            href="{{ route('admin.verbs.index') }}"
+                                            href="{{ route('admin.manage.connectors') }}"
                                             wire:navigate
                                         >
-                                            Manage Action/Operators
+                                            Manage Connectors
                                         </flux:sidebar.item>
 
                                     </div>

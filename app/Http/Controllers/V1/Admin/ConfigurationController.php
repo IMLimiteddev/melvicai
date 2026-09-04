@@ -229,6 +229,19 @@ class ConfigurationController extends Controller
 
         $baseUrl = config('services.rule_engine.base_url');
 
+        // dd($payload);
+
+        if ($request->input('action')=="save"){
+
+            $config->update([
+                    'configured_data'   => $payload,
+                    'status'            => 'draft',
+                    'process_stage'     => 'Saved not processed yet.'
+                ]);
+                
+            return back();
+        }
+
         try {
 
             $response = Http::timeout(300)
@@ -311,17 +324,20 @@ class ConfigurationController extends Controller
 
             $config->update([
                 'configured_data'   => $data,
+                'validation_data'   => $data['Validation_Warnings'],
                 'output_file_path'  => $storagePath,
                 'status'            => 'active',
-                'process_stage'   => 'Scanned Processed and Saved.'
+                'process_stage'   => 'Scanned Processed and Saved.',
+                'filename'          => $filename,
             ]);
 
 
-            return view('admin.download', [
-                'response'     => $data,
-                'originalName' => $originalName,
-                'id'           => $config->id,
-            ]);
+             return redirect()->route(
+                'admin.final-process',
+                ['id' => $config->id]
+            )->with('success', 'Configuration processed successfully.');
+
+
 
 
         } catch (\Throwable $e) {

@@ -30,7 +30,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">Configurations</li>
-                            <li class="breadcrumb-item active">All configurations</li>
+                            <li class="breadcrumb-item active">All Workflows</li>
                         </ol>
                     </div>
                     <div class="col-5 d-none d-xl-block">
@@ -58,7 +58,7 @@
                             </div>
 
                             <h4 style="margin:0;font-size:25px;font-weight:700;color:#222;letter-spacing:-0.3px;">
-                                Manage Configurations
+                                Manage Workflows
                             </h4>
 
                             <div

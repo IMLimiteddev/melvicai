@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ManageLogicController;
 use App\Livewire\Admin\Roles;
 use App\Http\Controllers\Admin\GmailController;
 use App\Http\Controllers\V1\Admin\ConfigurationController;
+use App\Http\Controllers\V1\Admin\WorkflowController;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/onboard/services', 'onboard.services')->name('onboard.services');
@@ -131,7 +132,7 @@ Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(f
     Route::get('/scan-process-display/{id?}', [ConfigurationController::class, 'scanProcessDisplay'])
     ->name('admin.scan-process-display');
 
-    Route::get('/scan-process-2/{id?}', [ConfigurationController::class, 'scanProcess2'])
+    Route::post('/scan-process-2/{id?}', [ConfigurationController::class, 'scanProcess2'])
     ->name('admin.scan-process-2');
 
     Route::get('/direct-process-1/{id?}', [ConfigurationController::class, 'directProcess1'])
@@ -145,6 +146,23 @@ Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(f
 
     Route::get('/single/config', [ConfigurationController::class, 'singleConfig'])
     ->name('admin.configs.single');
+
+});
+
+Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/index/workflow', [WorkflowController::class, 'indexWorkflow'])
+    ->name('admin.index.workflow');
+
+    Route::get('/manage/connector', [WorkflowController::class, 'manageConnector']) ->name('admin.manage.connectors');
+    Route::post('/store/connector', [WorkflowController::class, 'storeConnector']) ->name('admin.workflow.connector.store');
+    Route::put('/update/connector/{id}', [WorkflowController::class, 'updateConnector']) ->name('admin.workflow.connector.update'); 
+    Route::delete('/delete/connector/{id}', [WorkflowController::class, 'deleteConnector']) ->name('admin.workflow.connector.delete');
+
+    Route::post('/initiate/workflow', [WorkflowController::class, 'workflowInitiate'])
+    ->name('admin.initiate.workflow');
+
+    
 
 });
 
