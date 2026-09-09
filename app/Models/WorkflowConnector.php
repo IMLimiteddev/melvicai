@@ -10,6 +10,11 @@ class WorkflowConnector extends Model
         
         'name',
         'type',
+        'account_email',
+        'email_client_id',
+        'email_client_secret',
+        'token_status',
+        'status',
         
     ];
 }

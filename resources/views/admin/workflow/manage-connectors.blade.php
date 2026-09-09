@@ -960,6 +960,104 @@
 
                                         </div>
 
+                                        {{-- Account Email --}}
+                                        <div style="margin-bottom:20px;">
+
+                                            <label
+                                                style="
+                                                    display:block;
+                                                    margin-bottom:8px;
+                                                    font-size:14px;
+                                                    font-weight:600;
+                                                    color:#111827;
+                                                ">
+                                                Account Email
+                                            </label>
+
+                                            <input type="email"
+                                                name="account_email"
+                                                placeholder="e.g. user@example.com"
+                                                required
+
+                                                style="
+                                                    width:100%;
+                                                    height:46px;
+                                                    padding:0 14px;
+                                                    border:1px solid #ddd;
+                                                    border-radius:10px;
+                                                    outline:none;
+                                                    font-size:14px;
+                                                    color:#111827;
+                                                ">
+
+                                        </div>
+
+                                        {{-- Email Client ID --}}
+                                        <div style="margin-bottom:20px;">
+
+                                            <label
+                                                style="
+                                                    display:block;
+                                                    margin-bottom:8px;
+                                                    font-size:14px;
+                                                    font-weight:600;
+                                                    color:#111827;
+                                                ">
+                                                Email Client ID
+                                            </label>
+
+                                            <input type="text"
+                                                name="email_client_id"
+                                                placeholder="e.g. client_id"
+                                               
+
+                                                style="
+                                                    width:100%;
+                                                    height:46px;
+                                                    padding:0 14px;
+                                                    border:1px solid #ddd;
+                                                    border-radius:10px;
+                                                    outline:none;
+                                                    font-size:14px;
+                                                    color:#111827;
+                                                ">
+
+                                        </div>
+
+                                       
+
+                                        {{--Email  client secret--}}
+                                        <div style="margin-bottom:20px;">
+
+                                            <label
+                                                style="
+                                                    display:block;
+                                                    margin-bottom:8px;
+                                                    font-size:14px;
+                                                    font-weight:600;
+                                                    color:#111827;
+                                                ">
+                                                Email Client Secret
+                                            </label>
+
+                                            <input type="text"
+                                                name="email_client_secret"
+                                                placeholder="e.g. client_secret"
+                                                
+
+                                                style="
+                                                    width:100%;
+                                                    height:46px;
+                                                    padding:0 14px;
+                                                    border:1px solid #ddd;
+                                                    border-radius:10px;
+                                                    outline:none;
+                                                    font-size:14px;
+                                                    color:#111827;
+                                                ">
+
+                                        </div>
+
 
                                         {{-- TYPE --}}
                                         <div>

@@ -16,5 +16,6 @@ class Workflow extends Model
         'status',
         'usage_count',
         'user_identifier',
+        'batch'
     ];
 }

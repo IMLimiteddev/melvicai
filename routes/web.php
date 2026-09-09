@@ -162,6 +162,12 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
     Route::post('/initiate/workflow', [WorkflowController::class, 'workflowInitiate'])
     ->name('admin.initiate.workflow');
 
+    Route::get('/workarea', [WorkflowController::class, 'workarea'])
+    ->name('admin.workarea');
+
+    Route::post('/workarea-save', [WorkflowController::class, 'workflowSave'])
+    ->name('admin.workflow.save');
+
     
 
 });

@@ -20,6 +20,13 @@ return new class extends Migration
 
             $table->enum('type', ['input', 'output']);
 
+            $table->string('account_email')->nullable();
+
+            $table->string('email_client_id')->nullable();
+            $table->string('email_client_secret')->nullable();
+            $table->string('token_status')->default('token_not_set');
+            $table->string('status')->nullable(); // active, inactive, error
+            
             $table->timestamps();
 
         });

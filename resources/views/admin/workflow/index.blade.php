@@ -102,74 +102,222 @@
                     </div>
                     <div class="card-body">
 
-                        <div class="table-responsive">
+                        <div
+                            style="
+                                width:100%;
+                                overflow-x:auto;
+                                padding-bottom:8px;
+                            ">
+
                             <table class="table align-middle"
-                                style="width:100%; border-collapse:separate; border-spacing:0 10px;">
+                                style="
+                                        width:100%;
+                                        min-width:1200px;
+                                        border-collapse:separate;
+                                        border-spacing:0 10px;
+                                        table-layout:auto;
+                                    ">
 
                                 <thead>
                                     <tr style="background:#f8f9fa;">
-                                        <th style="padding:15px; border:none;">ID</th>
-                                        <th style="padding:15px; border:none;">Input Connector</th>
-                                        <th style="padding:15px; border:none;">Configuration</th>
-                                        <th style="padding:15px; border:none;">Output Connector</th>
-                                        <th style="padding:15px; border:none;">Status</th>
-                                        <th style="padding:15px; border:none; text-align:center;">Usage</th>
-                                        <th style="padding:15px; border:none;">User</th>
-                                        <th style="padding:15px; border:none; text-align:center;">Action</th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                white-space:nowrap;
+                                            ">
+                                            Batch
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                min-width:330px;
+                                            ">
+                                            Input Connector
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                min-width:200px;
+                                            ">
+                                            Configuration
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                min-width:330px;
+                                            ">
+                                            Output Connector
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                white-space:nowrap;
+                                            ">
+                                            Status
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                text-align:center;
+                                                white-space:nowrap;
+                                            ">
+                                            Usage
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                min-width:150px;
+                                            ">
+                                            User
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                text-align:center;
+                                                min-width:220px;
+                                            ">
+                                            Action
+                                        </th>
+
                                     </tr>
                                 </thead>
+
 
                                 <tbody>
 
                                     @foreach ($workflows as $workflow)
-
                                         <tr
-                                            style="background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.05); border-radius:12px;">
+                                            style="
+                                                background:#fff;
+                                                box-shadow:0 2px 12px rgba(0,0,0,0.05);
+                                                border-radius:12px;
+                                            ">
 
-                                            {{-- ID --}}
-                                            <td style="padding:18px; vertical-align:middle;">
+                                            {{-- BATCH --}}
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:160px;
+                                                ">
 
                                                 <div
                                                     style="
-                                                        width:40px;
-                                                        height:40px;
-                                                        border-radius:50%;
-                                                        background:#e6f1fb;
-                                                        display:flex;
-                                                        align-items:center;
-                                                        justify-content:center;
-                                                        font-size:13px;
-                                                        font-weight:600;
-                                                        color:#185fa5;
+                                                        background:#f8f9fa;
+                                                        border:1px solid #e5e7eb;
+                                                        border-radius:8px;
+                                                        padding:9px 11px;
                                                     ">
-                                                    {{ $workflow->id }}
+
+                                                    <span
+                                                        style="
+                                                            font-size:12px;
+                                                            font-weight:600;
+                                                            color:#185fa5;
+                                                            overflow-wrap:anywhere;
+                                                            word-break:break-word;
+                                                        ">
+                                                        {{ $workflow->batch }}
+                                                    </span>
+
                                                 </div>
 
                                             </td>
 
 
-                                            {{-- INPUT CONNECTOR --}}
-                                            <td style="padding:18px; vertical-align:middle;">
+                                            {{-- INPUT CONNECTORS --}}
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:330px;
+                                                ">
 
-                                                <div style="display:flex; flex-direction:column; gap:3px;">
+                                                <div
+                                                    style="
+                                                        max-height:180px;
+                                                        overflow-y:auto;
+                                                        overflow-x:hidden;
+                                                        padding-right:5px;
+                                                    ">
 
-                                                    <span
+                                                    <div
                                                         style="
-                                                            font-weight:600;
-                                                            color:#111827;
+                                                            display:grid;
+                                                            grid-template-columns:repeat(3, minmax(0, 1fr));
+                                                            gap:8px;
+                                                            width:100%;
                                                         ">
-                                                        {{ $workflow->input_name ?? 'No input connector' }}
-                                                    </span>
 
-                                                    @if ($workflow->input_connector_id)
-                                                        <span
-                                                            style="
-                                                                font-size:12px;
-                                                                color:#6c757d;
-                                                            ">
-                                                            ID: {{ $workflow->input_connector_id }}
-                                                        </span>
-                                                    @endif
+                                                        @forelse ($workflow->inputs as $input)
+                                                            <div
+                                                                style="
+                                                                    display:flex;
+                                                                    align-items:flex-start;
+                                                                    gap:7px;
+                                                                    padding:9px 10px;
+                                                                    background:#f8f9fa;
+                                                                    border:1px solid #e5e7eb;
+                                                                    border-radius:8px;
+                                                                    font-size:12px;
+                                                                    font-weight:600;
+                                                                    color:#222;
+                                                                    min-width:0;
+                                                                    overflow-wrap:anywhere;
+                                                                    word-break:break-word;
+                                                                    line-height:1.4;
+                                                                ">
+
+                                                                <span
+                                                                    style="
+                                                                        width:7px;
+                                                                        height:7px;
+                                                                        min-width:7px;
+                                                                        border-radius:50%;
+                                                                        background:#AEF09D;
+                                                                        display:inline-block;
+                                                                        margin-top:4px;
+                                                                    "></span>
+
+                                                                <span
+                                                                    style="
+                                                                        min-width:0;
+                                                                        overflow-wrap:anywhere;
+                                                                        word-break:break-word;
+                                                                    ">
+                                                                    {{ $input }}
+                                                                </span>
+
+                                                            </div>
+
+                                                        @empty
+
+                                                            <span
+                                                                style="
+                                                                    color:#888;
+                                                                    font-size:13px;
+                                                                ">
+                                                                No input connector
+                                                            </span>
+                                                        @endforelse
+
+                                                    </div>
 
                                                 </div>
 
@@ -177,53 +325,132 @@
 
 
                                             {{-- CONFIGURATION --}}
-                                            <td style="padding:18px; vertical-align:middle;">
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:200px;
+                                                ">
 
-                                                <div style="display:flex; flex-direction:column; gap:3px;">
+                                                <div
+                                                    style="
+                                                        display:flex;
+                                                        flex-direction:column;
+                                                        gap:7px;
+                                                    ">
 
-                                                    <span
+                                                    <div
                                                         style="
-                                                            font-weight:600;
-                                                            color:#111827;
+                                                            padding:9px 11px;
+                                                            background:#f8f9fa;
+                                                            border:1px solid #e5e7eb;
+                                                            border-radius:8px;
                                                         ">
-                                                        {{ $workflow->config_name }}
-                                                    </span>
 
-                                                    <span
-                                                        style="
-                                                            font-size:12px;
-                                                            color:#6c757d;
-                                                        ">
-                                                        Configuration #{{ $workflow->configuration_id }}
-                                                    </span>
+                                                        <div
+                                                            style="
+                                                                font-weight:600;
+                                                                color:#111827;
+                                                                font-size:13px;
+                                                                overflow-wrap:anywhere;
+                                                                word-break:break-word;
+                                                            ">
+                                                            {{ $workflow->config_name }}
+                                                        </div>
+
+                                                        <div
+                                                            style="
+                                                                font-size:11px;
+                                                                color:#6c757d;
+                                                                margin-top:4px;
+                                                            ">
+                                                            Configuration #{{ $workflow->configuration_id }}
+                                                        </div>
+
+                                                    </div>
 
                                                 </div>
 
                                             </td>
 
 
-                                            {{-- OUTPUT CONNECTOR --}}
-                                            <td style="padding:18px; vertical-align:middle;">
+                                            {{-- OUTPUT CONNECTORS --}}
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:330px;
+                                                ">
 
-                                                <div style="display:flex; flex-direction:column; gap:3px;">
+                                                <div
+                                                    style="
+                                                        max-height:180px;
+                                                        overflow-y:auto;
+                                                        overflow-x:hidden;
+                                                        padding-right:5px;
+                                                    ">
 
-                                                    <span
+                                                    <div
                                                         style="
-                                                            font-weight:600;
-                                                            color:#111827;
+                                                            display:grid;
+                                                            grid-template-columns:repeat(3, minmax(0, 1fr));
+                                                            gap:8px;
+                                                            width:100%;
                                                         ">
-                                                        {{ $workflow->output_name ?? 'No output connector' }}
-                                                    </span>
 
-                                                    @if ($workflow->output_connector_id)
-                                                        <span
-                                                            style="
-                                                                font-size:12px;
-                                                                color:#6c757d;
-                                                            ">
-                                                            ID: {{ $workflow->output_connector_id }}
-                                                        </span>
-                                                    @endif
+                                                        @forelse ($workflow->outputs as $output)
+                                                            <div
+                                                                style="
+                                                                    display:flex;
+                                                                    align-items:flex-start;
+                                                                    gap:7px;
+                                                                    padding:9px 10px;
+                                                                    background:#f8f9fa;
+                                                                    border:1px solid #e5e7eb;
+                                                                    border-radius:8px;
+                                                                    font-size:12px;
+                                                                    font-weight:600;
+                                                                    color:#222;
+                                                                    min-width:0;
+                                                                    overflow-wrap:anywhere;
+                                                                    word-break:break-word;
+                                                                    line-height:1.4;
+                                                                ">
+
+                                                                <span
+                                                                    style="
+                                                                        width:7px;
+                                                                        height:7px;
+                                                                        min-width:7px;
+                                                                        border-radius:50%;
+                                                                        background:#E94E1B;
+                                                                        display:inline-block;
+                                                                        margin-top:4px;
+                                                                    "></span>
+
+                                                                <span
+                                                                    style="
+                                                                        min-width:0;
+                                                                        overflow-wrap:anywhere;
+                                                                        word-break:break-word;
+                                                                    ">
+                                                                    {{ $output }}
+                                                                </span>
+
+                                                            </div>
+
+                                                        @empty
+
+                                                            <span
+                                                                style="
+                                                                    color:#888;
+                                                                    font-size:13px;
+                                                                ">
+                                                                No output connector
+                                                            </span>
+                                                        @endforelse
+
+                                                    </div>
 
                                                 </div>
 
@@ -231,10 +458,14 @@
 
 
                                             {{-- STATUS --}}
-                                            <td style="padding:18px; vertical-align:middle;">
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    white-space:nowrap;
+                                                ">
 
                                                 @if ($workflow->status === 'active')
-
                                                     <span
                                                         style="
                                                             display:inline-flex;
@@ -251,15 +482,12 @@
                                                                 height:8px;
                                                                 border-radius:50%;
                                                                 background:#28a745;
-                                                            ">
-                                                        </span>
+                                                            "></span>
 
                                                         Active
 
                                                     </span>
-
                                                 @else
-
                                                     <span
                                                         style="
                                                             display:inline-flex;
@@ -276,13 +504,11 @@
                                                                 height:8px;
                                                                 border-radius:50%;
                                                                 background:#dc3545;
-                                                            ">
-                                                        </span>
+                                                            "></span>
 
                                                         Inactive
 
                                                     </span>
-
                                                 @endif
 
                                             </td>
@@ -293,7 +519,7 @@
                                                 style="
                                                     padding:18px;
                                                     text-align:center;
-                                                    vertical-align:middle;
+                                                    vertical-align:top;
                                                 ">
 
                                                 <span
@@ -316,16 +542,27 @@
 
 
                                             {{-- USER --}}
-                                            <td style="padding:18px; vertical-align:middle;">
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:150px;
+                                                ">
 
-                                                <span
+                                                <div
                                                     style="
-                                                        font-size:14px;
+                                                        padding:9px 11px;
+                                                        background:#f8f9fa;
+                                                        border:1px solid #e5e7eb;
+                                                        border-radius:8px;
+                                                        font-size:13px;
                                                         font-weight:500;
                                                         color:#495057;
+                                                        overflow-wrap:anywhere;
+                                                        word-break:break-word;
                                                     ">
                                                     {{ $workflow->user_identifier }}
-                                                </span>
+                                                </div>
 
                                             </td>
 
@@ -335,13 +572,13 @@
                                                 style="
                                                     padding:18px;
                                                     text-align:center;
-                                                    vertical-align:middle;
+                                                    vertical-align:top;
                                                 ">
 
                                                 <div
                                                     style="
                                                         display:flex;
-                                                        gap:18px;
+                                                        gap:14px;
                                                         justify-content:center;
                                                         align-items:center;
                                                         flex-wrap:wrap;
@@ -350,27 +587,28 @@
                                                     {{-- VIEW --}}
                                                     <a href="#"
                                                         style="
-                                                            display:inline-flex;
-                                                            align-items:center;
-                                                            gap:7px;
-                                                            padding:8px 4px;
-                                                            color:#329b40;
-                                                            font-size:14px;
-                                                            font-weight:600;
-                                                            text-decoration:none;
-                                                            border-bottom:1px solid transparent;
-                                                            transition:all .25s ease;
-                                                        "
+                                                                display:inline-flex;
+                                                                align-items:center;
+                                                                gap:7px;
+                                                                padding:8px 4px;
+                                                                color:#329b40;
+                                                                font-size:14px;
+                                                                font-weight:600;
+                                                                text-decoration:none;
+                                                                border-bottom:1px solid transparent;
+                                                                transition:all .25s ease;
+                                                                white-space:nowrap;
+                                                            "
                                                         onmouseover="
-                                                            this.style.color='#267a32';
-                                                            this.style.borderBottomColor='#329b40';
-                                                            this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                        "
+                                                                this.style.color='#267a32';
+                                                                this.style.borderBottomColor='#329b40';
+                                                                this.querySelector('.action-arrow').style.transform='translateX(4px)';
+                                                            "
                                                         onmouseout="
-                                                            this.style.color='#329b40';
-                                                            this.style.borderBottomColor='transparent';
-                                                            this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                        ">
+                                                                this.style.color='#329b40';
+                                                                this.style.borderBottomColor='transparent';
+                                                                this.querySelector('.action-arrow').style.transform='translateX(0)';
+                                                            ">
 
                                                         <i class="fas fa-eye"></i>
 
@@ -378,9 +616,9 @@
 
                                                         <i class="fas fa-arrow-right action-arrow"
                                                             style="
-                                                                font-size:12px;
-                                                                transition:transform .25s ease;
-                                                            ">
+                                                                    font-size:12px;
+                                                                    transition:transform .25s ease;
+                                                                ">
                                                         </i>
 
                                                     </a>
@@ -389,27 +627,28 @@
                                                     {{-- EDIT --}}
                                                     <a href="#"
                                                         style="
-                                                            display:inline-flex;
-                                                            align-items:center;
-                                                            gap:7px;
-                                                            padding:8px 4px;
-                                                            color:#329b40;
-                                                            font-size:14px;
-                                                            font-weight:600;
-                                                            text-decoration:none;
-                                                            border-bottom:1px solid transparent;
-                                                            transition:all .25s ease;
-                                                        "
+                                                                display:inline-flex;
+                                                                align-items:center;
+                                                                gap:7px;
+                                                                padding:8px 4px;
+                                                                color:#329b40;
+                                                                font-size:14px;
+                                                                font-weight:600;
+                                                                text-decoration:none;
+                                                                border-bottom:1px solid transparent;
+                                                                transition:all .25s ease;
+                                                                white-space:nowrap;
+                                                            "
                                                         onmouseover="
-                                                            this.style.color='#267a32';
-                                                            this.style.borderBottomColor='#329b40';
-                                                            this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                        "
+                                                                this.style.color='#267a32';
+                                                                this.style.borderBottomColor='#329b40';
+                                                                this.querySelector('.action-arrow').style.transform='translateX(4px)';
+                                                            "
                                                         onmouseout="
-                                                            this.style.color='#329b40';
-                                                            this.style.borderBottomColor='transparent';
-                                                            this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                        ">
+                                                                this.style.color='#329b40';
+                                                                this.style.borderBottomColor='transparent';
+                                                                this.querySelector('.action-arrow').style.transform='translateX(0)';
+                                                            ">
 
                                                         <i class="fas fa-edit"></i>
 
@@ -417,9 +656,9 @@
 
                                                         <i class="fas fa-arrow-right action-arrow"
                                                             style="
-                                                                font-size:12px;
-                                                                transition:transform .25s ease;
-                                                            ">
+                                                                    font-size:12px;
+                                                                    transition:transform .25s ease;
+                                                                ">
                                                         </i>
 
                                                     </a>
@@ -429,12 +668,12 @@
                                             </td>
 
                                         </tr>
-
                                     @endforeach
 
                                 </tbody>
 
                             </table>
+
                         </div>
 
 
@@ -461,7 +700,7 @@
                 </div>
             </div>
         </div>
-      
+
         <!-- Modal -->
         <div class="modal fade" id="logicManagerModal" tabindex="-1" aria-hidden="true">
 
@@ -469,153 +708,139 @@
 
                 <div class="modal-content">
 
-                        <div class="modal-header"
-                            style="background:#fff;border-bottom:1px solid #eee;padding:20px 24px;">
-                            <h4 class="modal-title" style="font-weight:700;color:#222;margin:0;">
-                                <i class="fa fa-project-diagram me-2"></i>
-                                Manage Workflow
-                            </h4>
+                    <div class="modal-header" style="background:#fff;border-bottom:1px solid #eee;padding:20px 24px;">
+                        <h4 class="modal-title" style="font-weight:700;color:#222;margin:0;">
+                            <i class="fa fa-project-diagram me-2"></i>
+                            Manage Workflow
+                        </h4>
 
-                            <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close">
-                            </button>
-                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
 
-                        <div class="modal-body" style="padding:24px;">
+                    <div class="modal-body" style="padding:24px;">
 
-                            <form action="{{ route('admin.initiate.workflow') }}" method="POST">
-                                @csrf
+                        <form action="{{ route('admin.initiate.workflow') }}" method="POST">
+                            @csrf
 
-                                <div class="row g-3">
+                            <div class="row g-3">
 
-                                    {{-- INPUT CONNECTOR --}}
-                                    <div class="col-md-4">
-                                        <label class="form-label"
-                                            style="font-weight:600;color:#333;margin-bottom:8px;">
-                                            Input Connector
-                                            <span style="color:#dc3545;">*</span>
-                                        </label>
+                                {{-- INPUT CONNECTOR --}}
+                                <div class="col-md-4">
+                                    <label class="form-label" style="font-weight:600;color:#333;margin-bottom:8px;">
+                                        Input Connector
+                                        <span style="color:#dc3545;">*</span>
+                                    </label>
 
-                                        <select name="input_connector"
-                                            class="form-select"
-                                            required
-                                            style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
+                                    <select name="input_connector" class="form-select" required
+                                        style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
 
-                                            <option value="" selected disabled>
-                                                Select input connector
-                                            </option>
+                                        <option value="" selected disabled>
+                                            Select input connector
+                                        </option>
 
-                                            @foreach($workflowConnectors as $connector)
-                                                @if($connector->type === 'input')
-                                                    <option value="{{ $connector->id }}">
-                                                        {{ $connector->name }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-
-                                            
-
-                                        </select>
-                                    </div>
-
-
-                                    {{-- CONFIGURATION --}}
-                                    <div class="col-md-4">
-                                        <label class="form-label"
-                                            style="font-weight:600;color:#333;margin-bottom:8px;">
-                                            Configuration
-                                            <span style="color:#dc3545;">*</span>
-                                        </label>
-
-                                        <select name="configuration_id"
-                                            class="form-select"
-                                            required
-                                            style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
-
-                                            <option value="" selected disabled>
-                                                Select configuration
-                                            </option>
-
-                                            @foreach($configs as $config)
-                                                <option value="{{ $config->id }}">
-                                                    Config ID: {{ $config->id }} - {{ $config->name ?? $config->config_name }}
+                                        @foreach ($workflowConnectors as $connector)
+                                            @if ($connector->type === 'input')
+                                                <option value="{{ $connector->id }}">
+                                                    {{ $connector->name }}
                                                 </option>
-                                            @endforeach
-
-                                        </select>
-                                    </div>
+                                            @endif
+                                        @endforeach
 
 
-                                    {{-- OUTPUT CONNECTOR --}}
-                                    <div class="col-md-4">
-                                        <label class="form-label"
-                                            style="font-weight:600;color:#333;margin-bottom:8px;">
-                                            Output Connector
-                                            <span style="color:#dc3545;">*</span>
-                                        </label>
 
-                                        <select name="output_connector"
-                                            class="form-select"
-                                            required
-                                            style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
+                                    </select>
+                                </div>
 
-                                            <option value="" selected disabled>
-                                                Select output connector
+
+                                {{-- CONFIGURATION --}}
+                                <div class="col-md-4">
+                                    <label class="form-label" style="font-weight:600;color:#333;margin-bottom:8px;">
+                                        Configuration
+                                        <span style="color:#dc3545;">*</span>
+                                    </label>
+
+                                    <select name="configuration_id" class="form-select" required
+                                        style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
+
+                                        <option value="" selected disabled>
+                                            Select configuration
+                                        </option>
+
+                                        @foreach ($configs as $config)
+                                            <option value="{{ $config->id }}">
+                                                Config ID: {{ $config->id }} -
+                                                {{ $config->name ?? $config->config_name }}
                                             </option>
+                                        @endforeach
 
-                                           @foreach($workflowConnectors as $connector)
-                                                @if($connector->type === 'output')
-                                                    <option value="{{ $connector->id }}">
-                                                        {{ $connector->name }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-
-                                        </select>
-                                    </div>
-
+                                    </select>
                                 </div>
 
 
-                                {{-- CREATE BUTTON --}}
-                                <div style="display:flex;justify-content:flex-left;margin-top:25px;">
+                                {{-- OUTPUT CONNECTOR --}}
+                                <div class="col-md-4">
+                                    <label class="form-label" style="font-weight:600;color:#333;margin-bottom:8px;">
+                                        Output Connector
+                                        <span style="color:#dc3545;">*</span>
+                                    </label>
 
-                                    <button type="submit"
-                                        style="height:48px;padding:0 22px;border-radius:24px;background:#000;color:#fff;border:none;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;cursor:pointer;transition:background .3s ease,transform .3s ease;"
-                                        onmouseover="this.style.background='#28a745';this.style.transform='translateY(-2px)'"
-                                        onmouseout="this.style.background='#000';this.style.transform='translateY(0)'">
+                                    <select name="output_connector" class="form-select" required
+                                        style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
 
-                                        <i class="fa fa-plus"></i>
+                                        <option value="" selected disabled>
+                                            Select output connector
+                                        </option>
 
-                                        <span>Create Workflow</span>
+                                        @foreach ($workflowConnectors as $connector)
+                                            @if ($connector->type === 'output')
+                                                <option value="{{ $connector->id }}">
+                                                    {{ $connector->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
 
-                                    </button>
-
+                                    </select>
                                 </div>
 
-                            </form>
-
-                        </div>
+                            </div>
 
 
-                        <div class="modal-footer"
-                            style="border-top:1px solid #eee;padding:16px 24px;">
+                            {{-- CREATE BUTTON --}}
+                            <div style="display:flex;justify-content:flex-left;margin-top:25px;">
 
-                            <button type="button"
-                                data-bs-dismiss="modal"
-                                style="height:48px;padding:0 18px;border-radius:24px;background:#000;color:#fff;border:none;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;cursor:pointer;transition:background .3s ease,transform .3s ease;"
-                                onmouseover="this.style.background='#dc3545';this.style.transform='translateY(-2px)'"
-                                onmouseout="this.style.background='#000';this.style.transform='translateY(0)'">
+                                <button type="submit"
+                                    style="height:48px;padding:0 22px;border-radius:24px;background:#000;color:#fff;border:none;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;cursor:pointer;transition:background .3s ease,transform .3s ease;"
+                                    onmouseover="this.style.background='#28a745';this.style.transform='translateY(-2px)'"
+                                    onmouseout="this.style.background='#000';this.style.transform='translateY(0)'">
 
-                                <i class="fa fa-times"></i>
+                                    <i class="fa fa-plus"></i>
 
-                                <span>Close</span>
+                                    <span>Create Workflow</span>
 
-                            </button>
+                                </button>
 
-                        </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="modal-footer" style="border-top:1px solid #eee;padding:16px 24px;">
+
+                        <button type="button" data-bs-dismiss="modal"
+                            style="height:48px;padding:0 18px;border-radius:24px;background:#000;color:#fff;border:none;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;cursor:pointer;transition:background .3s ease,transform .3s ease;"
+                            onmouseover="this.style.background='#dc3545';this.style.transform='translateY(-2px)'"
+                            onmouseout="this.style.background='#000';this.style.transform='translateY(0)'">
+
+                            <i class="fa fa-times"></i>
+
+                            <span>Close</span>
+
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -629,31 +854,24 @@
 
                 <div class="modal-content">
 
-                    <div class="modal-header"
-                        style="background:#fff;border-bottom:1px solid #eee;padding:20px 24px;">
+                    <div class="modal-header" style="background:#fff;border-bottom:1px solid #eee;padding:20px 24px;">
 
-                        <h4 class="modal-title"
-                            style="font-weight:700;color:#222;margin:0;">
+                        <h4 class="modal-title" style="font-weight:700;color:#222;margin:0;">
 
                             <i class="fa fa-plug me-2"></i>
                             Create Connector
 
                         </h4>
 
-                        <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
 
                     </div>
 
 
-                    <div class="modal-body"
-                        style="padding:24px;">
+                    <div class="modal-body" style="padding:24px;">
 
-                        <form action="{{ route('admin.workflow.connector.store') }}"
-                            method="POST">
+                        <form action="{{ route('admin.workflow.connector.store') }}" method="POST">
 
                             @csrf
 
@@ -662,20 +880,15 @@
                                 {{-- CONNECTOR NAME --}}
                                 <div class="col-md-6">
 
-                                    <label class="form-label"
-                                        style="font-weight:600;color:#333;margin-bottom:8px;">
+                                    <label class="form-label" style="font-weight:600;color:#333;margin-bottom:8px;">
 
                                         Connector Name
                                         <span style="color:#dc3545;">*</span>
 
                                     </label>
 
-                                    <input type="text"
-                                        name="name"
-                                        class="form-control"
-                                        placeholder="Enter connector name"
-                                        value="{{ old('name') }}"
-                                        required
+                                    <input type="text" name="name" class="form-control"
+                                        placeholder="Enter connector name" value="{{ old('name') }}" required
                                         style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
 
                                 </div>
@@ -684,17 +897,14 @@
                                 {{-- CONNECTOR TYPE --}}
                                 <div class="col-md-6">
 
-                                    <label class="form-label"
-                                        style="font-weight:600;color:#333;margin-bottom:8px;">
+                                    <label class="form-label" style="font-weight:600;color:#333;margin-bottom:8px;">
 
                                         Connector Type
                                         <span style="color:#dc3545;">*</span>
 
                                     </label>
 
-                                    <select name="type"
-                                        class="form-select"
-                                        required
+                                    <select name="type" class="form-select" required
                                         style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;">
 
                                         <option value="" selected disabled>
@@ -737,11 +947,9 @@
                     </div>
 
 
-                    <div class="modal-footer"
-                        style="border-top:1px solid #eee;padding:16px 24px;">
+                    <div class="modal-footer" style="border-top:1px solid #eee;padding:16px 24px;">
 
-                        <button type="button"
-                            data-bs-dismiss="modal"
+                        <button type="button" data-bs-dismiss="modal"
                             style="height:48px;padding:0 18px;border-radius:24px;background:#000;color:#fff;border:none;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;cursor:pointer;transition:background .3s ease,transform .3s ease;"
                             onmouseover="this.style.background='#dc3545';this.style.transform='translateY(-2px)'"
                             onmouseout="this.style.background='#000';this.style.transform='translateY(0)'">

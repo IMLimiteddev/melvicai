@@ -225,6 +225,13 @@
                                             Manage Connectors
                                         </flux:sidebar.item>
 
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.workarea') }}"
+                                            wire:navigate
+                                        >
+                                            Workarea
+                                        </flux:sidebar.item>
+
                                     </div>
 
                                 </div>
