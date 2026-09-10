@@ -55,7 +55,7 @@ class WorkflowController extends Controller
             'configuration_id' => $configuration->id,
             'config_name' => $configuration->config_name,
 
-            'status' => 'active',
+            'status' => 'inactive',
             'usage_count' => 0,
             'user_identifier' => '001',
         ]);
@@ -65,16 +65,6 @@ class WorkflowController extends Controller
             'Workflow created successfully.'
         );
     }
-
-    // public function indexWorkflow()
-    // {
-    //     $configs = Configuration::all();
-    //     $workflowConnectors = WorkflowConnector::all();
-    //     $workflows = Workflow::all();
-    //     return view('admin.workflow.index', compact('configs', 'workflowConnectors', 'workflows'));
-    // }
-
-
 
 
     public function indexWorkflow()
@@ -91,6 +81,9 @@ class WorkflowController extends Controller
             )->setAttribute(
                 'outputs',
                 $batch->pluck('output_name')->filter()->values()
+            )->setAttribute(
+            'configuration_id',
+            $batch->first()->configuration_id
             ))
             ->values();
 
@@ -161,6 +154,138 @@ class WorkflowController extends Controller
     //     dd($request->all());
     // }
 
+    public function workflowUpdate(Request $request)
+    {
+        $request->validate([
+            'batch' => 'required|string',
+            'configuration_id' => 'required|exists:configurations,id',
+
+            'input_connectors' => 'nullable|array',
+            'input_connectors.*' => 'nullable|string',
+
+            'output_connectors' => 'nullable|array',
+            'output_connectors.*' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+
+        $config = Configuration::findOrFail($request->configuration_id);
+
+        try {
+
+            $batch = $request->batch;
+
+            $inputs = array_values(
+                array_filter($request->input('input_connectors', []))
+            );
+
+            $outputs = array_values(
+                array_filter($request->input('output_connectors', []))
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Get existing workflow rows
+            |--------------------------------------------------------------------------
+            */
+
+            $workflows = Workflow::where('batch', $batch)
+                ->orderBy('id')
+                ->get();
+
+            if ($workflows->isEmpty()) {
+                return back()->with('error', 'Workflow batch not found.');
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Number of rows required
+            |--------------------------------------------------------------------------
+            */
+
+            $requiredRows = max(
+                count($inputs),
+                count($outputs)
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update existing rows
+            |--------------------------------------------------------------------------
+            */
+
+            for ($i = 0; $i < $requiredRows; $i++) {
+
+                if (isset($workflows[$i])) {
+
+                    $workflow = $workflows[$i];
+
+                } else {
+
+                    /*
+                    | Create another row when the user added
+                    | more connectors than currently exist.
+                    */
+
+                    $workflow = new Workflow();
+
+                    $workflow->batch = $batch;
+
+                    /*
+                    | Copy the other workflow information from
+                    | the first row of this batch.
+                    */
+
+                    $firstWorkflow = $workflows->first();
+
+                    $workflow->config_name = $firstWorkflow->config_name ?? null;
+                    $workflow->status = $firstWorkflow->status ?? null;
+                    $workflow->usage_count = $firstWorkflow->usage_count ?? 0;
+                    $workflow->user_identifier = $firstWorkflow->user_identifier ?? null;
+                }
+
+                $workflow->configuration_id = $config->id;
+                
+                $workflow->config_name = $config->config_name;
+
+                $workflow->input_name = $inputs[$i] ?? null;
+
+                $workflow->output_name = $outputs[$i] ?? null;
+
+                $workflow->save();
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Remove rows that are no longer needed
+            |--------------------------------------------------------------------------
+            */
+
+            if ($workflows->count() > $requiredRows) {
+
+                $idsToDelete = $workflows
+                    ->slice($requiredRows)
+                    ->pluck('id');
+
+                Workflow::whereIn('id', $idsToDelete)->delete();
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->back()
+                ->with('success', 'Workflow updated successfully.');
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to update workflow: ' . $e->getMessage());
+        }
+    }
+
     public function workflowSave(Request $request)
     {
         $request->validate([
@@ -170,13 +295,6 @@ class WorkflowController extends Controller
             'workflows.*.output_connector_id' => 'required|exists:workflow_connectors,id',
         ]);
 
-        // return response()->json([
-        //         'success' => false,
-        //         'message' => $request->workflows,
-        //         // 'error' => $e->getMessage(),
-        //         // 'line' => $e->getLine(),
-        //         // 'file' => $e->getFile(),
-        //     ], 500);
 
         DB::beginTransaction();
 
@@ -185,7 +303,7 @@ class WorkflowController extends Controller
             /*
             * Generate ONE batch for this entire save operation.
             */
-            $batch = 'WF_' . now()->format('YmdHis') . '_' . strtoupper(
+            $batch = 'WF_'. strtoupper(
                 Str::random(6)
             );
 
@@ -222,7 +340,7 @@ class WorkflowController extends Controller
                     'output_connector_id' => $outputConnector->id,
                     'output_name' => $outputConnector->name,
 
-                    'status' => 'active',
+                    'status' => 'inactive',
                     'usage_count' => 0,
                     'user_identifier' => auth()->id(),
                 ]);
@@ -250,4 +368,622 @@ class WorkflowController extends Controller
             ], 500);
         }
     }
+
+    public function workflowSingle(Request $request, $id = null)
+    {
+        $workflow = Workflow::where('id', $id)->firstOrFail();
+
+        $batch = Workflow::where('batch', $workflow->batch)
+            ->orderBy('id')
+            ->get();
+
+        $workflow->setAttribute(
+            'inputs',
+            $batch->pluck('input_name')
+                ->filter(fn ($value) => !is_null($value) && $value !== '')
+                ->values()
+                ->toArray()
+        );
+
+        $workflow->setAttribute(
+            'outputs',
+            $batch->pluck('output_name')
+                ->filter(fn ($value) => !is_null($value) && $value !== '')
+                ->values()
+                ->toArray()
+        );
+
+        $workflowConnectors = WorkflowConnector::all();
+
+        $configs = Configuration::all();
+
+        return view(
+            'admin.workflow.single',
+            compact(
+                'workflow',
+                'workflowConnectors',
+                'configs'
+            )
+        );
+    }
+
+    public function connectorSuggestions(Request $request)
+    {
+        $type = $request->type;
+
+        // Call your existing Gemini service here...
+
+        return response()->json([
+            'suggestions' => $type === 'input'
+                ? ['PDF Input', 'Email Input', 'File Upload Input']
+                : ['PDF Output', 'Email Output', 'Configuration Output']
+        ]);
+    }
+
+
+    public function updateConnector(Request $request, $id)
+    {
+        $connector = WorkflowConnector::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'account_email' => 'nullable|email|max:255',
+            'email_client_id' => 'nullable|string|max:255',
+            'email_client_secret' => 'nullable|string|max:255',
+            'type' => 'required|string|in:input,output',
+        ]);
+
+        $connector->update([
+            'name' => $validated['name'],
+            'account_email' => $validated['account_email'] ?? null,
+            'email_client_id' => $validated['email_client_id'] ?? null,
+            'email_client_secret' => $validated['email_client_secret'] ?? null,
+            'type' => $validated['type'],
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Connector updated successfully.');
+    }
+
+    public function deleteConnector($id)
+    {
+        $connector = WorkflowConnector::findOrFail($id);
+
+        $connector->delete();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Connector deleted successfully.');
+    }
+
+    public function activateConfiguration(Request $request)
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | Validate request
+        |--------------------------------------------------------------------------
+        */
+
+        $request->validate([
+            'configuration_id' => 'required|integer',
+            'batch'            => 'required|string',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Request values
+        |--------------------------------------------------------------------------
+        */
+
+        $configurationId = $request->configuration_id;
+        $batch           = $request->batch;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get configuration
+        |--------------------------------------------------------------------------
+        */
+
+        $configuration = Configuration::findOrFail($configurationId);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get workflow
+        |--------------------------------------------------------------------------
+        */
+
+        $workflow = Workflow::where(
+            'batch',
+            $batch
+        )->firstOrFail();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get INPUT connectors
+        |--------------------------------------------------------------------------
+        */
+
+        $inputConnectorIds = is_array($workflow->input_connector_id)
+            ? $workflow->input_connector_id
+            : json_decode($workflow->input_connector_id, true);
+
+        if (!is_array($inputConnectorIds)) {
+            $inputConnectorIds = [
+                $workflow->input_connector_id
+            ];
+        }
+
+        $inputConnectors = WorkflowConnector::whereIn(
+            'id',
+            array_filter($inputConnectorIds)
+        )
+            ->where('type', 'input')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get OUTPUT connectors
+        |--------------------------------------------------------------------------
+        */
+
+        $outputConnectorIds = is_array($workflow->output_connector_id)
+            ? $workflow->output_connector_id
+            : json_decode($workflow->output_connector_id, true);
+
+        if (!is_array($outputConnectorIds)) {
+            $outputConnectorIds = [
+                $workflow->output_connector_id
+            ];
+        }
+
+        $outputConnectors = WorkflowConnector::whereIn(
+            'id',
+            array_filter($outputConnectorIds)
+        )
+            ->where('type', 'output')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Make sure input connectors exist
+        |--------------------------------------------------------------------------
+        */
+
+        if ($inputConnectors->isEmpty()) {
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    'Activation failed: No input connector was found for this workflow.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Make sure output connectors exist
+        |--------------------------------------------------------------------------
+        */
+
+        if ($outputConnectors->isEmpty()) {
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    'Activation failed: No output connector was found for this workflow.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validate INPUT connector credentials
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($inputConnectors as $connector) {
+
+            if (
+                strtolower($connector->name) === 'email' &&
+                (
+                    empty($connector->account_email) ||
+                    empty($connector->email_client_id) ||
+                    empty($connector->email_client_secret)
+                )
+            ) {
+                return redirect()
+                    ->back()
+                    ->with(
+                        'error',
+                        'Activation failed: Input connector "' .
+                        $connector->name .
+                        '" is missing email credentials.'
+                    );
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validate OUTPUT connector email
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($outputConnectors as $connector) {
+
+            if (empty($connector->account_email)) {
+                return redirect()
+                    ->back()
+                    ->with(
+                        'error',
+                        'Activation failed: Output connector "' .
+                        $connector->name .
+                        '" does not have an email address.'
+                    );
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Authenticate INPUT connectors
+        |--------------------------------------------------------------------------
+        */
+
+        try {
+
+            $gmailService = app(
+                \App\Services\WorkflowGmailService::class
+            );
+
+            foreach ($inputConnectors as $connector) {
+
+                if (strtolower($connector->name) !== 'email') {
+                    continue;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | No refresh token yet
+                |--------------------------------------------------------------------------
+                */
+
+                if (empty($connector->refresh_token)) {
+
+                    session([
+                        'pending_activation' => [
+                            'configuration_id' => $configurationId,
+                            'batch'            => $batch,
+                        ],
+                    ]);
+
+                    $authUrl = $gmailService->authorizeGmail(
+                        $connector
+                    );
+
+                    return redirect()->away($authUrl);
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | Authenticate existing Gmail token
+                |--------------------------------------------------------------------------
+                */
+
+                try {
+
+                    $gmailService->authenticateConnector(
+                        $connector
+                    );
+
+                } catch (\Throwable $e) {
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Existing refresh token may be expired/revoked.
+                    | Send user through Google authorization again.
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $connector->token_status = 'token_error';
+                    $connector->status = 'error';
+                    $connector->save();
+
+                    session([
+                        'pending_activation' => [
+                            'configuration_id' => $configurationId,
+                            'batch'            => $batch,
+                        ],
+                    ]);
+
+                    $authUrl = $gmailService->authorizeGmail(
+                        $connector
+                    );
+
+                    return redirect()->away($authUrl);
+                }
+            }
+
+            } catch (\Throwable $e) {
+
+                return redirect()
+                    ->back()
+                    ->with(
+                        'error',
+                        'Activation failed: ' . $e->getMessage()
+                    );
+            }
+
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Gmail authentication successful
+            | Activate workflow and perform first email check
+            |--------------------------------------------------------------------------
+            */
+
+            $workflow->status = 'active';
+            $workflow->save();
+
+            $gmailService = app(\App\Services\WorkflowGmailService::class);
+
+            $result = $gmailService->checkWorkflowEmails($workflow);
+
+            return redirect()
+                ->route('admin.index.workflow')
+                ->with(
+                    'success',
+                    'Workflow activated successfully. ' .
+                    $result['count'] .
+                    ' unread PDF-CONVERTER email(s) found.'
+                );
+        /*
+        |--------------------------------------------------------------------------
+        | TEMPORARY TEST POINT
+        |--------------------------------------------------------------------------
+        |
+        | If Gmail authentication succeeds, stop here for now.
+        | We will add output-email testing next.
+        |
+        */
+
+        dd([
+            'configuration'   => $configuration,
+            'workflow'        => $workflow,
+            'input_connectors' => $inputConnectors,
+            'output_connectors' => $outputConnectors,
+            'message'         => 'Gmail authentication successful.',
+        ]);
+    }
+
+    // public function authorizeGmail($id)
+    // {
+    //     $connector = WorkflowConnector::findOrFail($id);
+
+    //     if ($connector->type !== 'input') {
+    //         return back()->with('error', 'Invalid Gmail input connector.');
+    //     }
+
+    //     if (
+    //         empty($connector->email_client_id) ||
+    //         empty($connector->email_client_secret)
+    //     ) {
+    //         return back()->with(
+    //             'error',
+    //             'Gmail Client ID and Client Secret are required.'
+    //         );
+    //     }
+
+    //     $client = new \Google\Client();
+
+    //     $client->setClientId($connector->email_client_id);
+    //     $client->setClientSecret($connector->email_client_secret);
+
+    //     $client->setRedirectUri(
+    //         route('admin.workflow.connector.gmail.callback')
+    //     );
+
+    //     $client->setAccessType('offline');
+    //     $client->setPrompt('consent');
+
+    //     $client->setScopes([
+    //         'https://www.googleapis.com/auth/gmail.readonly',
+    //         'https://www.googleapis.com/auth/gmail.modify',
+    //         'https://www.googleapis.com/auth/gmail.send',
+    //     ]);
+
+    //     // Remember which connector started OAuth
+    //     session([
+    //         'gmail_oauth_connector_id' => $connector->id,
+    //     ]);
+
+    //     return redirect()->away(
+    //         $client->createAuthUrl()
+    //     );
+    // }
+
+    // public function gmailCallback(Request $request)
+    // {
+    //     $connectorId = session('gmail_oauth_connector_id');
+
+    //     if (!$connectorId) {
+    //         return redirect()
+    //             ->back()
+    //             ->with('error', 'Gmail authorization session expired.');
+    //     }
+
+    //     $connector = WorkflowConnector::findOrFail($connectorId);
+
+    //     if ($request->has('error')) {
+    //         return redirect()
+    //             ->back()
+    //             ->with(
+    //                 'error',
+    //                 'Gmail authorization was cancelled or denied.'
+    //             );
+    //     }
+
+    //     if (!$request->code) {
+    //         return redirect()
+    //             ->back()
+    //             ->with(
+    //                 'error',
+    //                 'Google did not return an authorization code.'
+    //             );
+    //     }
+
+    //     try {
+
+    //         $client = new \Google\Client();
+
+    //         $client->setClientId($connector->email_client_id);
+    //         $client->setClientSecret($connector->email_client_secret);
+
+    //         $client->setRedirectUri(
+    //             route('admin.workflow.connector.gmail.callback')
+    //         );
+
+    //         $client->setAccessType('offline');
+
+    //         $token = $client->fetchAccessTokenWithAuthCode(
+    //             $request->code
+    //         );
+
+    //         if (isset($token['error'])) {
+    //             throw new \Exception(
+    //                 $token['error_description']
+    //                 ?? $token['error']
+    //                 ?? 'Unable to obtain Gmail token.'
+    //             );
+    //         }
+
+    //         if (empty($token['access_token'])) {
+    //             throw new \Exception(
+    //                 'Google did not return an access token.'
+    //             );
+    //         }
+
+    //         /*
+    //         |--------------------------------------------------------------------------
+    //         | Save tokens against THIS connector
+    //         |--------------------------------------------------------------------------
+    //         */
+
+    //         $connector->access_token = $token['access_token'];
+
+    //         if (!empty($token['refresh_token'])) {
+    //             $connector->refresh_token = $token['refresh_token'];
+    //         }
+
+    //         if (!empty($token['expires_in'])) {
+    //             $connector->token_expires_at = now()->addSeconds(
+    //                 $token['expires_in']
+    //             );
+    //         }
+
+    //         $connector->token_status = 'token_valid';
+    //         $connector->status = 'active';
+
+    //         $connector->save();
+
+    //         session()->forget('gmail_oauth_connector_id');
+
+    //         return redirect()
+    //             ->route('admin.index.workflow')
+    //             ->with(
+    //                 'success',
+    //                 'Gmail account connected successfully.'
+    //             );
+
+    //     } catch (\Throwable $e) {
+
+    //         return redirect()
+    //             ->back()
+    //             ->with(
+    //                 'error',
+    //                 'Gmail authorization failed: ' . $e->getMessage()
+    //             );
+    //     }
+    // }
+
+    public function authorizeGmail($id)
+    {
+        try {
+
+            $connector = WorkflowConnector::findOrFail($id);
+
+            $gmailService = app(
+                \App\Services\WorkflowGmailService::class
+            );
+
+            $authUrl = $gmailService->authorizeGmail(
+                $connector
+            );
+
+            return redirect()->away($authUrl);
+
+        } catch (\Throwable $e) {
+
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    'Gmail authorization failed: ' .
+                    $e->getMessage()
+                );
+        }
+    }
+
+   public function gmailCallback(Request $request)
+    {
+        try {
+
+            $gmailService = app(
+                \App\Services\WorkflowGmailService::class
+            );
+
+            $connector = $gmailService->gmailCallback(
+                $request
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | Check whether activation was waiting for this authorization
+            |--------------------------------------------------------------------------
+            */
+
+            $pendingActivation = session(
+                'pending_activation'
+            );
+
+            session()->forget('pending_activation');
+
+            if ($pendingActivation) {
+
+                return redirect()
+                    ->route('admin.index.workflow')
+                    ->with(
+                        'success',
+                        'Gmail account authorized successfully. Please activate the workflow again to continue testing.'
+                    );
+            }
+
+            return redirect()
+                ->route('admin.index.workflow')
+                ->with(
+                    'success',
+                    'Gmail account connected successfully.'
+                );
+
+        } catch (\Throwable $e) {
+
+            return redirect()
+                ->route('admin.index.workflow')
+                ->with(
+                    'error',
+                    'Gmail authorization failed: ' .
+                    $e->getMessage()
+                );
+        }
+    }
+
+    
 }

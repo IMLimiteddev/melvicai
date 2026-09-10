@@ -168,6 +168,22 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
     Route::post('/workarea-save', [WorkflowController::class, 'workflowSave'])
     ->name('admin.workflow.save');
 
+    Route::post('/workflow-update', [WorkflowController::class, 'workflowUpdate'])
+    ->name('admin.workflow.update');
+
+    Route::get('/workflow-single/{id?}', [WorkflowController::class, 'workflowSingle'])
+    ->name('admin.workflow.single');
+
+    Route::post(
+        '/connector/suggestions',
+        [WorkflowController::class, 'connectorSuggestions']
+    )->name('admin.workflow.connector.suggestions');
+
+    Route::post(
+    '/configuration/activate',
+    [WorkflowController::class, 'activateConfiguration']
+)->name('admin.workflow.configuration.activate');
+
     
 
 });
@@ -177,6 +193,16 @@ Route::get('/google/gmail/connect', [GmailController::class, 'connect'])
 
 Route::get('/google/gmail/callback', [GmailController::class, 'callback'])
     ->name('gmail.callback');
+
+Route::get(
+    '/connector/{id}/gmail/authorize',
+    [WorkflowController::class, 'authorizeGmail']
+)->name('admin.workflow.connector.gmail.authorize');
+
+Route::get(
+    '/google/gmail/callback',
+    [WorkflowController::class, 'gmailCallback']
+)->name('admin.workflow.connector.gmail.callback');
 
 // Route::get('/admin/roles-permissions', Roles::class)
 //     ->name('admin.roles-perm');

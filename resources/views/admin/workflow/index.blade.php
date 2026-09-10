@@ -466,6 +466,7 @@
                                                 ">
 
                                                 @if ($workflow->status === 'active')
+
                                                     <span
                                                         style="
                                                             display:inline-flex;
@@ -482,34 +483,150 @@
                                                                 height:8px;
                                                                 border-radius:50%;
                                                                 background:#28a745;
-                                                            "></span>
+                                                            ">
+                                                        </span>
 
                                                         Active
 
                                                     </span>
-                                                @else
-                                                    <span
-                                                        style="
-                                                            display:inline-flex;
-                                                            align-items:center;
-                                                            gap:6px;
-                                                            color:#dc3545;
-                                                            font-size:14px;
-                                                            font-weight:600;
-                                                        ">
 
+                                                @else
+
+                                                    <div style="display:flex;align-items:center;gap:15px;">
+
+                                                        {{-- INACTIVE STATUS --}}
                                                         <span
                                                             style="
-                                                                width:8px;
-                                                                height:8px;
-                                                                border-radius:50%;
-                                                                background:#dc3545;
-                                                            "></span>
+                                                                display:inline-flex;
+                                                                align-items:center;
+                                                                gap:6px;
+                                                                color:#dc3545;
+                                                                font-size:14px;
+                                                                font-weight:600;
+                                                            ">
 
-                                                        Inactive
+                                                            <span
+                                                                style="
+                                                                    width:8px;
+                                                                    height:8px;
+                                                                    border-radius:50%;
+                                                                    background:#dc3545;
+                                                                ">
+                                                            </span>
 
-                                                    </span>
+                                                            Inactive
+
+                                                        </span>
+
+
+                                                        {{-- ACTIVATE FORM --}}
+                                                        <form
+                                                            id="activateConfigurationForm-{{ $workflow->id }}"
+                                                            action="{{ route('admin.workflow.configuration.activate') }}"
+                                                            method="POST"
+                                                            style="margin:0;">
+
+                                                            @csrf
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="configuration_id"
+                                                                value="{{ $workflow->configuration_id }}">
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="batch"
+                                                                value="{{ $workflow->batch }}">
+
+
+                                                            {{-- ACTIVATE BUTTON --}}
+                                                            <a href="javascript:void(0)"
+                                                                onclick="
+                                                                    Swal.fire({
+                                                                        title: 'Activate Configuration?',
+                                                                        text: 'A test will be run to verify that the configured email credentials are correct. The configuration will only be activated if the test succeeds.',
+                                                                        icon: 'warning',
+                                                                        showCancelButton: true,
+                                                                        confirmButtonText: 'Yes, Test & Activate',
+                                                                        cancelButtonText: 'Cancel',
+                                                                        reverseButtons: true,
+                                                                        buttonsStyling: false,
+
+                                                                        customClass: {
+                                                                            confirmButton: 'swal-confirm-button',
+                                                                            cancelButton: 'swal-cancel-button'
+                                                                        }
+                                                                    }).then((result) => {
+
+                                                                        if (result.isConfirmed) {
+
+                                                                            /*
+                                                                            |--------------------------------------------------------------------------
+                                                                            | Show preloader
+                                                                            |--------------------------------------------------------------------------
+                                                                            */
+
+                                                                            document.getElementById('workflowActivationLoader').style.display = 'flex';
+
+                                                                            /*
+                                                                            |--------------------------------------------------------------------------
+                                                                            | Submit form
+                                                                            |--------------------------------------------------------------------------
+                                                                            */
+
+                                                                            document
+                                                                                .getElementById('activateConfigurationForm-{{ $workflow->id }}')
+                                                                                .submit();
+
+                                                                        }
+
+                                                                    });
+                                                                "
+                                                                style="
+                                                                    display:inline-flex;
+                                                                    align-items:center;
+                                                                    gap:7px;
+                                                                    padding:8px 4px;
+                                                                    color:#329b40;
+                                                                    font-size:14px;
+                                                                    font-weight:600;
+                                                                    text-decoration:none;
+                                                                    border-bottom:1px solid transparent;
+                                                                    transition:all .25s ease;
+                                                                    white-space:nowrap;
+                                                                    cursor:pointer;
+                                                                "
+                                                                onmouseover="
+                                                                    this.style.color='#267a32';
+                                                                    this.style.borderBottomColor='#329b40';
+                                                                    this.querySelector('.action-arrow').style.transform='translateX(4px)';
+                                                                "
+                                                                onmouseout="
+                                                                    this.style.color='#329b40';
+                                                                    this.style.borderBottomColor='transparent';
+                                                                    this.querySelector('.action-arrow').style.transform='translateX(0)';
+                                                                ">
+
+                                                                <i class="fas fa-power-off"></i>
+
+                                                                <span>Activate</span>
+
+                                                                <i class="fas fa-arrow-right action-arrow"
+                                                                    style="
+                                                                        font-size:12px;
+                                                                        transition:transform .25s ease;
+                                                                    ">
+                                                                </i>
+
+                                                            </a>
+
+                                                        </form>
+
+                                                    </div>
+
                                                 @endif
+
+                                            
 
                                             </td>
 
@@ -585,7 +702,7 @@
                                                     ">
 
                                                     {{-- VIEW --}}
-                                                    <a href="#"
+                                                    <a href="{{ route('admin.workflow.single', ['id' => $workflow->id]) }}"
                                                         style="
                                                                 display:inline-flex;
                                                                 align-items:center;
@@ -625,30 +742,37 @@
 
 
                                                     {{-- EDIT --}}
-                                                    <a href="#"
+                                                    <a href="javascript:void(0)"
+                                                        onclick="openEditWorkflowModal(
+                                                            @js($workflow->batch),
+                                                            @js($workflow->configuration_id),
+                                                            @js($workflow->inputs),
+                                                            @js($workflow->outputs)
+                                                        )"
                                                         style="
-                                                                display:inline-flex;
-                                                                align-items:center;
-                                                                gap:7px;
-                                                                padding:8px 4px;
-                                                                color:#329b40;
-                                                                font-size:14px;
-                                                                font-weight:600;
-                                                                text-decoration:none;
-                                                                border-bottom:1px solid transparent;
-                                                                transition:all .25s ease;
-                                                                white-space:nowrap;
-                                                            "
+                                                            display:inline-flex;
+                                                            align-items:center;
+                                                            gap:7px;
+                                                            padding:8px 4px;
+                                                            color:#329b40;
+                                                            font-size:14px;
+                                                            font-weight:600;
+                                                            text-decoration:none;
+                                                            border-bottom:1px solid transparent;
+                                                            transition:all .25s ease;
+                                                            white-space:nowrap;
+                                                            cursor:pointer;
+                                                        "
                                                         onmouseover="
-                                                                this.style.color='#267a32';
-                                                                this.style.borderBottomColor='#329b40';
-                                                                this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                            "
+                                                            this.style.color='#267a32';
+                                                            this.style.borderBottomColor='#329b40';
+                                                            this.querySelector('.action-arrow').style.transform='translateX(4px)';
+                                                        "
                                                         onmouseout="
-                                                                this.style.color='#329b40';
-                                                                this.style.borderBottomColor='transparent';
-                                                                this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                            ">
+                                                            this.style.color='#329b40';
+                                                            this.style.borderBottomColor='transparent';
+                                                            this.querySelector('.action-arrow').style.transform='translateX(0)';
+                                                        ">
 
                                                         <i class="fas fa-edit"></i>
 
@@ -656,9 +780,9 @@
 
                                                         <i class="fas fa-arrow-right action-arrow"
                                                             style="
-                                                                    font-size:12px;
-                                                                    transition:transform .25s ease;
-                                                                ">
+                                                                font-size:12px;
+                                                                transition:transform .25s ease;
+                                                            ">
                                                         </i>
 
                                                     </a>
@@ -968,5 +1092,810 @@
 
         </div>
 
+
+        {{-- EDIT WORKFLOW MODAL --}}
+        <div class="modal fade" id="editWorkflowModal" tabindex="-1" aria-labelledby="editWorkflowModalLabel"
+            aria-hidden="true">
+
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    {{-- HEADER --}}
+                    <div class="modal-header"
+                        style="
+                                background:#fff;
+                                border-bottom:1px solid #eee;
+                                padding:20px 24px;
+                            ">
+
+                        <div>
+
+                            <h4 id="editWorkflowModalLabel"
+                                style="
+                                        font-weight:700;
+                                        color:#222;
+                                        margin:0;
+                                    ">
+
+                                <i class="fa fa-edit me-2"></i>
+                                Edit Workflow
+
+                            </h4>
+
+                            <div id="editWorkflowBatch"
+                                style="
+                                        margin-top:5px;
+                                        font-size:12px;
+                                        color:#777;
+                                        word-break:break-all;
+                                    ">
+                            </div>
+
+                        </div>
+
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+
+                    </div>
+
+
+                    {{-- BODY --}}
+                    <div class="modal-body"
+                        style="
+                                padding:24px;
+                                max-height:70vh;
+                                overflow-y:auto;
+                            ">
+
+                        <form id="editWorkflowForm" action="{{ route('admin.workflow.update') }}" method="POST">
+
+                            @csrf
+
+                            <input type="hidden" name="batch" id="editWorkflowBatchInput">
+
+
+                            {{-- INPUT CONNECTORS --}}
+                            <div style="margin-bottom:30px;">
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:space-between;
+                                        margin-bottom:15px;
+                                    ">
+
+                                    <div>
+
+                                        <h5
+                                            style="
+                                                margin:0;
+                                                font-weight:700;
+                                                color:#222;
+                                            ">
+                                            Input Connectors
+                                        </h5>
+
+                                        <small style="color:#777;">
+                                            Select an existing input connector or add a new one
+                                        </small>
+
+                                    </div>
+
+
+                                    <button type="button" onclick="addEditConnector('input')"
+                                        style="
+                                                height:40px;
+                                                padding:0 16px;
+                                                border-radius:20px;
+                                                background:#000;
+                                                color:#fff;
+                                                border:none;
+                                                display:flex;
+                                                align-items:center;
+                                                gap:8px;
+                                                font-size:14px;
+                                                cursor:pointer;
+                                                transition:all .3s ease;
+                                            "
+                                        onmouseover="
+                                                this.style.background='#28a745';
+                                                this.style.transform='translateY(-2px)';
+                                            "
+                                        onmouseout="
+                                                this.style.background='#000';
+                                                this.style.transform='translateY(0)';
+                                            ">
+
+                                        <i class="fa fa-plus"></i>
+
+                                        Add Input
+
+                                    </button>
+
+                                </div>
+
+
+                                <div id="editInputConnectors"></div>
+
+                            </div>
+
+                            {{-- CONFIGURATION --}}
+                            <div style="margin-bottom:25px;">
+
+                                <label class="form-label"
+                                    style="font-weight:600;color:#333;margin-bottom:8px;">
+                                    Configuration <span style="color:#dc3545;">*</span>
+                                </label>
+
+                                <select name="configuration_id"
+                                    id="editWorkflowConfiguration"
+                                    class="form-select"
+                                    required
+                                    style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;cursor:pointer;">
+
+                                    <option value="" selected disabled>
+                                        Select configuration
+                                    </option>
+
+                                    @foreach ($configs as $config)
+
+                                        <option value="{{ $config->id }}">
+                                            {{ $config->config_name ?? $config->file_name ?? 'Configuration #'.$config->id }}
+                                        </option>
+
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+                            {{-- OUTPUT CONNECTORS --}}
+                            <div>
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:space-between;
+                                        margin-bottom:15px;
+                                    ">
+
+                                    <div>
+
+                                        <h5
+                                            style="
+                                                margin:0;
+                                                font-weight:700;
+                                                color:#222;
+                                            ">
+                                            Output Connectors
+                                        </h5>
+
+                                        <small style="color:#777;">
+                                            Select an existing output connector or add a new one
+                                        </small>
+
+                                    </div>
+
+
+                                    <button type="button" onclick="addEditConnector('output')"
+                                        style="
+                                                height:40px;
+                                                padding:0 16px;
+                                                border-radius:20px;
+                                                background:#000;
+                                                color:#fff;
+                                                border:none;
+                                                display:flex;
+                                                align-items:center;
+                                                gap:8px;
+                                                font-size:14px;
+                                                cursor:pointer;
+                                                transition:all .3s ease;
+                                            "
+                                        onmouseover="
+                                                this.style.background='#28a745';
+                                                this.style.transform='translateY(-2px)';
+                                            "
+                                        onmouseout="
+                                                this.style.background='#000';
+                                                this.style.transform='translateY(0)';
+                                            ">
+
+                                        <i class="fa fa-plus"></i>
+
+                                        Add Output
+
+                                    </button>
+
+                                </div>
+
+
+                                <div id="editOutputConnectors"></div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    {{-- FOOTER --}}
+                    <div class="modal-footer"
+                        style="
+                                border-top:1px solid #eee;
+                                padding:16px 24px;
+                            ">
+
+                        <button type="button" data-bs-dismiss="modal"
+                            style="
+                                    height:48px;
+                                    padding:0 18px;
+                                    border-radius:24px;
+                                    background:#000;
+                                    color:#fff;
+                                    border:none;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    gap:10px;
+                                    font-size:15px;
+                                    cursor:pointer;
+                                    transition:all .3s ease;
+                                "
+                            onmouseover="
+                                    this.style.background='#dc3545';
+                                    this.style.transform='translateY(-2px)';
+                                "
+                            onmouseout="
+                                    this.style.background='#000';
+                                    this.style.transform='translateY(0)';
+                                ">
+
+                            <i class="fa fa-times"></i>
+                            <span>Close</span>
+
+                        </button>
+
+
+                        <button type="submit" form="editWorkflowForm"
+                            style="
+                                    height:48px;
+                                    padding:0 22px;
+                                    border-radius:24px;
+                                    background:#000;
+                                    color:#fff;
+                                    border:none;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    gap:10px;
+                                    font-size:15px;
+                                    cursor:pointer;
+                                    transition:all .3s ease;
+                                "
+                            onmouseover="
+                                    this.style.background='#28a745';
+                                    this.style.transform='translateY(-2px)';
+                                "
+                            onmouseout="
+                                    this.style.background='#000';
+                                    this.style.transform='translateY(0)';
+                                ">
+
+                            <i class="fa fa-save"></i>
+                            <span>Save Changes</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+
+    {{-- WORKFLOW ACTIVATION PRELOADER --}}
+    <div
+        id="workflowActivationLoader"
+        style="
+            display:none;
+            position:fixed;
+            inset:0;
+            width:100%;
+            height:100%;
+            background:rgba(255,255,255,0.97);
+            z-index:999999;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+            text-align:center;
+        ">
+
+        {{-- Spinner --}}
+        <div
+            style="
+                width:55px;
+                height:55px;
+                border:5px solid #e9e9e9;
+                border-top:5px solid #329b40;
+                border-radius:50%;
+                animation:workflowLoaderSpin 1s linear infinite;
+            ">
+        </div>
+
+        {{-- Title --}}
+        <div
+            style="
+                margin-top:22px;
+                font-size:20px;
+                font-weight:700;
+                color:#222;
+            ">
+
+            Testing Configuration
+
+        </div>
+
+        {{-- Description --}}
+        <div
+            style="
+                margin-top:8px;
+                font-size:14px;
+                color:#777;
+                max-width:430px;
+                line-height:1.6;
+            ">
+
+            Please wait while we verify the email credentials
+            and activate your workflow.
+
+        </div>
+
+        {{-- Small status --}}
+        <div
+            style="
+                margin-top:18px;
+                display:inline-flex;
+                align-items:center;
+                gap:7px;
+                color:#329b40;
+                font-size:13px;
+                font-weight:600;
+            ">
+
+            <span
+                style="
+                    width:7px;
+                    height:7px;
+                    background:#329b40;
+                    border-radius:50%;
+                    display:inline-block;
+                ">
+            </span>
+
+            Do not close this page
+
+        </div>
+
+    </div>
+
+
+    <style>
+        @keyframes workflowLoaderSpin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+
+    <script>
+        let editInputIndex = 0;
+        let editOutputIndex = 0;
+
+
+        function openEditWorkflowModal(batch, configurationId, inputs, outputs) {
+
+            editInputIndex = 0;
+            editOutputIndex = 0;
+
+            document.getElementById('editWorkflowBatch').textContent =
+                'Batch: ' + batch;
+
+            document.getElementById('editWorkflowBatchInput').value =
+                batch;
+
+            document.getElementById('editWorkflowConfiguration').value =
+                configurationId;
+
+            document.getElementById('editInputConnectors').innerHTML = '';
+            document.getElementById('editOutputConnectors').innerHTML = '';
+
+            if (Array.isArray(inputs)) {
+
+                inputs.forEach(function(input) {
+
+                    addEditConnector('input', input);
+
+                });
+
+            }
+
+            if (Array.isArray(outputs)) {
+
+                outputs.forEach(function(output) {
+
+                    addEditConnector('output', output);
+
+                });
+
+            }
+
+            const modalElement =
+                document.getElementById('editWorkflowModal');
+
+            if (!modalElement) {
+
+                console.error('editWorkflowModal not found');
+
+                return;
+            }
+
+            const modal =
+                new bootstrap.Modal(modalElement);
+
+            modal.show();
+        }
+
+
+        function addEditConnector(type, selectedValue = '') {
+
+            let container;
+
+
+            if (type === 'input') {
+
+                container =
+                    document.getElementById('editInputConnectors');
+
+                editInputIndex++;
+
+            } else {
+
+                container =
+                    document.getElementById('editOutputConnectors');
+
+                editOutputIndex++;
+
+            }
+
+
+            const row =
+                document.createElement('div');
+
+
+            row.style.cssText = `
+                display:flex;
+                align-items:center;
+                gap:10px;
+                margin-bottom:10px;
+            `;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SELECT
+            |--------------------------------------------------------------------------
+            */
+
+            const select =
+                document.createElement('select');
+
+
+            select.name =
+                type + '_connectors[]';
+
+            select.className =
+                'form-select';
+
+            select.required = true;
+
+
+            select.style.cssText = `
+                height:48px;
+                border-radius:10px;
+                border:1px solid #dee2e6;
+                padding:0 14px;
+                flex:1;
+                cursor:pointer;
+            `;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | PLACEHOLDER
+            |--------------------------------------------------------------------------
+            */
+
+            const placeholder =
+                document.createElement('option');
+
+            placeholder.value = '';
+
+            placeholder.textContent =
+                'Select ' + type + ' connector';
+
+            placeholder.disabled = true;
+
+            if (!selectedValue) {
+
+                placeholder.selected = true;
+
+            }
+
+            select.appendChild(placeholder);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | DATABASE CONNECTORS
+            |--------------------------------------------------------------------------
+            */
+
+            @foreach ($workflowConnectors as $connector)
+
+                if ('{{ $connector->type }}' === type) {
+
+                    const option =
+                        document.createElement('option');
+
+                    option.value =
+                        @js($connector->name);
+
+                    option.textContent =
+                        @js($connector->name);
+
+
+                    if (
+                        selectedValue ===
+                        @js($connector->name)
+                    ) {
+
+                        option.selected = true;
+
+                    }
+
+
+                    select.appendChild(option);
+
+                }
+            @endforeach
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ADD NEW CONNECTOR BUTTON
+            |--------------------------------------------------------------------------
+            */
+
+            const addButton =
+                document.createElement('button');
+
+
+            addButton.type = 'button';
+
+
+            addButton.innerHTML =
+                '<i class="fa fa-plus"></i>';
+
+
+            addButton.title =
+                'Create new ' + type + ' connector';
+
+
+            addButton.style.cssText = `
+                width:42px;
+                height:42px;
+                border-radius:50%;
+                background:#000;
+                color:#fff;
+                border:none;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                cursor:pointer;
+                flex-shrink:0;
+                transition:all .3s ease;
+            `;
+
+
+            addButton.onmouseover = function() {
+
+                this.style.background = '#28a745';
+
+                this.style.transform =
+                    'rotate(90deg)';
+
+            };
+
+
+            addButton.onmouseout = function() {
+
+                this.style.background = '#000';
+
+                this.style.transform =
+                    'rotate(0deg)';
+
+            };
+
+
+            addButton.onclick = function() {
+
+                openCreateConnectorFromEdit(type);
+
+            };
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | REMOVE BUTTON
+            |--------------------------------------------------------------------------
+            */
+
+            const removeButton =
+                document.createElement('button');
+
+
+            removeButton.type = 'button';
+
+
+            removeButton.innerHTML =
+                '<i class="fa fa-times"></i>';
+
+
+            removeButton.title =
+                'Remove connector';
+
+
+            removeButton.style.cssText = `
+                width:42px;
+                height:42px;
+                border-radius:50%;
+                background:#000;
+                color:#fff;
+                border:none;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                cursor:pointer;
+                flex-shrink:0;
+                transition:all .3s ease;
+            `;
+
+
+            removeButton.onmouseover = function() {
+
+                this.style.background = '#dc3545';
+
+                this.style.transform =
+                    'rotate(90deg)';
+
+            };
+
+
+            removeButton.onmouseout = function() {
+
+                this.style.background = '#000';
+
+                this.style.transform =
+                    'rotate(0deg)';
+
+            };
+
+
+            removeButton.onclick = function() {
+
+                row.remove();
+
+            };
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | BUILD ROW
+            |--------------------------------------------------------------------------
+            */
+
+            row.appendChild(select);
+
+            row.appendChild(addButton);
+
+            row.appendChild(removeButton);
+
+            container.appendChild(row);
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | OPEN CREATE CONNECTOR MODAL
+        |--------------------------------------------------------------------------
+        */
+
+        function openCreateConnectorFromEdit(type) {
+
+            const editModal =
+                bootstrap.Modal.getInstance(
+                    document.getElementById('editWorkflowModal')
+                );
+
+
+            if (editModal) {
+
+                editModal.hide();
+
+            }
+
+
+            const createModalElement =
+                document.getElementById('connectorManagerModal');
+
+
+            if (!createModalElement) {
+
+                console.error(
+                    'connectorManagerModal not found'
+                );
+
+                return;
+
+            }
+
+
+            /*
+            | Set connector type automatically
+            */
+
+            const typeSelect =
+                createModalElement.querySelector(
+                    'select[name="type"]'
+                );
+
+
+            if (typeSelect) {
+
+                typeSelect.value = type;
+
+            }
+
+
+            const createModal =
+                new bootstrap.Modal(createModalElement);
+
+
+            createModal.show();
+
+        }
+
+
+        
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    
 </x-layouts::app>
