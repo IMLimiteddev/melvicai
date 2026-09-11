@@ -146,7 +146,7 @@
             </h3>
 
             <p id="processingMessage">
-                Please wait while your configuration is being processed...
+                Takes ~ 1-2 mins. Please wait while your configuration is being processed...
             </p>
 
             <div id="processingBarContainer">

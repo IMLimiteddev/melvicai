@@ -242,7 +242,44 @@
 
                                     <div class="card-body tab-content active" id="header">
 
-                                        <div class="d-flex justify-content-end align-items-center mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+
+                                             <button
+                                                type="button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal"
+                                                style="
+                                                    height:48px;
+                                                    padding:0 18px;
+                                                    border-radius:24px;
+                                                    background:#000;
+                                                    color:#fff;
+                                                    border:none;
+                                                    display:flex;
+                                                    align-items:center;
+                                                    justify-content:center;
+                                                    gap:10px;
+                                                    font-size:15px;
+                                                    cursor:pointer;
+                                                    transition:background .3s ease;
+                                                "
+                                                onmouseover="
+                                                    this.style.background='#28a745';
+                                                    this.querySelector('.plus-icon').style.transform='rotate(360deg) scale(1.15)';
+                                                "
+                                                onmouseout="
+                                                    this.style.background='#000';
+                                                    this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)';
+                                                "
+                                            >
+                                                <i
+                                                    class="fa fa-plus plus-icon"
+                                                    style="transition:transform .3s ease;"
+                                                ></i>
+
+                                                <span>Verb</span>
+                                            </button>
 
                                             <button type="submit" name="action" value="save"
                                                 {{-- data-bs-toggle="modal"
@@ -367,6 +404,42 @@
                                                 Verb
 
                                             </button> --}}
+
+                                             <button
+                                                type="button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#logicManagerModal"
+                                                style="
+                                                    height:48px;
+                                                    padding:0 18px;
+                                                    border-radius:24px;
+                                                    background:#000;
+                                                    color:#fff;
+                                                    border:none;
+                                                    display:flex;
+                                                    align-items:center;
+                                                    justify-content:center;
+                                                    gap:10px;
+                                                    font-size:15px;
+                                                    cursor:pointer;
+                                                    transition:background .3s ease;
+                                                "
+                                                onmouseover="
+                                                    this.style.background='#28a745';
+                                                    this.querySelector('.plus-icon').style.transform='rotate(360deg) scale(1.15)';
+                                                "
+                                                onmouseout="
+                                                    this.style.background='#000';
+                                                    this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)';
+                                                "
+                                            >
+                                                <i
+                                                    class="fa fa-plus plus-icon"
+                                                    style="transition:transform .3s ease;"
+                                                ></i>
+
+                                                <span>Verb</span>
+                                            </button>
 
                                             <button type="submit" name="action" value="save"
                                                 {{-- data-bs-toggle="modal"

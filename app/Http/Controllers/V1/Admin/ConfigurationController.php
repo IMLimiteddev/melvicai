@@ -308,28 +308,19 @@ class ConfigurationController extends Controller
     // Direct process stage 2
     public function directProcess2(Request $request, $id = null)
     {
-
         $config = Configuration::findOrFail($id);
 
         $request->validate([
             'payload' => 'required',
         ]);
 
-        $storedPath = $config->input_file_path;
-        $file = storage_path('app/public/' . $storedPath);
-
-        $originalName = $config->file_name;
-
-
-        if (!file_exists($file)) {
-
-            return back()->with(
-                'error',
-                'Configuration file could not be found.'
-            );
-        }
-
         $payload = $request->input('payload');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Decode JSON payload
+        |--------------------------------------------------------------------------
+        */
 
         if (is_string($payload)) {
 
@@ -344,145 +335,95 @@ class ConfigurationController extends Controller
             }
         }
 
-        $baseUrl = config('services.rule_engine.base_url');
 
-        //Save for later work.
+        /*
+        |--------------------------------------------------------------------------
+        | SAVE ONLY
+        |--------------------------------------------------------------------------
+        |
+        | If the user is only saving the configuration, do not dispatch
+        | the processing job.
+        |
+        */
 
-        //Next task is persisting the save data over the javascript 
-        
-        if ($request->input('action')=="save"){
+        if ($request->input('action') === 'save') {
 
             $config->update([
-                    'configured_data'   => $payload,
-                    'status'            => 'draft',
-                    'process_stage'     => 'Saved not processed yet.'
-                ]);
-                
+                'configured_data' => $payload,
+                'status'          => 'draft',
+                'process_stage'   => 'Saved not processed yet.',
+            ]);
+
             return back();
         }
 
-        try {
 
-            $response = Http::timeout(300)
-                ->attach(
-                    'file',
-                    file_get_contents($file),
-                    $originalName
-                )
-                ->post(
-                    "{$baseUrl}/docs/schworer/new-rule-3",
-                    [
-                        'config' => json_encode($payload),
-                    ]
-                );
+        /*
+        |--------------------------------------------------------------------------
+        | Make sure the input file exists
+        |--------------------------------------------------------------------------
+        */
 
-            if (!$response->successful()) {
-                // dd($response->status(), $response->body());
+        $storedPath = $config->input_file_path;
 
-                Log::error('Rule engine configuration processing failed', [
-                    'configuration_id' => $config->id,
-                    'status'            => $response->status(),
-                    'response'          => $response->body(),
-                ]);
+        $file = storage_path(
+            'app/public/' . $storedPath
+        );
 
-                return back()->with(
-                    'error',
-                    'Failed to process file. Rule engine returned status: '
-                    . $response->status()
-                );
-            }
-
-
-            $data = $response->json();
-
-            $filename = $data['Mapped_txt_file'] ?? null;
-
-            // dd($filename);
-
-            if (!$filename) {
-
-                throw new \Exception(
-                    'Mapped_txt_file was not returned by the API.'
-                );
-            }
-
-            $downloadUrl =
-                "{$baseUrl}/download/output_file/"
-                . rawurlencode($filename);
-
-
-            $txtResponse = Http::timeout(300)
-                ->get($downloadUrl);
-
-
-            if (!$txtResponse->successful()) {
-
-                throw new \Exception(
-                    'Failed to download TXT file. Status: '
-                    . $txtResponse->status()
-                );
-            }
-
-
-            $storagePath = 'config/' . $filename;
-
-            $fullStoragePath =
-                storage_path('app/public/' . $storagePath);
-
-
-
-            $directory = dirname($fullStoragePath);
-
-            if (!is_dir($directory)) {
-
-                mkdir($directory, 0755, true);
-            }
-
-            file_put_contents(
-                $fullStoragePath,
-                $txtResponse->body()
-            );
-
-
-            $config->update([
-                'configured_data'   => $data['Submitted_config_json'],
-                'validation_data'   => $data['Validation_Warnings'],
-                'output_file_path'  => $storagePath,
-                'status'            => 'active',
-                'process_stage'     => 'Directly Processed and Saved.',
-                'filename'          => $filename,
-
-            ]);
-
-
-            // return view('admin.download', [
-            //     'response'     => $data,
-            //     'originalName' => $originalName,
-            //     'id'           => $config->id,
-            // ]);
-
-            return redirect()->route(
-                'admin.final-process',
-                ['id' => $config->id]
-            )->with('success', 'Configuration processed successfully.');
-
-
-        } catch (\Throwable $e) {
-
-            Log::error('Configuration Stage 2 failed', [
-                'configuration_id' => $config->id,
-                'error'            => $e->getMessage(),
-                'line'             => $e->getLine(),
-                'file'             => $e->getFile(),
-            ]);
-
+        if (!file_exists($file)) {
 
             return back()->with(
                 'error',
-                'Failed to process configuration: '
-                . $e->getMessage()
+                'Configuration file could not be found.'
             );
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mark as INACTIVE
+        |--------------------------------------------------------------------------
+        |
+        | Your application only uses:
+        |
+        | draft    = saved but not processed
+        | inactive = processing / not finished
+        | active   = processing finished
+        |
+        */
+
+        $config->update([
+            'configured_data' => $payload,
+            'status'          => 'inactive',
+            'process_stage'   => 'Processing configuration...',
+        ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Send processing to the queue
+        |--------------------------------------------------------------------------
+        */
+
+        ProcessConfigurationJob::dispatch(
+            $config->id,
+            $payload
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Immediately send the user to the final process page
+        |--------------------------------------------------------------------------
+        |
+        | The browser does NOT wait for the rule engine.
+        |
+        */
+
+        return redirect()->route(
+            'admin.final-process',
+            ['id' => $config->id]
+        );
     }
     
 
