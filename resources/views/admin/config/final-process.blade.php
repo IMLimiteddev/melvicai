@@ -1,6 +1,7 @@
 <x-layouts::app :title="__('Models')">
 
     <style>
+
         .tab-link {
             color: #444;
             text-decoration: none;
@@ -48,20 +49,26 @@
         .our-btn:hover i {
             transform: scale(1.15);
         }
+
     </style>
+
 
     <div class="page-body" id="pageBody">
 
         <div class="container-fluid">
 
             <div class="page-title">
+
                 <div class="row">
 
                     <div class="col-xl-4 col-sm-7 box-col-3">
+
                         <h3>Warnings/Download Area</h3>
+
                     </div>
 
                 </div>
+
             </div>
 
         </div>
@@ -76,6 +83,7 @@
                     <div class="card">
 
                         <div class="card-body">
+
 
                             {{-- ========================= --}}
                             {{-- TABS --}}
@@ -92,7 +100,6 @@
                                 "
                             >
 
-                                {{-- TAB 1 --}}
                                 <a
                                     href="#"
                                     class="tab-link active"
@@ -102,17 +109,31 @@
                                 </a>
 
 
-                                {{-- TAB 2 --}}
-                                <a
-                                    href="{{ route('admin.download.output', ['filename' => $originalName ?? '']) }}"
-                                    target="_blank"
-                                    class="tab-link"
-                                >
-                                    Processed File
-                                </a>
+                                @if (!empty($configuration?->output_file_path))
+
+                                    <a
+                                        href="{{ route('admin.download.output', [
+                                            'filename' => basename($configuration->output_file_path),
+                                        ]) }}"
+                                        class="tab-link"
+                                    >
+                                        Download File
+                                    </a>
+
+                                @else
+
+                                    <a
+                                        href="#"
+                                        class="tab-link"
+                                        onclick="return false;"
+                                        style="opacity:0.5;cursor:not-allowed;"
+                                    >
+                                        Download File
+                                    </a>
+
+                                @endif
 
 
-                                {{-- TAB 3 --}}
                                 <a
                                     href="#"
                                     class="tab-link"
@@ -125,7 +146,7 @@
 
 
                             {{-- ========================= --}}
-                            {{-- TAB CONTENT --}}
+                            {{-- VALIDATION CONTENT --}}
                             {{-- ========================= --}}
 
                             <div
@@ -153,9 +174,7 @@
                                             Validation Rule
                                         </h5>
 
-                                        <p
-                                            class="text-muted mb-0"
-                                        >
+                                        <p class="text-muted mb-0">
                                             View the validation results generated for this configuration.
                                         </p>
 
@@ -167,49 +186,18 @@
                                     <button
                                         type="button"
                                         class="our-btn"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#validationModal"
+                                        onclick="openValidationModal()"
                                         onmouseover="this.querySelector('i').style.transform='rotate(10deg) scale(1.15)'"
                                         onmouseout="this.querySelector('i').style.transform='rotate(0deg) scale(1)'"
                                     >
 
-                                        <i
-                                            class="fa fa-shield-alt"
-                                        ></i>
+                                        <i class="fa fa-shield-alt"></i>
 
                                         View Validation Rule
 
                                     </button>
 
                                 </div>
-
-                            </div>
-
-
-                            {{-- ========================= --}}
-                            {{-- DOWNLOAD BUTTON --}}
-                            {{-- ========================= --}}
-
-                            <div
-                                style="
-                                    display:flex;
-                                    justify-content:flex-end;
-                                    margin-top:20px;
-                                "
-                            >
-
-                                <a
-                                    href="{{ route('admin.download.output', ['filename' => $originalName ?? '']) }}"
-                                    target="_blank"
-                                    class="our-btn"
-                                    title="Open processed file"
-                                >
-
-                                    <i class="fa fa-eye"></i>
-
-                                    View File
-
-                                </a>
 
                             </div>
 
@@ -254,7 +242,7 @@
                     <button
                         type="button"
                         class="btn-close"
-                        data-bs-dismiss="modal"
+                        onclick="closeValidationModal()"
                         aria-label="Close"
                     ></button>
 
@@ -263,22 +251,20 @@
 
                 <div class="modal-body">
 
-                    @forelse($response['Validation_Warnings'] ?? [] as $warning)
+                    @forelse($validation ?? [] as $warning)
 
                         <div
-                            class="alert {{ $warning['severity'] == 'warning' ? 'alert-warning' : 'alert-info' }} mb-3"
+                            class="alert {{ ($warning['severity'] ?? '') === 'warning' ? 'alert-warning' : 'alert-info' }} mb-3"
                         >
 
-                            <div
-                                class="d-flex justify-content-between"
-                            >
+                            <div class="d-flex justify-content-between">
 
                                 <strong>
-                                    {{ strtoupper($warning['severity']) }}
+                                    {{ strtoupper($warning['severity'] ?? 'INFO') }}
                                 </strong>
 
                                 <span class="text-muted">
-                                    {{ $warning['section'] }}
+                                    {{ $warning['section'] ?? 'N/A' }}
                                 </span>
 
                             </div>
@@ -286,18 +272,35 @@
                             <hr>
 
                             <p class="mb-2">
-                                <strong>Location:</strong>
-                                {{ $warning['location'] }}
+
+                                <strong>
+                                    Location:
+                                </strong>
+
+                                {{ $warning['location'] ?? 'N/A' }}
+
                             </p>
+
 
                             <p class="mb-2">
-                                <strong>Issue:</strong>
-                                {{ $warning['message'] }}
+
+                                <strong>
+                                    Issue:
+                                </strong>
+
+                                {{ $warning['message'] ?? 'N/A' }}
+
                             </p>
 
+
                             <p class="mb-0">
-                                <strong>Suggestion:</strong>
-                                {{ $warning['suggestion'] }}
+
+                                <strong>
+                                    Suggestion:
+                                </strong>
+
+                                {{ $warning['suggestion'] ?? 'N/A' }}
+
                             </p>
 
                         </div>
@@ -322,7 +325,7 @@
                     <button
                         type="button"
                         class="our-btn"
-                        data-bs-dismiss="modal"
+                        onclick="closeValidationModal()"
                     >
 
                         <i class="fa fa-times"></i>
@@ -338,5 +341,45 @@
         </div>
 
     </div>
+
+
+    {{-- ================================================= --}}
+    {{-- VALIDATION MODAL SCRIPT --}}
+    {{-- ================================================= --}}
+
+    <script>
+
+        function openValidationModal() {
+
+            const modalElement = document.getElementById('validationModal');
+
+            if (!modalElement) {
+                return;
+            }
+
+            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+            modal.show();
+
+        }
+
+
+        function closeValidationModal() {
+
+            const modalElement = document.getElementById('validationModal');
+
+            if (!modalElement) {
+                return;
+            }
+
+            const modal = bootstrap.Modal.getInstance(modalElement);
+
+            if (modal) {
+                modal.hide();
+            }
+
+        }
+
+    </script>
 
 </x-layouts::app>

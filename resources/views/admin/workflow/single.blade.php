@@ -100,680 +100,713 @@
                         </div> --}}
 
                     </div>
-                   <div class="card-body">
+                    <div class="card-body">
 
-    <div style="
-        width:100%;
-        overflow-x:auto;
-        padding-bottom:8px;
-    ">
-
-        {{-- SINGLE WORKFLOW VIEW --}}
-        <div style="width:100%;">
-
-            {{-- WORKFLOW HEADER --}}
-            <div style="
-                background:#fff;
-                border:1px solid #e9ecef;
-                border-radius:16px;
-                padding:24px;
-                margin-bottom:18px;
-                box-shadow:0 4px 18px rgba(0,0,0,0.04);
-            ">
-
-                <div style="
-                    display:flex;
-                    align-items:center;
-                    justify-content:space-between;
-                    gap:20px;
-                    flex-wrap:wrap;
-                ">
-
-                    {{-- LEFT --}}
-                    <div style="min-width:0;">
-
-                        <div style="
-                            font-size:11px;
-                            font-weight:700;
-                            letter-spacing:1.5px;
-                            text-transform:uppercase;
-                            color:#888;
-                            margin-bottom:7px;
-                        ">
-                            Workflow
-                        </div>
-
-                        <div style="
-                            font-size:20px;
-                            font-weight:700;
-                            color:#222;
-                            overflow-wrap:anywhere;
-                        ">
-                            {{ $workflow->batch }}
-                        </div>
-
-                        <div style="
-                            margin-top:7px;
-                            font-size:13px;
-                            color:#777;
-                        ">
-                            Workflow batch identifier
-                        </div>
-
-                    </div>
-
-
-                    {{-- RIGHT ACTIONS --}}
-                    <div style="
-                        display:flex;
-                        align-items:center;
-                        gap:12px;
-                        flex-wrap:wrap;
+                        <div
+                            style="
+                        width:100%;
+                        overflow-x:auto;
+                        padding-bottom:8px;
                     ">
 
-                        {{-- STATUS --}}
-                        @if ($workflow->status === 'active')
+                            {{-- SINGLE WORKFLOW VIEW --}}
+                            <div style="width:100%;">
 
-                            <span style="
-                                height:40px;
-                                padding:0 15px;
-                                border-radius:20px;
-                                background:#f0fff2;
-                                color:#28a745;
-                                display:inline-flex;
-                                align-items:center;
-                                gap:7px;
-                                font-size:13px;
-                                font-weight:600;
+                                {{-- WORKFLOW HEADER --}}
+                                <div
+                                    style="
+                                background:#fff;
+                                border:1px solid #e9ecef;
+                                border-radius:16px;
+                                padding:24px;
+                                margin-bottom:18px;
+                                box-shadow:0 4px 18px rgba(0,0,0,0.04);
                             ">
-                                <span style="
-                                    width:8px;
-                                    height:8px;
-                                    border-radius:50%;
-                                    background:#28a745;
-                                "></span>
 
-                                Active
-                            </span>
+                                    <div
+                                        style="
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:space-between;
+                                    gap:20px;
+                                    flex-wrap:wrap;
+                                ">
 
-                        @else
+                                        {{-- LEFT --}}
+                                        <div style="min-width:0;">
 
-                            <span style="
-                                height:40px;
-                                padding:0 15px;
-                                border-radius:20px;
-                                background:#fff3f3;
-                                color:#dc3545;
-                                display:inline-flex;
-                                align-items:center;
-                                gap:7px;
-                                font-size:13px;
-                                font-weight:600;
+                                            <div
+                                                style="
+                                            font-size:11px;
+                                            font-weight:700;
+                                            letter-spacing:1.5px;
+                                            text-transform:uppercase;
+                                            color:#888;
+                                            margin-bottom:7px;
+                                        ">
+                                                Workflow
+                                            </div>
+
+                                            <div
+                                                style="
+                                            font-size:20px;
+                                            font-weight:700;
+                                            color:#222;
+                                            overflow-wrap:anywhere;
+                                        ">
+                                                {{ $workflow->batch }}
+                                            </div>
+
+                                            <div
+                                                style="
+                                            margin-top:7px;
+                                            font-size:13px;
+                                            color:#777;
+                                        ">
+                                                Workflow batch identifier
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- RIGHT ACTIONS --}}
+                                        <div
+                                            style="
+                                        display:flex;
+                                        align-items:center;
+                                        gap:12px;
+                                        flex-wrap:wrap;
+                                    ">
+
+                                            {{-- STATUS --}}
+                                            @if ($workflow->status === 'active')
+                                                <span
+                                                    style="
+                                                height:40px;
+                                                padding:0 15px;
+                                                border-radius:20px;
+                                                background:#f0fff2;
+                                                color:#28a745;
+                                                display:inline-flex;
+                                                align-items:center;
+                                                gap:7px;
+                                                font-size:13px;
+                                                font-weight:600;
+                                            ">
+                                                    <span
+                                                        style="
+                                                    width:8px;
+                                                    height:8px;
+                                                    border-radius:50%;
+                                                    background:#28a745;
+                                                "></span>
+
+                                                    Active
+                                                </span>
+                                            @else
+                                                <span
+                                                    style="
+                                                height:40px;
+                                                padding:0 15px;
+                                                border-radius:20px;
+                                                background:#fff3f3;
+                                                color:#dc3545;
+                                                display:inline-flex;
+                                                align-items:center;
+                                                gap:7px;
+                                                font-size:13px;
+                                                font-weight:600;
+                                            ">
+                                                    <span
+                                                        style="
+                                                    width:8px;
+                                                    height:8px;
+                                                    border-radius:50%;
+                                                    background:#dc3545;
+                                                "></span>
+
+                                                    Inactive
+                                                </span>
+                                            @endif
+
+
+                                            {{-- EDIT BUTTON --}}
+                                            <button type="button"
+                                                onclick="openEditWorkflowModal(
+                                                @js($workflow->batch),
+                                                @js($workflow->configuration_id),
+                                                @js($workflow->inputs ?? []),
+                                                @js($workflow->outputs ?? [])
+                                            )"
+                                                style="
+                                                height:44px;
+                                                padding:0 19px;
+                                                border-radius:22px;
+                                                background:#000;
+                                                color:#fff;
+                                                border:none;
+                                                display:flex;
+                                                align-items:center;
+                                                justify-content:center;
+                                                gap:9px;
+                                                font-size:14px;
+                                                font-weight:600;
+                                                cursor:pointer;
+                                                transition:all .3s ease;
+                                            "
+                                                onmouseover="
+                                                this.style.background='#28a745';
+                                                this.style.transform='translateY(-2px)';
+                                                this.querySelector('.edit-icon').style.transform='rotate(-8deg)';
+                                            "
+                                                onmouseout="
+                                                this.style.background='#000';
+                                                this.style.transform='translateY(0)';
+                                                this.querySelector('.edit-icon').style.transform='rotate(0deg)';
+                                            ">
+
+                                                <i class="fas fa-edit edit-icon"
+                                                    style="transition:transform .3s ease;"></i>
+
+                                                <span>Edit Workflow</span>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                {{-- WORKFLOW FLOW --}}
+                                <div
+                                    style="
+                                background:#fff;
+                                border:1px solid #e9ecef;
+                                border-radius:16px;
+                                padding:28px;
+                                box-shadow:0 4px 18px rgba(0,0,0,0.04);
                             ">
-                                <span style="
-                                    width:8px;
-                                    height:8px;
-                                    border-radius:50%;
-                                    background:#dc3545;
-                                "></span>
 
-                                Inactive
-                            </span>
+                                    <div
+                                        style="
+                                    font-size:11px;
+                                    font-weight:700;
+                                    letter-spacing:1.5px;
+                                    text-transform:uppercase;
+                                    color:#888;
+                                    margin-bottom:22px;
+                                ">
+                                        Workflow Configuration
+                                    </div>
 
-                        @endif
+
+                                    {{-- FLOW --}}
+                                    <div
+                                        style="
+                                    display:flex;
+                                    align-items:stretch;
+                                    gap:18px;
+                                    width:100%;
+                                    min-width:850px;
+                                ">
+
+                                        {{-- INPUT --}}
+                                        <div
+                                            style="
+                                        flex:1;
+                                        min-width:0;
+                                        border:1px solid #e5e7eb;
+                                        border-radius:14px;
+                                        padding:20px;
+                                        background:#fafafa;
+                                    ">
+
+                                            <div
+                                                style="
+                                            display:flex;
+                                            align-items:center;
+                                            gap:9px;
+                                            margin-bottom:16px;
+                                        ">
+
+                                                <span
+                                                    style="
+                                                width:10px;
+                                                height:10px;
+                                                min-width:10px;
+                                                border-radius:50%;
+                                                background:#AEF09D;
+                                            "></span>
+
+                                                <span
+                                                    style="
+                                                font-size:13px;
+                                                font-weight:700;
+                                                color:#222;
+                                            ">
+                                                    INPUT CONNECTORS
+                                                </span>
+
+                                            </div>
 
 
-                        {{-- EDIT BUTTON --}}
-                        <button
-                            type="button"
-                            onclick="openEditWorkflowModal(
-                                @js($workflow->batch),
-                                @js($workflow->configuration_id),
-                                @js($workflow->inputs ?? []),
-                                @js($workflow->outputs ?? [])
-                            )"
-                            style="
-                                height:44px;
-                                padding:0 19px;
-                                border-radius:22px;
+                                            <div
+                                                style="
+                                            display:flex;
+                                            flex-direction:column;
+                                            gap:9px;
+                                            max-height:280px;
+                                            overflow-y:auto;
+                                            padding-right:4px;
+                                        ">
+
+                                                @forelse (($workflow->inputs ?? []) as $input)
+                                                    <div
+                                                        style="
+                                                    background:#fff;
+                                                    border:1px solid #e5e7eb;
+                                                    border-radius:10px;
+                                                    padding:11px 13px;
+                                                    display:flex;
+                                                    align-items:flex-start;
+                                                    gap:9px;
+                                                    font-size:13px;
+                                                    font-weight:600;
+                                                    color:#222;
+                                                    overflow-wrap:anywhere;
+                                                    word-break:break-word;
+                                                ">
+
+                                                        <span
+                                                            style="
+                                                        width:7px;
+                                                        height:7px;
+                                                        min-width:7px;
+                                                        border-radius:50%;
+                                                        background:#AEF09D;
+                                                        margin-top:5px;
+                                                    "></span>
+
+                                                        <span>
+                                                            {{ $input }}
+                                                        </span>
+
+                                                    </div>
+
+                                                @empty
+
+                                                    <div
+                                                        style="
+                                                    padding:15px;
+                                                    color:#888;
+                                                    font-size:13px;
+                                                    background:#fff;
+                                                    border:1px dashed #ddd;
+                                                    border-radius:10px;
+                                                ">
+                                                        No input connectors
+                                                    </div>
+                                                @endforelse
+
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- ARROW --}}
+                                        <div
+                                            style="
+                                        width:55px;
+                                        min-width:55px;
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:center;
+                                    ">
+
+                                            <div
+                                                style="
+                                            width:42px;
+                                            height:42px;
+                                            border-radius:50%;
+                                            background:#000;
+                                            color:#fff;
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                        ">
+                                                <i class="fas fa-arrow-right" style="font-size:14px;"></i>
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- CONFIGURATION --}}
+                                        <div
+                                            style="
+                                        flex:1;
+                                        min-width:0;
+                                        border:1px solid #e5e7eb;
+                                        border-radius:14px;
+                                        padding:20px;
+                                        background:#fafafa;
+                                    ">
+
+                                            <div
+                                                style="
+                                            display:flex;
+                                            align-items:center;
+                                            gap:9px;
+                                            margin-bottom:16px;
+                                        ">
+
+                                                <span
+                                                    style="
+                                                width:10px;
+                                                height:10px;
+                                                min-width:10px;
+                                                border-radius:50%;
+                                                background:#391773;
+                                            "></span>
+
+                                                <span
+                                                    style="
+                                                font-size:13px;
+                                                font-weight:700;
+                                                color:#222;
+                                            ">
+                                                    CONFIGURATION
+                                                </span>
+
+                                            </div>
+
+
+                                            <div
+                                                style="
+                                            background:#fff;
+                                            border:1px solid #e5e7eb;
+                                            border-radius:10px;
+                                            padding:15px;
+                                        ">
+
+                                                <div
+                                                    style="
+                                                font-size:15px;
+                                                font-weight:700;
+                                                color:#222;
+                                                overflow-wrap:anywhere;
+                                                word-break:break-word;
+                                            ">
+                                                    {{ $workflow->config_name ?: 'No configuration selected' }}
+                                                </div>
+
+                                                <div
+                                                    style="
+                                                margin-top:6px;
+                                                font-size:12px;
+                                                color:#777;
+                                            ">
+                                                    Configuration #{{ $workflow->configuration_id }}
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- ARROW --}}
+                                        <div
+                                            style="
+                                        width:55px;
+                                        min-width:55px;
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:center;
+                                    ">
+
+                                            <div
+                                                style="
+                                            width:42px;
+                                            height:42px;
+                                            border-radius:50%;
+                                            background:#000;
+                                            color:#fff;
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                        ">
+                                                <i class="fas fa-arrow-right" style="font-size:14px;"></i>
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- OUTPUT --}}
+                                        <div
+                                            style="
+                                        flex:1;
+                                        min-width:0;
+                                        border:1px solid #e5e7eb;
+                                        border-radius:14px;
+                                        padding:20px;
+                                        background:#fafafa;
+                                    ">
+
+                                            <div
+                                                style="
+                                            display:flex;
+                                            align-items:center;
+                                            gap:9px;
+                                            margin-bottom:16px;
+                                        ">
+
+                                                <span
+                                                    style="
+                                                width:10px;
+                                                height:10px;
+                                                min-width:10px;
+                                                border-radius:50%;
+                                                background:#E94E1B;
+                                            "></span>
+
+                                                <span
+                                                    style="
+                                                font-size:13px;
+                                                font-weight:700;
+                                                color:#222;
+                                            ">
+                                                    OUTPUT CONNECTORS
+                                                </span>
+
+                                            </div>
+
+
+                                            <div
+                                                style="
+                                            display:flex;
+                                            flex-direction:column;
+                                            gap:9px;
+                                            max-height:280px;
+                                            overflow-y:auto;
+                                            padding-right:4px;
+                                        ">
+
+                                                @forelse (($workflow->outputs ?? []) as $output)
+                                                    <div
+                                                        style="
+                                                    background:#fff;
+                                                    border:1px solid #e5e7eb;
+                                                    border-radius:10px;
+                                                    padding:11px 13px;
+                                                    display:flex;
+                                                    align-items:flex-start;
+                                                    gap:9px;
+                                                    font-size:13px;
+                                                    font-weight:600;
+                                                    color:#222;
+                                                    overflow-wrap:anywhere;
+                                                    word-break:break-word;
+                                                ">
+
+                                                        <span
+                                                            style="
+                                                        width:7px;
+                                                        height:7px;
+                                                        min-width:7px;
+                                                        border-radius:50%;
+                                                        background:#E94E1B;
+                                                        margin-top:5px;
+                                                    "></span>
+
+                                                        <span>
+                                                            {{ $output }}
+                                                        </span>
+
+                                                    </div>
+
+                                                @empty
+
+                                                    <div
+                                                        style="
+                                                    padding:15px;
+                                                    color:#888;
+                                                    font-size:13px;
+                                                    background:#fff;
+                                                    border:1px dashed #ddd;
+                                                    border-radius:10px;
+                                                ">
+                                                        No output connectors
+                                                    </div>
+                                                @endforelse
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {{-- WORKFLOW DETAILS --}}
+                                    <div
+                                        style="
+                                    display:grid;
+                                    grid-template-columns:repeat(3,1fr);
+                                    gap:14px;
+                                    margin-top:22px;
+                                ">
+
+                                        {{-- USAGE --}}
+                                        <div
+                                            style="
+                                        border:1px solid #e5e7eb;
+                                        border-radius:12px;
+                                        padding:15px 17px;
+                                        background:#fafafa;
+                                    ">
+
+                                            <div
+                                                style="
+                                            font-size:11px;
+                                            font-weight:700;
+                                            text-transform:uppercase;
+                                            letter-spacing:1px;
+                                            color:#888;
+                                            margin-bottom:6px;
+                                        ">
+                                                Usage
+                                            </div>
+
+                                            <div
+                                                style="
+                                            font-size:18px;
+                                            font-weight:700;
+                                            color:#222;
+                                        ">
+                                                {{ $workflow->usage_count ?? 0 }}
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- USER --}}
+                                        <div
+                                            style="
+                                        border:1px solid #e5e7eb;
+                                        border-radius:12px;
+                                        padding:15px 17px;
+                                        background:#fafafa;
+                                    ">
+
+                                            <div
+                                                style="
+                                            font-size:11px;
+                                            font-weight:700;
+                                            text-transform:uppercase;
+                                            letter-spacing:1px;
+                                            color:#888;
+                                            margin-bottom:6px;
+                                        ">
+                                                User
+                                            </div>
+
+                                            <div
+                                                style="
+                                            font-size:14px;
+                                            font-weight:600;
+                                            color:#222;
+                                            overflow-wrap:anywhere;
+                                            word-break:break-word;
+                                        ">
+                                                {{ $workflow->user_identifier ?: 'N/A' }}
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- CONFIG ID --}}
+                                        <div
+                                            style="
+                                        border:1px solid #e5e7eb;
+                                        border-radius:12px;
+                                        padding:15px 17px;
+                                        background:#fafafa;
+                                    ">
+
+                                            <div
+                                                style="
+                                            font-size:11px;
+                                            font-weight:700;
+                                            text-transform:uppercase;
+                                            letter-spacing:1px;
+                                            color:#888;
+                                            margin-bottom:6px;
+                                        ">
+                                                Configuration ID
+                                            </div>
+
+                                            <div
+                                                style="
+                                            font-size:14px;
+                                            font-weight:600;
+                                            color:#222;
+                                        ">
+                                                #{{ $workflow->configuration_id }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- BOTTOM CENTER BUTTON --}}
+                        <div
+                                style="
+                            display:flex;
+                            justify-content:center;
+                            margin-top:30px;
+                        ">
+
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#logicManagerModal"
+                                style="
+                                height:48px;
+                                padding:0 18px;
+                                border-radius:24px;
                                 background:#000;
                                 color:#fff;
                                 border:none;
                                 display:flex;
                                 align-items:center;
                                 justify-content:center;
-                                gap:9px;
-                                font-size:14px;
-                                font-weight:600;
-                                cursor:pointer;
-                                transition:all .3s ease;
-                            "
-                            onmouseover="
-                                this.style.background='#28a745';
-                                this.style.transform='translateY(-2px)';
-                                this.querySelector('.edit-icon').style.transform='rotate(-8deg)';
-                            "
-                            onmouseout="
-                                this.style.background='#000';
-                                this.style.transform='translateY(0)';
-                                this.querySelector('.edit-icon').style.transform='rotate(0deg)';
-                            "
-                        >
-
-                            <i
-                                class="fas fa-edit edit-icon"
-                                style="transition:transform .3s ease;"
-                            ></i>
-
-                            <span>Edit Workflow</span>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- WORKFLOW FLOW --}}
-            <div style="
-                background:#fff;
-                border:1px solid #e9ecef;
-                border-radius:16px;
-                padding:28px;
-                box-shadow:0 4px 18px rgba(0,0,0,0.04);
-            ">
-
-                <div style="
-                    font-size:11px;
-                    font-weight:700;
-                    letter-spacing:1.5px;
-                    text-transform:uppercase;
-                    color:#888;
-                    margin-bottom:22px;
-                ">
-                    Workflow Configuration
-                </div>
-
-
-                {{-- FLOW --}}
-                <div style="
-                    display:flex;
-                    align-items:stretch;
-                    gap:18px;
-                    width:100%;
-                    min-width:850px;
-                ">
-
-                    {{-- INPUT --}}
-                    <div style="
-                        flex:1;
-                        min-width:0;
-                        border:1px solid #e5e7eb;
-                        border-radius:14px;
-                        padding:20px;
-                        background:#fafafa;
-                    ">
-
-                        <div style="
-                            display:flex;
-                            align-items:center;
-                            gap:9px;
-                            margin-bottom:16px;
-                        ">
-
-                            <span style="
-                                width:10px;
-                                height:10px;
-                                min-width:10px;
-                                border-radius:50%;
-                                background:#AEF09D;
-                            "></span>
-
-                            <span style="
-                                font-size:13px;
-                                font-weight:700;
-                                color:#222;
-                            ">
-                                INPUT CONNECTORS
-                            </span>
-
-                        </div>
-
-
-                        <div style="
-                            display:flex;
-                            flex-direction:column;
-                            gap:9px;
-                            max-height:280px;
-                            overflow-y:auto;
-                            padding-right:4px;
-                        ">
-
-                            @forelse (($workflow->inputs ?? []) as $input)
-
-                                <div style="
-                                    background:#fff;
-                                    border:1px solid #e5e7eb;
-                                    border-radius:10px;
-                                    padding:11px 13px;
-                                    display:flex;
-                                    align-items:flex-start;
-                                    gap:9px;
-                                    font-size:13px;
-                                    font-weight:600;
-                                    color:#222;
-                                    overflow-wrap:anywhere;
-                                    word-break:break-word;
-                                ">
-
-                                    <span style="
-                                        width:7px;
-                                        height:7px;
-                                        min-width:7px;
-                                        border-radius:50%;
-                                        background:#AEF09D;
-                                        margin-top:5px;
-                                    "></span>
-
-                                    <span>
-                                        {{ $input }}
-                                    </span>
-
-                                </div>
-
-                            @empty
-
-                                <div style="
-                                    padding:15px;
-                                    color:#888;
-                                    font-size:13px;
-                                    background:#fff;
-                                    border:1px dashed #ddd;
-                                    border-radius:10px;
-                                ">
-                                    No input connectors
-                                </div>
-
-                            @endforelse
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- ARROW --}}
-                    <div style="
-                        width:55px;
-                        min-width:55px;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                    ">
-
-                        <div style="
-                            width:42px;
-                            height:42px;
-                            border-radius:50%;
-                            background:#000;
-                            color:#fff;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                        ">
-                            <i class="fas fa-arrow-right" style="font-size:14px;"></i>
-                        </div>
-
-                    </div>
-
-
-                    {{-- CONFIGURATION --}}
-                    <div style="
-                        flex:1;
-                        min-width:0;
-                        border:1px solid #e5e7eb;
-                        border-radius:14px;
-                        padding:20px;
-                        background:#fafafa;
-                    ">
-
-                        <div style="
-                            display:flex;
-                            align-items:center;
-                            gap:9px;
-                            margin-bottom:16px;
-                        ">
-
-                            <span style="
-                                width:10px;
-                                height:10px;
-                                min-width:10px;
-                                border-radius:50%;
-                                background:#391773;
-                            "></span>
-
-                            <span style="
-                                font-size:13px;
-                                font-weight:700;
-                                color:#222;
-                            ">
-                                CONFIGURATION
-                            </span>
-
-                        </div>
-
-
-                        <div style="
-                            background:#fff;
-                            border:1px solid #e5e7eb;
-                            border-radius:10px;
-                            padding:15px;
-                        ">
-
-                            <div style="
+                                gap:10px;
                                 font-size:15px;
-                                font-weight:700;
-                                color:#222;
-                                overflow-wrap:anywhere;
-                                word-break:break-word;
+                                cursor:pointer;
+                                transition:background .3s ease;
+                            "
+                                onmouseover="
+                                this.style.background='#28a745';
+                                this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)';
+                            "
+                                onmouseout="
+                                this.style.background='#000';
+                                this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)';
                             ">
-                                {{ $workflow->config_name ?: 'No configuration selected' }}
-                            </div>
 
-                            <div style="
-                                margin-top:6px;
-                                font-size:12px;
-                                color:#777;
-                            ">
-                                Configuration #{{ $workflow->configuration_id }}
-                            </div>
+                                <i class="fa fa-plus plus-icon" style="transition:transform .3s ease;"></i>
+
+                                <span>Create Workflow</span>
+
+                            </button>
 
                         </div>
 
                     </div>
-
-
-                    {{-- ARROW --}}
-                    <div style="
-                        width:55px;
-                        min-width:55px;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                    ">
-
-                        <div style="
-                            width:42px;
-                            height:42px;
-                            border-radius:50%;
-                            background:#000;
-                            color:#fff;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                        ">
-                            <i class="fas fa-arrow-right" style="font-size:14px;"></i>
-                        </div>
-
-                    </div>
-
-
-                    {{-- OUTPUT --}}
-                    <div style="
-                        flex:1;
-                        min-width:0;
-                        border:1px solid #e5e7eb;
-                        border-radius:14px;
-                        padding:20px;
-                        background:#fafafa;
-                    ">
-
-                        <div style="
-                            display:flex;
-                            align-items:center;
-                            gap:9px;
-                            margin-bottom:16px;
-                        ">
-
-                            <span style="
-                                width:10px;
-                                height:10px;
-                                min-width:10px;
-                                border-radius:50%;
-                                background:#E94E1B;
-                            "></span>
-
-                            <span style="
-                                font-size:13px;
-                                font-weight:700;
-                                color:#222;
-                            ">
-                                OUTPUT CONNECTORS
-                            </span>
-
-                        </div>
-
-
-                        <div style="
-                            display:flex;
-                            flex-direction:column;
-                            gap:9px;
-                            max-height:280px;
-                            overflow-y:auto;
-                            padding-right:4px;
-                        ">
-
-                            @forelse (($workflow->outputs ?? []) as $output)
-
-                                <div style="
-                                    background:#fff;
-                                    border:1px solid #e5e7eb;
-                                    border-radius:10px;
-                                    padding:11px 13px;
-                                    display:flex;
-                                    align-items:flex-start;
-                                    gap:9px;
-                                    font-size:13px;
-                                    font-weight:600;
-                                    color:#222;
-                                    overflow-wrap:anywhere;
-                                    word-break:break-word;
-                                ">
-
-                                    <span style="
-                                        width:7px;
-                                        height:7px;
-                                        min-width:7px;
-                                        border-radius:50%;
-                                        background:#E94E1B;
-                                        margin-top:5px;
-                                    "></span>
-
-                                    <span>
-                                        {{ $output }}
-                                    </span>
-
-                                </div>
-
-                            @empty
-
-                                <div style="
-                                    padding:15px;
-                                    color:#888;
-                                    font-size:13px;
-                                    background:#fff;
-                                    border:1px dashed #ddd;
-                                    border-radius:10px;
-                                ">
-                                    No output connectors
-                                </div>
-
-                            @endforelse
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                {{-- WORKFLOW DETAILS --}}
-                <div style="
-                    display:grid;
-                    grid-template-columns:repeat(3,1fr);
-                    gap:14px;
-                    margin-top:22px;
-                ">
-
-                    {{-- USAGE --}}
-                    <div style="
-                        border:1px solid #e5e7eb;
-                        border-radius:12px;
-                        padding:15px 17px;
-                        background:#fafafa;
-                    ">
-
-                        <div style="
-                            font-size:11px;
-                            font-weight:700;
-                            text-transform:uppercase;
-                            letter-spacing:1px;
-                            color:#888;
-                            margin-bottom:6px;
-                        ">
-                            Usage
-                        </div>
-
-                        <div style="
-                            font-size:18px;
-                            font-weight:700;
-                            color:#222;
-                        ">
-                            {{ $workflow->usage_count ?? 0 }}
-                        </div>
-
-                    </div>
-
-
-                    {{-- USER --}}
-                    <div style="
-                        border:1px solid #e5e7eb;
-                        border-radius:12px;
-                        padding:15px 17px;
-                        background:#fafafa;
-                    ">
-
-                        <div style="
-                            font-size:11px;
-                            font-weight:700;
-                            text-transform:uppercase;
-                            letter-spacing:1px;
-                            color:#888;
-                            margin-bottom:6px;
-                        ">
-                            User
-                        </div>
-
-                        <div style="
-                            font-size:14px;
-                            font-weight:600;
-                            color:#222;
-                            overflow-wrap:anywhere;
-                            word-break:break-word;
-                        ">
-                            {{ $workflow->user_identifier ?: 'N/A' }}
-                        </div>
-
-                    </div>
-
-
-                    {{-- CONFIG ID --}}
-                    <div style="
-                        border:1px solid #e5e7eb;
-                        border-radius:12px;
-                        padding:15px 17px;
-                        background:#fafafa;
-                    ">
-
-                        <div style="
-                            font-size:11px;
-                            font-weight:700;
-                            text-transform:uppercase;
-                            letter-spacing:1px;
-                            color:#888;
-                            margin-bottom:6px;
-                        ">
-                            Configuration ID
-                        </div>
-
-                        <div style="
-                            font-size:14px;
-                            font-weight:600;
-                            color:#222;
-                        ">
-                            #{{ $workflow->configuration_id }}
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    {{-- BOTTOM CENTER BUTTON --}}
-    <div style="
-        display:flex;
-        justify-content:center;
-        margin-top:30px;
-    ">
-
-        <button
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#logicManagerModal"
-            style="
-                height:48px;
-                padding:0 18px;
-                border-radius:24px;
-                background:#000;
-                color:#fff;
-                border:none;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                gap:10px;
-                font-size:15px;
-                cursor:pointer;
-                transition:background .3s ease;
-            "
-            onmouseover="
-                this.style.background='#28a745';
-                this.querySelector('.plus-icon').style.transform='rotate(90deg) scale(1.15)';
-            "
-            onmouseout="
-                this.style.background='#000';
-                this.querySelector('.plus-icon').style.transform='rotate(0deg) scale(1)';
-            "
-        >
-
-            <i
-                class="fa fa-plus plus-icon"
-                style="transition:transform .3s ease;"
-            ></i>
-
-            <span>Create Workflow</span>
-
-        </button>
-
-    </div>
-
-</div>
                 </div>
             </div>
         </div>
@@ -1178,14 +1211,11 @@
                             {{-- CONFIGURATION --}}
                             <div style="margin-bottom:25px;">
 
-                                <label class="form-label"
-                                    style="font-weight:600;color:#333;margin-bottom:8px;">
+                                <label class="form-label" style="font-weight:600;color:#333;margin-bottom:8px;">
                                     Configuration <span style="color:#dc3545;">*</span>
                                 </label>
 
-                                <select name="configuration_id"
-                                    id="editWorkflowConfiguration"
-                                    class="form-select"
+                                <select name="configuration_id" id="editWorkflowConfiguration" class="form-select"
                                     required
                                     style="height:48px;border-radius:10px;border:1px solid #dee2e6;padding:0 14px;cursor:pointer;">
 
@@ -1194,11 +1224,9 @@
                                     </option>
 
                                     @foreach ($configs as $config)
-
                                         <option value="{{ $config->id }}">
-                                            {{ $config->config_name ?? $config->file_name ?? 'Configuration #'.$config->id }}
+                                            {{ $config->config_name ?? ($config->file_name ?? 'Configuration #' . $config->id) }}
                                         </option>
-
                                     @endforeach
 
                                 </select>

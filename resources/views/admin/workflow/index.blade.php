@@ -192,6 +192,26 @@
                                                 text-align:center;
                                                 min-width:220px;
                                             ">
+                                            Status Reports
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                text-align:center;
+                                                min-width:220px;
+                                            ">
+                                            Use Parameters
+                                        </th>
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                border:none;
+                                                text-align:center;
+                                                min-width:220px;
+                                            ">
                                             Action
                                         </th>
 
@@ -679,6 +699,91 @@
                                                         word-break:break-word;
                                                     ">
                                                     {{ $workflow->user_identifier }}
+                                                </div>
+
+                                            </td>
+
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:150px;
+                                                ">
+
+                                                <div
+                                                    style="
+                                                        padding:9px 11px;
+                                                        background:#f8f9fa;
+                                                        border:1px solid #e5e7eb;
+                                                        border-radius:8px;
+                                                        font-size:13px;
+                                                        font-weight:500;
+                                                        color:#495057;
+                                                        overflow-wrap:anywhere;
+                                                        word-break:break-word;
+                                                    ">
+                                                    Link here
+                                                </div>
+
+                                            </td>
+
+                                            <td
+                                                style="
+                                                    padding:18px;
+                                                    vertical-align:top;
+                                                    min-width:150px;
+                                                ">
+
+                                                  <div
+                                                    style="
+                                                        display:flex;
+                                                        gap:14px;
+                                                        justify-content:center;
+                                                        align-items:center;
+                                                        flex-wrap:wrap;
+                                                    ">
+
+                                                    
+
+                                                    {{-- VIEW --}}
+                                                    <a href="{{ route('admin.workflow.configuration.use', ['config_id' => $workflow?->configuration_id]) }}"
+                                                        style="
+                                                                display:inline-flex;
+                                                                align-items:center;
+                                                                gap:7px;
+                                                                padding:8px 4px;
+                                                                color:#329b40;
+                                                                font-size:14px;
+                                                                font-weight:600;
+                                                                text-decoration:none;
+                                                                border-bottom:1px solid transparent;
+                                                                transition:all .25s ease;
+                                                                white-space:nowrap;
+                                                            "
+                                                        onmouseover="
+                                                                this.style.color='#267a32';
+                                                                this.style.borderBottomColor='#329b40';
+                                                                this.querySelector('.action-arrow').style.transform='translateX(4px)';
+                                                            "
+                                                        onmouseout="
+                                                                this.style.color='#329b40';
+                                                                this.style.borderBottomColor='transparent';
+                                                                this.querySelector('.action-arrow').style.transform='translateX(0)';
+                                                            ">
+
+                                                        <i class="fas fa-eye"></i>
+
+                                                        <span>Use</span>
+
+                                                        <i class="fas fa-arrow-right action-arrow"
+                                                            style="
+                                                                    font-size:12px;
+                                                                    transition:transform .25s ease;
+                                                                ">
+                                                        </i>
+
+                                                    </a>
+
                                                 </div>
 
                                             </td>

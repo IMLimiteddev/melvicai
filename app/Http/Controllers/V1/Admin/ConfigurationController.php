@@ -323,7 +323,7 @@ class ConfigurationController extends Controller
 
 
             $config->update([
-                'configured_data'   => $data,
+                'configured_data'   => $data['Submitted_config_json'],
                 'validation_data'   => $data['Validation_Warnings'],
                 'output_file_path'  => $storagePath,
                 'status'            => 'active',
@@ -577,6 +577,9 @@ class ConfigurationController extends Controller
             'response'     => $config->configured_data,
             'originalName' => $config->file_name,
             'id'           => $config->id,
+            'configuration'=> $config,
+            'validation'=>$config->validation_data
+            // 'txt_name' => $config->
         ]);
 
 

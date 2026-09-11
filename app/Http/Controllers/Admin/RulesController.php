@@ -436,22 +436,47 @@ class RulesController extends Controller
         //         ->header('Content-Disposition', 'attachment; filename="' . basename($filename) . '"');
         // }
 
-       public function downloadOutputFile($filename)
-       {
-            // dd($filename, $id);
-            // find the scanned suggested result by id and save the filename to the txt_file column
-            // if ($id) {
-            //     $result = ScannedSuggestedResult::findOrFail($id);
+      public function downloadOutputFile($filename)
+{
 
-            //     $result->txt_file = $filename;
-            //     $result->save();
-            // }
+// dd($filename);
+    try {
 
-           
-            return redirect()->away(
-                'http://76.13.131.17:32775/download/output_file/' . rawurlencode($filename)
+        $url = 'http://76.13.131.17:32775/download/output_file/' .
+            rawurlencode($filename);
+
+        $response = Http::timeout(300)->get($url);
+
+        if (!$response->successful()) {
+
+            return redirect()
+                ->back()
+                ->with(
+                    'error',
+                    'Unable to download the output file.'
+                );
+        }
+
+        return response(
+            $response->body(),
+            200,
+            [
+                'Content-Type' => 'text/plain',
+                'Content-Disposition' => 'attachment; filename="' . basename($filename) . '"',
+                'Content-Length' => strlen($response->body()),
+            ]
+        );
+
+    } catch (\Throwable $e) {
+
+        return redirect()
+            ->back()
+            ->with(
+                'error',
+                'Unable to download the output file: ' . $e->getMessage()
             );
     }
+}
 
 
         //the new rule service index page
@@ -892,7 +917,6 @@ class RulesController extends Controller
                 $result = ScannedSuggestedResult::findOrFail($id);
 
              
-
                 $config = $result->suggested_data;
 
                 // Decode JSON if stored as string
@@ -1064,4 +1088,6 @@ class RulesController extends Controller
                 ], 500);
             }
         }
+
+
 }

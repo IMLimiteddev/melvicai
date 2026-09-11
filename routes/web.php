@@ -179,12 +179,16 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
         [WorkflowController::class, 'connectorSuggestions']
     )->name('admin.workflow.connector.suggestions');
 
-    Route::post(
-    '/configuration/activate',
-    [WorkflowController::class, 'activateConfiguration']
-)->name('admin.workflow.configuration.activate');
+    Route::post('/configuration/activate',[WorkflowController::class, 'activateConfiguration'])
+    ->name('admin.workflow.configuration.activate');
 
-    
+    // change the naming
+    Route::get('/configuration/use-config/{config_id?}',[WorkflowController::class, 'useParameterView'])
+    ->name('admin.workflow.configuration.use');
+
+
+    Route::post('/configuration/use-config/process/{config_id?}',[WorkflowController::class, 'useParameterProcessConfig'])
+    ->name('admin.workflow.configuration.process.use');
 
 });
 
