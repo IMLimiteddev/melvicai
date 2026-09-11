@@ -761,724 +761,726 @@
     </div> --}}
 
     {{-- ========================================================= --}}
-{{-- VERB MANAGER MODAL --}}
-{{-- ========================================================= --}}
+    {{-- VERB MANAGER MODAL --}}
+    {{-- ========================================================= --}}
 
-<div
-    class="modal fade"
-    id="logicManagerModal"
-    tabindex="-1"
-    aria-labelledby="logicManagerModalLabel"
-    aria-hidden="true"
->
+    <div
+        class="modal fade"
+        id="logicManagerModal"
+        tabindex="-1"
+        aria-labelledby="logicManagerModalLabel"
+        aria-hidden="true"
+    >
 
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-
-        <div
-            class="modal-content"
-            style="
-                border:none;
-                border-radius:18px;
-                overflow:hidden;
-                box-shadow:0 15px 50px rgba(0,0,0,.18);
-            "
-        >
-
-            {{-- ================================================= --}}
-            {{-- HEADER --}}
-            {{-- ================================================= --}}
+        <div class="modal-dialog modal-xl modal-dialog-centered">
 
             <div
-                class="modal-header"
+                class="modal-content"
                 style="
-                    padding:22px 25px;
-                    background:#f8f8f8;
-                    border-bottom:1px solid #e5e5e5;
+                    border:none;
+                    border-radius:18px;
+                    overflow:hidden;
+                    box-shadow:0 15px 50px rgba(0,0,0,.18);
                 "
             >
 
-                <div>
+                {{-- ================================================= --}}
+                {{-- HEADER --}}
+                {{-- ================================================= --}}
 
-                    <h4
-                        class="modal-title"
-                        id="logicManagerModalLabel"
+                <div
+                    class="modal-header"
+                    style="
+                        padding:22px 25px;
+                        background:#f8f8f8;
+                        border-bottom:1px solid #e5e5e5;
+                    "
+                >
+
+                    <div>
+
+                        <h4
+                            class="modal-title"
+                            id="logicManagerModalLabel"
+                            style="
+                                margin:0;
+                                font-weight:600;
+                                color:#222;
+                            "
+                        >
+                            <i
+                                class="fa fa-cogs"
+                                style="margin-right:8px;"
+                            ></i>
+
+                            Verb Manager
+                        </h4>
+
+                        <p
+                            style="
+                                margin:5px 0 0 0;
+                                color:#777;
+                                font-size:14px;
+                            "
+                        >
+                            Manage the operators and actions used by your workflow.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
                         style="
-                            margin:0;
-                            font-weight:600;
-                            color:#222;
+                            width:38px;
+                            height:38px;
+                            border:none;
+                            border-radius:50%;
+                            background:#000;
+                            color:#fff;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            cursor:pointer;
+                            transition:background .3s ease, transform .2s ease;
+                        "
+                        onmouseover="
+                            this.style.background='#dc3545';
+                            this.style.transform='rotate(90deg)';
+                        "
+                        onmouseout="
+                            this.style.background='#000';
+                            this.style.transform='rotate(0deg)';
                         "
                     >
-                        <i
-                            class="fa fa-cogs"
-                            style="margin-right:8px;"
-                        ></i>
-
-                        Verb Manager
-                    </h4>
-
-                    <p
-                        style="
-                            margin:5px 0 0 0;
-                            color:#777;
-                            font-size:14px;
-                        "
-                    >
-                        Manage the operators and actions used by your workflow.
-                    </p>
+                        <i class="fa fa-times"></i>
+                    </button>
 
                 </div>
 
 
-                <button
-                    type="button"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                    style="
-                        width:38px;
-                        height:38px;
-                        border:none;
-                        border-radius:50%;
-                        background:#000;
-                        color:#fff;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        cursor:pointer;
-                        transition:background .3s ease, transform .2s ease;
-                    "
-                    onmouseover="
-                        this.style.background='#dc3545';
-                        this.style.transform='rotate(90deg)';
-                    "
-                    onmouseout="
-                        this.style.background='#000';
-                        this.style.transform='rotate(0deg)';
-                    "
-                >
-                    <i class="fa fa-times"></i>
-                </button>
-
-            </div>
-
-
-            {{-- ================================================= --}}
-            {{-- BODY --}}
-            {{-- ================================================= --}}
-
-            <div
-                class="modal-body"
-                style="
-                    padding:25px;
-                    background:#fff;
-                "
-            >
-
-                {{-- Success / Error Message --}}
-
-                <div
-                    id="verbManagerMessage"
-                    style="
-                        display:none;
-                        margin-bottom:20px;
-                        padding:12px 16px;
-                        border-radius:10px;
-                        font-size:14px;
-                    "
-                ></div>
-
-
                 {{-- ================================================= --}}
-                {{-- TABLE --}}
+                {{-- BODY --}}
                 {{-- ================================================= --}}
 
                 <div
+                    class="modal-body"
                     style="
-                        border:1px solid #e3e3e3;
-                        border-radius:12px;
-                        overflow:hidden;
+                        padding:25px;
+                        background:#fff;
                     "
                 >
+
+                    {{-- Success / Error Message --}}
+
+                    <div
+                        id="verbManagerMessage"
+                        style="
+                            display:none;
+                            margin-bottom:20px;
+                            padding:12px 16px;
+                            border-radius:10px;
+                            font-size:14px;
+                        "
+                    ></div>
+
+
+                    {{-- ================================================= --}}
+                    {{-- TABLE --}}
+                    {{-- ================================================= --}}
 
                     <div
                         style="
-                            overflow-x:auto;
+                            border:1px solid #e3e3e3;
+                            border-radius:12px;
+                            overflow:hidden;
                         "
                     >
 
-                        <table
+                        <div
                             style="
-                                width:100%;
-                                border-collapse:collapse;
-                                margin:0;
+                                overflow-x:auto;
                             "
                         >
 
-                            <thead>
+                            <table
+                                style="
+                                    width:100%;
+                                    border-collapse:collapse;
+                                    margin:0;
+                                "
+                            >
 
-                                <tr
-                                    style="
-                                        background:#f7f7f7;
-                                        border-bottom:1px solid #ddd;
-                                    "
-                                >
-
-                                    <th
-                                        style="
-                                            padding:15px;
-                                            text-align:left;
-                                            font-size:13px;
-                                            font-weight:600;
-                                            color:#555;
-                                            width:70px;
-                                        "
-                                    >
-                                        S/N
-                                    </th>
-
-
-                                    <th
-                                        style="
-                                            padding:15px;
-                                            text-align:left;
-                                            font-size:13px;
-                                            font-weight:600;
-                                            color:#555;
-                                            width:180px;
-                                        "
-                                    >
-                                        Type
-                                    </th>
-
-
-                                    <th
-                                        style="
-                                            padding:15px;
-                                            text-align:left;
-                                            font-size:13px;
-                                            font-weight:600;
-                                            color:#555;
-                                            width:220px;
-                                        "
-                                    >
-                                        Name
-                                    </th>
-
-
-                                    <th
-                                        style="
-                                            padding:15px;
-                                            text-align:left;
-                                            font-size:13px;
-                                            font-weight:600;
-                                            color:#555;
-                                        "
-                                    >
-                                        Meaning
-                                    </th>
-
-
-                                    <th
-                                        style="
-                                            padding:15px;
-                                            text-align:left;
-                                            font-size:13px;
-                                            font-weight:600;
-                                            color:#555;
-                                            width:170px;
-                                        "
-                                    >
-                                        Creator
-                                    </th>
-
-
-                                    <th
-                                        style="
-                                            padding:15px;
-                                            text-align:center;
-                                            font-size:13px;
-                                            font-weight:600;
-                                            color:#555;
-                                            width:150px;
-                                        "
-                                    >
-                                        Action
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody id="verbTableBody">
-
-                                @forelse($verbs as $verb)
+                                <thead>
 
                                     <tr
-                                        id="row-{{ $verb->id }}"
-                                        data-id="{{ $verb->id }}"
                                         style="
-                                            border-bottom:1px solid #eee;
+                                            background:#f7f7f7;
+                                            border-bottom:1px solid #ddd;
                                         "
                                     >
 
-                                        {{-- S/N --}}
-
-                                        <td
-                                            class="serial-number"
+                                        <th
                                             style="
-                                                padding:14px 15px;
-                                                color:#666;
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:70px;
                                             "
                                         >
-                                            {{ $loop->iteration }}
-                                        </td>
+                                            S/N
+                                        </th>
 
 
-                                        {{-- TYPE --}}
-
-                                        <td style="padding:14px 15px;">
-
-                                            <span
-                                                class="view type-text"
-                                                style="color:#333;"
-                                            >
-                                                {{ $verb->type }}
-                                            </span>
-
-
-                                            <select
-                                                class="edit type-input"
-                                                style="
-                                                    display:none;
-                                                    width:100%;
-                                                    height:40px;
-                                                    padding:0 12px;
-                                                    border:1px solid #ccc;
-                                                    border-radius:8px;
-                                                    outline:none;
-                                                    background:#fff;
-                                                "
-                                            >
-
-                                                <option
-                                                    value="Operator"
-                                                    {{ $verb->type === 'Operator' ? 'selected' : '' }}
-                                                >
-                                                    Operator
-                                                </option>
-
-                                                <option
-                                                    value="Action"
-                                                    {{ $verb->type === 'Action' ? 'selected' : '' }}
-                                                >
-                                                    Action
-                                                </option>
-
-                                            </select>
-
-                                        </td>
-
-
-                                        {{-- NAME --}}
-
-                                        <td style="padding:14px 15px;">
-
-                                            <span
-                                                class="view verb-text"
-                                                style="color:#333;"
-                                            >
-                                                {{ $verb->verb ?? '-' }}
-                                            </span>
-
-
-                                            <input
-                                                type="text"
-                                                class="edit verb-input"
-                                                value="{{ $verb->verb }}"
-                                                style="
-                                                    display:none;
-                                                    width:100%;
-                                                    height:40px;
-                                                    padding:0 12px;
-                                                    border:1px solid #ccc;
-                                                    border-radius:8px;
-                                                    outline:none;
-                                                "
-                                            >
-
-                                        </td>
-
-
-                                        {{-- MEANING --}}
-
-                                        <td style="padding:14px 15px;">
-
-                                            <span
-                                                class="view meaning-text"
-                                                style="color:#666;"
-                                            >
-                                                {{ $verb->meaning ?? '-' }}
-                                            </span>
-
-
-                                            <input
-                                                type="text"
-                                                class="edit meaning-input"
-                                                value="{{ $verb->meaning }}"
-                                                style="
-                                                    display:none;
-                                                    width:100%;
-                                                    height:40px;
-                                                    padding:0 12px;
-                                                    border:1px solid #ccc;
-                                                    border-radius:8px;
-                                                    outline:none;
-                                                "
-                                            >
-
-                                        </td>
-
-
-                                        {{-- CREATOR --}}
-
-                                        <td
+                                        <th
                                             style="
-                                                padding:14px 15px;
-                                                color:#666;
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:180px;
                                             "
                                         >
-                                            {{ optional($verb->user)->name ?? ($verb->user_id ?? 'Unknown') }}
-                                        </td>
+                                            Type
+                                        </th>
 
 
-                                        {{-- ACTIONS --}}
-
-                                        <td
+                                        <th
                                             style="
-                                                padding:14px 15px;
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:220px;
+                                            "
+                                        >
+                                            Name
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                            "
+                                        >
+                                            Meaning
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:170px;
+                                            "
+                                        >
+                                            Creator
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
                                                 text-align:center;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:150px;
                                             "
                                         >
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="verbTableBody">
+
+                                    @forelse($verbs as $verb)
+
+                                        <tr
+                                            id="row-{{ $verb->id }}"
+                                            data-id="{{ $verb->id }}"
+                                            style="
+                                                border-bottom:1px solid #eee;
+                                            "
+                                        >
+
+                                            {{-- S/N --}}
+
+                                            <td
+                                                class="serial-number"
+                                                style="
+                                                    padding:14px 15px;
+                                                    color:#666;
+                                                "
+                                            >
+                                                {{ $loop->iteration }}
+                                            </td>
+
+
+                                            {{-- TYPE --}}
+
+                                            <td style="padding:14px 15px;">
+
+                                                <span
+                                                    class="view type-text"
+                                                    style="color:#333;"
+                                                >
+                                                    {{ $verb->type }}
+                                                </span>
+
+
+                                                <select
+                                                    class="edit type-input"
+                                                    style="
+                                                        display:none;
+                                                        width:100%;
+                                                        height:40px;
+                                                        padding:0 12px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:8px;
+                                                        outline:none;
+                                                        background:#fff;
+                                                    "
+                                                >
+
+                                                    <option
+                                                        value="Operator"
+                                                        {{ $verb->type === 'Operator' ? 'selected' : '' }}
+                                                    >
+                                                        Operator
+                                                    </option>
+
+                                                    <option
+                                                        value="Action"
+                                                        {{ $verb->type === 'Action' ? 'selected' : '' }}
+                                                    >
+                                                        Action
+                                                    </option>
+
+                                                </select>
+
+                                            </td>
+
+
+                                            {{-- NAME --}}
+
+                                            <td style="padding:14px 15px;">
+
+                                                <span
+                                                    class="view verb-text"
+                                                    style="color:#333;"
+                                                >
+                                                    {{ $verb->verb ?? '-' }}
+                                                </span>
+
+
+                                                <input
+                                                    type="text"
+                                                    class="edit verb-input"
+                                                    value="{{ $verb->verb }}"
+                                                    style="
+                                                        display:none;
+                                                        width:100%;
+                                                        height:40px;
+                                                        padding:0 12px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:8px;
+                                                        outline:none;
+                                                    "
+                                                >
+
+                                            </td>
+
+
+                                            {{-- MEANING --}}
+
+                                            <td style="padding:14px 15px;">
+
+                                                <span
+                                                    class="view meaning-text"
+                                                    style="color:#666;"
+                                                >
+                                                    {{ $verb->meaning ?? '-' }}
+                                                </span>
+
+
+                                                <input
+                                                    type="text"
+                                                    class="edit meaning-input"
+                                                    value="{{ $verb->meaning }}"
+                                                    style="
+                                                        display:none;
+                                                        width:100%;
+                                                        height:40px;
+                                                        padding:0 12px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:8px;
+                                                        outline:none;
+                                                    "
+                                                >
+
+                                            </td>
+
+
+                                            {{-- CREATOR --}}
+
+                                            <td
+                                                style="
+                                                    padding:14px 15px;
+                                                    color:#666;
+                                                "
+                                            >
+                                                {{ optional($verb->user)->name ?? ($verb->user_id ?? 'Unknown') }}
+                                            </td>
+
+
+                                            {{-- ACTIONS --}}
+
+                                            <td
+                                                style="
+                                                    padding:14px 15px;
+                                                    text-align:center;
+                                                "
+                                            >
+
+                                                <div
+                                                    style="
+                                                        display:flex;
+                                                        justify-content:center;
+                                                        align-items:center;
+                                                        gap:7px;
+                                                    "
+                                                >
+
+                                                    {{-- EDIT --}}
+
+                                                    <button
+                                                        type="button"
+                                                        class="verb-edit-btn"
+                                                        data-id="{{ $verb->id }}"
+                                                        style="
+                                                            width:38px;
+                                                            height:38px;
+                                                            border:none;
+                                                            border-radius:50%;
+                                                            background:#000;
+                                                            color:#fff;
+                                                            display:flex;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            cursor:pointer;
+                                                            transition:background .3s ease, transform .2s ease;
+                                                        "
+                                                        onmouseover="
+                                                            this.style.background='#28a745';
+                                                            this.style.transform='scale(1.08)';
+                                                        "
+                                                        onmouseout="
+                                                            this.style.background='#000';
+                                                            this.style.transform='scale(1)';
+                                                        "
+                                                    >
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+
+
+                                                    {{-- SAVE EDIT --}}
+
+                                                    <button
+                                                        type="button"
+                                                        class="verb-save-btn"
+                                                        data-id="{{ $verb->id }}"
+                                                        style="
+                                                            display:none;
+                                                            width:38px;
+                                                            height:38px;
+                                                            border:none;
+                                                            border-radius:50%;
+                                                            background:#000;
+                                                            color:#fff;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            cursor:pointer;
+                                                            transition:background .3s ease, transform .2s ease;
+                                                        "
+                                                        onmouseover="
+                                                            this.style.background='#28a745';
+                                                            this.style.transform='scale(1.08)';
+                                                        "
+                                                        onmouseout="
+                                                            this.style.background='#000';
+                                                            this.style.transform='scale(1)';
+                                                        "
+                                                    >
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+
+
+                                                    {{-- DELETE --}}
+
+                                                    <button
+                                                        type="button"
+                                                        class="verb-delete-btn"
+                                                        data-id="{{ $verb->id }}"
+                                                        style="
+                                                            width:38px;
+                                                            height:38px;
+                                                            border:none;
+                                                            border-radius:50%;
+                                                            background:#000;
+                                                            color:#fff;
+                                                            display:flex;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            cursor:pointer;
+                                                            transition:background .3s ease, transform .2s ease;
+                                                        "
+                                                        onmouseover="
+                                                            this.style.background='#dc3545';
+                                                            this.style.transform='scale(1.08)';
+                                                        "
+                                                        onmouseout="
+                                                            this.style.background='#000';
+                                                            this.style.transform='scale(1)';
+                                                        "
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    @empty
+
+                                        <tr id="noVerbsRow">
+
+                                            <td
+                                                colspan="6"
+                                                style="
+                                                    padding:40px 20px;
+                                                    text-align:center;
+                                                    color:#999;
+                                                "
+                                            >
+                                                No verbs have been added yet.
+                                            </td>
+
+                                        </tr>
+
+                                    @endforelse
+
+                                </tbody>
+
+
+                                {{-- ================================================= --}}
+                                {{-- PLUS ROW --}}
+                                {{-- ================================================= --}}
+
+                                <tfoot>
+
+                                    <tr>
+
+                                        <td
+                                            colspan="6"
+                                            style="
+                                                padding:15px;
+                                                text-align:center;
+                                                background:#fafafa;
+                                            "
+                                        >
+
+                                            <button
+                                                type="button"
+                                                id="addVerbRowBtn"
+                                                style="
+                                                    width:42px;
+                                                    height:42px;
+                                                    border:none;
+                                                    border-radius:50%;
+                                                    background:#000;
+                                                    color:#fff;
+                                                    display:inline-flex;
+                                                    align-items:center;
+                                                    justify-content:center;
+                                                    cursor:pointer;
+                                                    font-size:18px;
+                                                    transition:background .3s ease, transform .2s ease;
+                                                "
+                                                onmouseover="
+                                                    this.style.background='#28a745';
+                                                    this.style.transform='rotate(90deg) scale(1.08)';
+                                                "
+                                                onmouseout="
+                                                    this.style.background='#000';
+                                                    this.style.transform='rotate(0deg) scale(1)';
+                                                "
+                                                title="Add Verb"
+                                            >
+
+                                                <i class="fa fa-plus"></i>
+
+                                            </button>
+
 
                                             <div
                                                 style="
-                                                    display:flex;
-                                                    justify-content:center;
-                                                    align-items:center;
-                                                    gap:7px;
+                                                    margin-top:7px;
+                                                    color:#888;
+                                                    font-size:12px;
                                                 "
                                             >
-
-                                                {{-- EDIT --}}
-
-                                                <button
-                                                    type="button"
-                                                    class="verb-edit-btn"
-                                                    data-id="{{ $verb->id }}"
-                                                    style="
-                                                        width:38px;
-                                                        height:38px;
-                                                        border:none;
-                                                        border-radius:50%;
-                                                        background:#000;
-                                                        color:#fff;
-                                                        display:flex;
-                                                        align-items:center;
-                                                        justify-content:center;
-                                                        cursor:pointer;
-                                                        transition:background .3s ease, transform .2s ease;
-                                                    "
-                                                    onmouseover="
-                                                        this.style.background='#28a745';
-                                                        this.style.transform='scale(1.08)';
-                                                    "
-                                                    onmouseout="
-                                                        this.style.background='#000';
-                                                        this.style.transform='scale(1)';
-                                                    "
-                                                >
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-
-
-                                                {{-- SAVE EDIT --}}
-
-                                                <button
-                                                    type="button"
-                                                    class="verb-save-btn"
-                                                    data-id="{{ $verb->id }}"
-                                                    style="
-                                                        display:none;
-                                                        width:38px;
-                                                        height:38px;
-                                                        border:none;
-                                                        border-radius:50%;
-                                                        background:#000;
-                                                        color:#fff;
-                                                        align-items:center;
-                                                        justify-content:center;
-                                                        cursor:pointer;
-                                                        transition:background .3s ease, transform .2s ease;
-                                                    "
-                                                    onmouseover="
-                                                        this.style.background='#28a745';
-                                                        this.style.transform='scale(1.08)';
-                                                    "
-                                                    onmouseout="
-                                                        this.style.background='#000';
-                                                        this.style.transform='scale(1)';
-                                                    "
-                                                >
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-
-
-                                                {{-- DELETE --}}
-
-                                                <button
-                                                    type="button"
-                                                    class="verb-delete-btn"
-                                                    data-id="{{ $verb->id }}"
-                                                    style="
-                                                        width:38px;
-                                                        height:38px;
-                                                        border:none;
-                                                        border-radius:50%;
-                                                        background:#000;
-                                                        color:#fff;
-                                                        display:flex;
-                                                        align-items:center;
-                                                        justify-content:center;
-                                                        cursor:pointer;
-                                                        transition:background .3s ease, transform .2s ease;
-                                                    "
-                                                    onmouseover="
-                                                        this.style.background='#dc3545';
-                                                        this.style.transform='scale(1.08)';
-                                                    "
-                                                    onmouseout="
-                                                        this.style.background='#000';
-                                                        this.style.transform='scale(1)';
-                                                    "
-                                                >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-
+                                                Add another verb
                                             </div>
 
                                         </td>
 
                                     </tr>
 
-                                @empty
+                                </tfoot>
 
-                                    <tr id="noVerbsRow">
+                            </table>
 
-                                        <td
-                                            colspan="6"
-                                            style="
-                                                padding:40px 20px;
-                                                text-align:center;
-                                                color:#999;
-                                            "
-                                        >
-                                            No verbs have been added yet.
-                                        </td>
-
-                                    </tr>
-
-                                @endforelse
-
-                            </tbody>
-
-
-                            {{-- ================================================= --}}
-                            {{-- PLUS ROW --}}
-                            {{-- ================================================= --}}
-
-                            <tfoot>
-
-                                <tr>
-
-                                    <td
-                                        colspan="6"
-                                        style="
-                                            padding:15px;
-                                            text-align:center;
-                                            background:#fafafa;
-                                        "
-                                    >
-
-                                        <button
-                                            type="button"
-                                            id="addVerbRowBtn"
-                                            style="
-                                                width:42px;
-                                                height:42px;
-                                                border:none;
-                                                border-radius:50%;
-                                                background:#000;
-                                                color:#fff;
-                                                display:inline-flex;
-                                                align-items:center;
-                                                justify-content:center;
-                                                cursor:pointer;
-                                                font-size:18px;
-                                                transition:background .3s ease, transform .2s ease;
-                                            "
-                                            onmouseover="
-                                                this.style.background='#28a745';
-                                                this.style.transform='rotate(90deg) scale(1.08)';
-                                            "
-                                            onmouseout="
-                                                this.style.background='#000';
-                                                this.style.transform='rotate(0deg) scale(1)';
-                                            "
-                                            title="Add Verb"
-                                        >
-
-                                            <i class="fa fa-plus"></i>
-
-                                        </button>
-
-
-                                        <div
-                                            style="
-                                                margin-top:7px;
-                                                color:#888;
-                                                font-size:12px;
-                                            "
-                                        >
-                                            Add another verb
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-
-                            </tfoot>
-
-                        </table>
+                        </div>
 
                     </div>
 
                 </div>
 
-            </div>
 
-
-            {{-- ================================================= --}}
-            {{-- FOOTER --}}
-            {{-- ================================================= --}}
-
-            <div
-                class="modal-footer"
-                style="
-                    padding:18px 25px;
-                    border-top:1px solid #e5e5e5;
-                    background:#fafafa;
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                "
-            >
-
-                <span
-                    id="pendingVerbText"
-                    style="
-                        color:#777;
-                        font-size:13px;
-                    "
-                >
-                    No unsaved changes
-                </span>
-
+                {{-- ================================================= --}}
+                {{-- FOOTER --}}
+                {{-- ================================================= --}}
 
                 <div
+                    class="modal-footer"
                     style="
+                        padding:18px 25px;
+                        border-top:1px solid #e5e5e5;
+                        background:#fafafa;
                         display:flex;
-                        gap:10px;
+                        justify-content:space-between;
+                        align-items:center;
                     "
                 >
 
-                    {{-- DONE --}}
-
-                    <button
-                        type="button"
-                        id="doneVerbBtn"
+                    <span
+                        id="pendingVerbText"
                         style="
-                            height:48px;
-                            padding:0 20px;
-                            border-radius:24px;
-                            background:#000;
-                            color:#fff;
-                            border:none;
+                            color:#777;
+                            font-size:13px;
+                        "
+                    >
+                        No unsaved changes
+                    </span>
+
+
+                    <div
+                        style="
                             display:flex;
-                            align-items:center;
-                            justify-content:center;
                             gap:10px;
-                            font-size:15px;
-                            cursor:pointer;
-                            transition:background .3s ease, transform .2s ease;
-                        "
-                        onmouseover="
-                            this.style.background='#28a745';
-                            this.querySelector('i').style.transform='scale(1.15)';
-                        "
-                        onmouseout="
-                            this.style.background='#000';
-                            this.querySelector('i').style.transform='scale(1)';
                         "
                     >
 
-                        <i
-                            class="fa fa-check"
-                            style="transition:transform .3s ease;"
-                        ></i>
+                        {{-- DONE --}}
 
-                        Done
+                        <button
+                            type="button"
+                            id="doneVerbBtn"
+                            style="
+                                height:48px;
+                                padding:0 20px;
+                                border-radius:24px;
+                                background:#000;
+                                color:#fff;
+                                border:none;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                gap:10px;
+                                font-size:15px;
+                                cursor:pointer;
+                                transition:background .3s ease, transform .2s ease;
+                            "
+                            onmouseover="
+                                this.style.background='#28a745';
+                                this.querySelector('i').style.transform='scale(1.15)';
+                            "
+                            onmouseout="
+                                this.style.background='#000';
+                                this.querySelector('i').style.transform='scale(1)';
+                            "
+                        >
 
-                    </button>
+                            <i
+                                class="fa fa-check"
+                                style="transition:transform .3s ease;"
+                            ></i>
+
+                            Done
+
+                        </button>
 
 
-                    {{-- CLOSE --}}
+                        {{-- CLOSE --}}
 
-                    <button
-                        type="button"
-                        data-bs-dismiss="modal"
-                        style="
-                            height:48px;
-                            padding:0 20px;
-                            border-radius:24px;
-                            background:#000;
-                            color:#fff;
-                            border:none;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            gap:10px;
-                            font-size:15px;
-                            cursor:pointer;
-                            transition:background .3s ease, transform .2s ease;
-                        "
-                        onmouseover="
-                            this.style.background='#dc3545';
-                            this.querySelector('i').style.transform='rotate(10deg) scale(1.1)';
-                        "
-                        onmouseout="
-                            this.style.background='#000';
-                            this.querySelector('i').style.transform='rotate(0deg) scale(1)';
-                        "
-                    >
+                        <button
+                            type="button"
+                            data-bs-dismiss="modal"
+                            style="
+                                height:48px;
+                                padding:0 20px;
+                                border-radius:24px;
+                                background:#000;
+                                color:#fff;
+                                border:none;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                gap:10px;
+                                font-size:15px;
+                                cursor:pointer;
+                                transition:background .3s ease, transform .2s ease;
+                            "
+                            onmouseover="
+                                this.style.background='#dc3545';
+                                this.querySelector('i').style.transform='rotate(10deg) scale(1.1)';
+                            "
+                            onmouseout="
+                                this.style.background='#000';
+                                this.querySelector('i').style.transform='rotate(0deg) scale(1)';
+                            "
+                        >
 
-                        <i
-                            class="fa fa-times"
-                            style="transition:transform .3s ease;"
-                        ></i>
+                            <i
+                                class="fa fa-times"
+                                style="transition:transform .3s ease;"
+                            ></i>
 
-                        Close
+                            Close
 
-                    </button>
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -1487,8 +1489,6 @@
         </div>
 
     </div>
-
-</div>
 
     
     <script>

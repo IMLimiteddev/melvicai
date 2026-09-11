@@ -509,271 +509,601 @@
 
     </div>
 
-    <div class="modal fade" id="logicManagerModal" tabindex="-1" aria-hidden="true">
+     <div
+        class="modal fade"
+        id="logicManagerModal"
+        tabindex="-1"
+        aria-labelledby="logicManagerModalLabel"
+        aria-hidden="true"
+    >
 
         <div class="modal-dialog modal-xl modal-dialog-centered">
 
-            <div class="modal-content">
+            <div
+                class="modal-content"
+                style="
+                    border:none;
+                    border-radius:18px;
+                    overflow:hidden;
+                    box-shadow:0 15px 50px rgba(0,0,0,.18);
+                "
+            >
 
-                <div class="modal-header">
+                {{-- ================================================= --}}
+                {{-- HEADER --}}
+                {{-- ================================================= --}}
 
-                    <h4 class="modal-title">
+                <div
+                    class="modal-header"
+                    style="
+                        padding:22px 25px;
+                        background:#f8f8f8;
+                        border-bottom:1px solid #e5e5e5;
+                    "
+                >
 
-                        <i class="fa fa-cogs me-2"></i>
+                    <div>
 
-                        Verb Manager
+                        <h4
+                            class="modal-title"
+                            id="logicManagerModalLabel"
+                            style="
+                                margin:0;
+                                font-weight:600;
+                                color:#222;
+                            "
+                        >
+                            <i
+                                class="fa fa-cogs"
+                                style="margin-right:8px;"
+                            ></i>
 
-                    </h4>
+                            Verb Manager
+                        </h4>
 
-                    <button class="btn-close" data-bs-dismiss="modal">
+                        <p
+                            style="
+                                margin:5px 0 0 0;
+                                color:#777;
+                                font-size:14px;
+                            "
+                        >
+                            Manage the operators and actions used by your workflow.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        style="
+                            width:38px;
+                            height:38px;
+                            border:none;
+                            border-radius:50%;
+                            background:#000;
+                            color:#fff;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            cursor:pointer;
+                            transition:background .3s ease, transform .2s ease;
+                        "
+                        onmouseover="
+                            this.style.background='#dc3545';
+                            this.style.transform='rotate(90deg)';
+                        "
+                        onmouseout="
+                            this.style.background='#000';
+                            this.style.transform='rotate(0deg)';
+                        "
+                    >
+                        <i class="fa fa-times"></i>
                     </button>
 
                 </div>
 
-                <div class="modal-body">
 
-                    <div class="row">
-
-                        <!-- LEFT PANEL -->
-
-                        <div class="col-md-4">
-
-                            <div class="card shadow-sm">
-
-                                <div class="card-header">
-                                    <strong>Add New Logic</strong>
-                                </div>
-
-                                <div class="card-body">
-
-                                    <form action="{{ route('admin.verb.store') }}" method="POST">
-
-                                        @csrf
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Type <span>*</span></label>
-
-                                            <select class="form-control" name="type" required>
-                                                <option value="">Select Type</option>
-                                                <option value="Operator"
-                                                    {{ old('type') == 'Operator' ? 'selected' : '' }}>
-                                                    Operator
-                                                </option>
-                                                <option value="Action" {{ old('type') == 'Action' ? 'selected' : '' }}>
-                                                    Action
-                                                </option>
-                                            </select>
-
-                                            @error('type')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Name <span>*</span></label>
-
-                                            <input type="text" name="verb" class="form-control"
-                                                placeholder="Contains" value="{{ old('verb') }}" required>
-
-                                            @error('verb')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Meaning <span style="font-style: italic">This is
-                                                    not neccessary and can be ignored.</span></label>
-
-                                            <textarea name="meaning" class="form-control" rows="3" placeholder="Describe what this logic does...">{{ old('meaning') }}</textarea>
-
-                                            @error('meaning')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-
-                                        <button type="submit" class="btn btn-success w-100">
-                                            Save
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- RIGHT PANEL -->
-
-                        <div class="col-md-8">
-
-                            <div class="card shadow-sm">
-
-                                <div class="card-header">
-
-                                    <strong>Existing Logic</strong>
-
-                                </div>
-
-                                <div class="card-body p-0">
-
-                                    <table class="table table-bordered table-hover mb-0">
-
-                                        <thead>
-
-                                            <tr>
-
-                                                <th width="60">
-
-                                                    S/N
-
-                                                </th>
-
-                                                <th>
-
-                                                    Type
-
-                                                </th>
-
-                                                <th>
-
-                                                    Name
-
-                                                </th>
-
-                                                <th>
-
-                                                    Meaning
-
-                                                </th>
-
-                                                <th>
-
-                                                    Creator
-
-                                                </th>
-
-                                                <th width="170">
-
-                                                    Action
-
-                                                </th>
-
-                                            </tr>
-
-                                        </thead>
-
-                                        <tbody>
-                                            @forelse($verbs as $verb)
-                                                <tr id="row-{{ $verb->id }}">
-
-                                                    <td>{{ $loop->iteration }}</td>
-
-                                                    <td>
-                                                        <span class="view type-text">{{ $verb->type }}</span>
-
-                                                        <select name="type" form="update-form-{{ $verb->id }}"
-                                                            class="form-control form-control-sm edit type-input d-none"
-                                                            style="border:1px solid #000000; outline:none;"
-                                                            onfocus="this.style.boxShadow='0 0 0 .25rem rgba(13,110,253,.25)';"
-                                                            onblur="this.style.boxShadow='none';">
-
-                                                            <option value="Operator"
-                                                                {{ $verb->type == 'Operator' ? 'selected' : '' }}>
-                                                                Operator
-                                                            </option>
-                                                            <option value="Action"
-                                                                {{ $verb->type == 'Action' ? 'selected' : '' }}>Action
-                                                            </option>
-
-                                                        </select>
-                                                    </td>
-
-                                                    <td>
-                                                        <span class="view verb-text">{{ $verb->verb ?? '-' }}</span>
-
-                                                        <input type="text" name="verb"
-                                                            form="update-form-{{ $verb->id }}"
-                                                            class="form-control form-control-sm edit verb-input d-none"
-                                                            value="{{ $verb->verb }}"
-                                                            style="border:1px solid #000000; outline:none;"
-                                                            onfocus="this.style.boxShadow='0 0 0 .25rem rgba(13,110,253,.25)';"
-                                                            onblur="this.style.boxShadow='none';">
-                                                    </td>
-
-                                                    <td>
-                                                        <span
-                                                            class="view meaning-text">{{ $verb->meaning ?? '-' }}</span>
-
-                                                        <input type="text" name="meaning"
-                                                            form="update-form-{{ $verb->id }}"
-                                                            class="form-control form-control-sm edit meaning-input d-none"
-                                                            value="{{ $verb->meaning }}"
-                                                            style="border:1px solid #000000; outline:none;"
-                                                            onfocus="this.style.boxShadow='0 0 0 .25rem rgba(13,110,253,.25)';"
-                                                            onblur="this.style.boxShadow='none';">
-                                                    </td>
-
-                                                    <td>
-                                                        {{ optional($verb->user)->name ?? ($verb->user_id ?? 'Unknown') }}
-                                                    </td>
-
-                                                    <td>
-
-                                                        <form id="update-form-{{ $verb->id }}"
-                                                            action="{{ route('admin.verb.edit', $verb->id) }}"
-                                                            method="POST" class="d-inline">
-
-                                                            @csrf
-
-                                                            <button type="button"
-                                                                class="btn btn-warning btn-sm edit-btn"
-                                                                data-id="{{ $verb->id }}">
-
-                                                                <i class="fas fa-edit"></i>
-
-                                                            </button>
-
-                                                            <button type="submit"
-                                                                class="btn btn-success btn-sm save-btn d-none">
-
-                                                                <i class="fas fa-check"></i>
-
-                                                            </button>
-
-                                                        </form>
-
-                                                        <form action="{{ route('admin.verb.destroy', $verb->id) }}"
-                                                            method="POST" class="d-inline">
-
-                                                            @csrf
-                                                            @method('DELETE')
-
-                                                            <button class="btn btn-danger btn-sm">
-                                                                <i class="fas fa-trash"></i>
-                                                            </button>
-
-                                                        </form>
-
-                                                    </td>
-
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="6" class="text-center text-muted py-4">
-                                                        No verbs have been added yet.
-                                                    </td>
-                                                </tr>
-                                            @endforelse
-                                        </tbody>
-
-
-
-                                    </table>
-
-                                </div>
-
-                            </div>
+                {{-- ================================================= --}}
+                {{-- BODY --}}
+                {{-- ================================================= --}}
+
+                <div
+                    class="modal-body"
+                    style="
+                        padding:25px;
+                        background:#fff;
+                    "
+                >
+
+                    {{-- Success / Error Message --}}
+
+                    <div
+                        id="verbManagerMessage"
+                        style="
+                            display:none;
+                            margin-bottom:20px;
+                            padding:12px 16px;
+                            border-radius:10px;
+                            font-size:14px;
+                        "
+                    ></div>
+
+
+                    {{-- ================================================= --}}
+                    {{-- TABLE --}}
+                    {{-- ================================================= --}}
+
+                    <div
+                        style="
+                            border:1px solid #e3e3e3;
+                            border-radius:12px;
+                            overflow:hidden;
+                        "
+                    >
+
+                        <div
+                            style="
+                                overflow-x:auto;
+                            "
+                        >
+
+                            <table
+                                style="
+                                    width:100%;
+                                    border-collapse:collapse;
+                                    margin:0;
+                                "
+                            >
+
+                                <thead>
+
+                                    <tr
+                                        style="
+                                            background:#f7f7f7;
+                                            border-bottom:1px solid #ddd;
+                                        "
+                                    >
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:70px;
+                                            "
+                                        >
+                                            S/N
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:180px;
+                                            "
+                                        >
+                                            Type
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:220px;
+                                            "
+                                        >
+                                            Name
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                            "
+                                        >
+                                            Meaning
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:left;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:170px;
+                                            "
+                                        >
+                                            Creator
+                                        </th>
+
+
+                                        <th
+                                            style="
+                                                padding:15px;
+                                                text-align:center;
+                                                font-size:13px;
+                                                font-weight:600;
+                                                color:#555;
+                                                width:150px;
+                                            "
+                                        >
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="verbTableBody">
+
+                                    @forelse($verbs as $verb)
+
+                                        <tr
+                                            id="row-{{ $verb->id }}"
+                                            data-id="{{ $verb->id }}"
+                                            style="
+                                                border-bottom:1px solid #eee;
+                                            "
+                                        >
+
+                                            {{-- S/N --}}
+
+                                            <td
+                                                class="serial-number"
+                                                style="
+                                                    padding:14px 15px;
+                                                    color:#666;
+                                                "
+                                            >
+                                                {{ $loop->iteration }}
+                                            </td>
+
+
+                                            {{-- TYPE --}}
+
+                                            <td style="padding:14px 15px;">
+
+                                                <span
+                                                    class="view type-text"
+                                                    style="color:#333;"
+                                                >
+                                                    {{ $verb->type }}
+                                                </span>
+
+
+                                                <select
+                                                    class="edit type-input"
+                                                    style="
+                                                        display:none;
+                                                        width:100%;
+                                                        height:40px;
+                                                        padding:0 12px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:8px;
+                                                        outline:none;
+                                                        background:#fff;
+                                                    "
+                                                >
+
+                                                    <option
+                                                        value="Operator"
+                                                        {{ $verb->type === 'Operator' ? 'selected' : '' }}
+                                                    >
+                                                        Operator
+                                                    </option>
+
+                                                    <option
+                                                        value="Action"
+                                                        {{ $verb->type === 'Action' ? 'selected' : '' }}
+                                                    >
+                                                        Action
+                                                    </option>
+
+                                                </select>
+
+                                            </td>
+
+
+                                            {{-- NAME --}}
+
+                                            <td style="padding:14px 15px;">
+
+                                                <span
+                                                    class="view verb-text"
+                                                    style="color:#333;"
+                                                >
+                                                    {{ $verb->verb ?? '-' }}
+                                                </span>
+
+
+                                                <input
+                                                    type="text"
+                                                    class="edit verb-input"
+                                                    value="{{ $verb->verb }}"
+                                                    style="
+                                                        display:none;
+                                                        width:100%;
+                                                        height:40px;
+                                                        padding:0 12px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:8px;
+                                                        outline:none;
+                                                    "
+                                                >
+
+                                            </td>
+
+
+                                            {{-- MEANING --}}
+
+                                            <td style="padding:14px 15px;">
+
+                                                <span
+                                                    class="view meaning-text"
+                                                    style="color:#666;"
+                                                >
+                                                    {{ $verb->meaning ?? '-' }}
+                                                </span>
+
+
+                                                <input
+                                                    type="text"
+                                                    class="edit meaning-input"
+                                                    value="{{ $verb->meaning }}"
+                                                    style="
+                                                        display:none;
+                                                        width:100%;
+                                                        height:40px;
+                                                        padding:0 12px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:8px;
+                                                        outline:none;
+                                                    "
+                                                >
+
+                                            </td>
+
+
+                                            {{-- CREATOR --}}
+
+                                            <td
+                                                style="
+                                                    padding:14px 15px;
+                                                    color:#666;
+                                                "
+                                            >
+                                                {{ optional($verb->user)->name ?? ($verb->user_id ?? 'Unknown') }}
+                                            </td>
+
+
+                                            {{-- ACTIONS --}}
+
+                                            <td
+                                                style="
+                                                    padding:14px 15px;
+                                                    text-align:center;
+                                                "
+                                            >
+
+                                                <div
+                                                    style="
+                                                        display:flex;
+                                                        justify-content:center;
+                                                        align-items:center;
+                                                        gap:7px;
+                                                    "
+                                                >
+
+                                                    {{-- EDIT --}}
+
+                                                    <button
+                                                        type="button"
+                                                        class="verb-edit-btn"
+                                                        data-id="{{ $verb->id }}"
+                                                        style="
+                                                            width:38px;
+                                                            height:38px;
+                                                            border:none;
+                                                            border-radius:50%;
+                                                            background:#000;
+                                                            color:#fff;
+                                                            display:flex;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            cursor:pointer;
+                                                            transition:background .3s ease, transform .2s ease;
+                                                        "
+                                                        onmouseover="
+                                                            this.style.background='#28a745';
+                                                            this.style.transform='scale(1.08)';
+                                                        "
+                                                        onmouseout="
+                                                            this.style.background='#000';
+                                                            this.style.transform='scale(1)';
+                                                        "
+                                                    >
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+
+
+                                                    {{-- SAVE EDIT --}}
+
+                                                    <button
+                                                        type="button"
+                                                        class="verb-save-btn"
+                                                        data-id="{{ $verb->id }}"
+                                                        style="
+                                                            display:none;
+                                                            width:38px;
+                                                            height:38px;
+                                                            border:none;
+                                                            border-radius:50%;
+                                                            background:#000;
+                                                            color:#fff;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            cursor:pointer;
+                                                            transition:background .3s ease, transform .2s ease;
+                                                        "
+                                                        onmouseover="
+                                                            this.style.background='#28a745';
+                                                            this.style.transform='scale(1.08)';
+                                                        "
+                                                        onmouseout="
+                                                            this.style.background='#000';
+                                                            this.style.transform='scale(1)';
+                                                        "
+                                                    >
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+
+
+                                                    {{-- DELETE --}}
+
+                                                    <button
+                                                        type="button"
+                                                        class="verb-delete-btn"
+                                                        data-id="{{ $verb->id }}"
+                                                        style="
+                                                            width:38px;
+                                                            height:38px;
+                                                            border:none;
+                                                            border-radius:50%;
+                                                            background:#000;
+                                                            color:#fff;
+                                                            display:flex;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            cursor:pointer;
+                                                            transition:background .3s ease, transform .2s ease;
+                                                        "
+                                                        onmouseover="
+                                                            this.style.background='#dc3545';
+                                                            this.style.transform='scale(1.08)';
+                                                        "
+                                                        onmouseout="
+                                                            this.style.background='#000';
+                                                            this.style.transform='scale(1)';
+                                                        "
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    @empty
+
+                                        <tr id="noVerbsRow">
+
+                                            <td
+                                                colspan="6"
+                                                style="
+                                                    padding:40px 20px;
+                                                    text-align:center;
+                                                    color:#999;
+                                                "
+                                            >
+                                                No verbs have been added yet.
+                                            </td>
+
+                                        </tr>
+
+                                    @endforelse
+
+                                </tbody>
+
+
+                                {{-- ================================================= --}}
+                                {{-- PLUS ROW --}}
+                                {{-- ================================================= --}}
+
+                                <tfoot>
+
+                                    <tr>
+
+                                        <td
+                                            colspan="6"
+                                            style="
+                                                padding:15px;
+                                                text-align:center;
+                                                background:#fafafa;
+                                            "
+                                        >
+
+                                            <button
+                                                type="button"
+                                                id="addVerbRowBtn"
+                                                style="
+                                                    width:42px;
+                                                    height:42px;
+                                                    border:none;
+                                                    border-radius:50%;
+                                                    background:#000;
+                                                    color:#fff;
+                                                    display:inline-flex;
+                                                    align-items:center;
+                                                    justify-content:center;
+                                                    cursor:pointer;
+                                                    font-size:18px;
+                                                    transition:background .3s ease, transform .2s ease;
+                                                "
+                                                onmouseover="
+                                                    this.style.background='#28a745';
+                                                    this.style.transform='rotate(90deg) scale(1.08)';
+                                                "
+                                                onmouseout="
+                                                    this.style.background='#000';
+                                                    this.style.transform='rotate(0deg) scale(1)';
+                                                "
+                                                title="Add Verb"
+                                            >
+
+                                                <i class="fa fa-plus"></i>
+
+                                            </button>
+
+
+                                            <div
+                                                style="
+                                                    margin-top:7px;
+                                                    color:#888;
+                                                    font-size:12px;
+                                                "
+                                            >
+                                                Add another verb
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tfoot>
+
+                            </table>
 
                         </div>
 
@@ -781,13 +1111,121 @@
 
                 </div>
 
-                <div class="modal-footer">
 
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                {{-- ================================================= --}}
+                {{-- FOOTER --}}
+                {{-- ================================================= --}}
 
-                        Close
+                <div
+                    class="modal-footer"
+                    style="
+                        padding:18px 25px;
+                        border-top:1px solid #e5e5e5;
+                        background:#fafafa;
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                    "
+                >
 
-                    </button>
+                    <span
+                        id="pendingVerbText"
+                        style="
+                            color:#777;
+                            font-size:13px;
+                        "
+                    >
+                        No unsaved changes
+                    </span>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:10px;
+                        "
+                    >
+
+                        {{-- DONE --}}
+
+                        <button
+                            type="button"
+                            id="doneVerbBtn"
+                            style="
+                                height:48px;
+                                padding:0 20px;
+                                border-radius:24px;
+                                background:#000;
+                                color:#fff;
+                                border:none;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                gap:10px;
+                                font-size:15px;
+                                cursor:pointer;
+                                transition:background .3s ease, transform .2s ease;
+                            "
+                            onmouseover="
+                                this.style.background='#28a745';
+                                this.querySelector('i').style.transform='scale(1.15)';
+                            "
+                            onmouseout="
+                                this.style.background='#000';
+                                this.querySelector('i').style.transform='scale(1)';
+                            "
+                        >
+
+                            <i
+                                class="fa fa-check"
+                                style="transition:transform .3s ease;"
+                            ></i>
+
+                            Done
+
+                        </button>
+
+
+                        {{-- CLOSE --}}
+
+                        <button
+                            type="button"
+                            data-bs-dismiss="modal"
+                            style="
+                                height:48px;
+                                padding:0 20px;
+                                border-radius:24px;
+                                background:#000;
+                                color:#fff;
+                                border:none;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                gap:10px;
+                                font-size:15px;
+                                cursor:pointer;
+                                transition:background .3s ease, transform .2s ease;
+                            "
+                            onmouseover="
+                                this.style.background='#dc3545';
+                                this.querySelector('i').style.transform='rotate(10deg) scale(1.1)';
+                            "
+                            onmouseout="
+                                this.style.background='#000';
+                                this.querySelector('i').style.transform='rotate(0deg) scale(1)';
+                            "
+                        >
+
+                            <i
+                                class="fa fa-times"
+                                style="transition:transform .3s ease;"
+                            ></i>
+
+                            Close
+
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -2705,7 +3143,7 @@
 
 
     {{-- - Verb manager The inline edit script- --}}
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
 
             const rows = document.querySelectorAll('tbody tr');
@@ -2756,6 +3194,1161 @@
                 });
 
             });
+
+        });
+    </script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const tableBody = document.getElementById('verbTableBody');
+            const addBtn = document.getElementById('addVerbRowBtn');
+            const doneBtn = document.getElementById('doneVerbBtn');
+            const messageBox = document.getElementById('verbManagerMessage');
+            const pendingText = document.getElementById('pendingVerbText');
+
+            let newRows = [];
+
+
+            /* =========================================================
+            CSRF
+            ========================================================== */
+
+            const csrfToken =
+                document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+
+            /* =========================================================
+            MESSAGE
+            ========================================================== */
+
+            function showMessage(message, type = 'success') {
+
+                if (!messageBox) {
+                    return;
+                }
+
+                messageBox.innerText = message;
+
+                messageBox.style.display = 'block';
+
+                if (type === 'success') {
+
+                    messageBox.style.background = '#eaf7ee';
+                    messageBox.style.color = '#1f7a3d';
+                    messageBox.style.border = '1px solid #bce3c7';
+
+                } else {
+
+                    messageBox.style.background = '#fff0f0';
+                    messageBox.style.color = '#b02a37';
+                    messageBox.style.border = '1px solid #f1b5b9';
+
+                }
+
+            }
+
+
+            /* =========================================================
+            UPDATE SERIAL NUMBERS
+            ========================================================== */
+
+            function updateSerialNumbers() {
+
+                const rows =
+                    tableBody.querySelectorAll('tr[data-id], tr[data-new-row]');
+
+                rows.forEach(function (row, index) {
+
+                    const serial =
+                        row.querySelector('.serial-number');
+
+                    if (serial) {
+                        serial.innerText = index + 1;
+                    }
+
+                });
+
+            }
+
+
+            /* =========================================================
+            UPDATE PENDING TEXT
+            ========================================================== */
+
+            function updatePendingText() {
+
+                const count =
+                    tableBody.querySelectorAll('tr[data-new-row]').length;
+
+                if (count === 0) {
+
+                    pendingText.innerText =
+                        'No unsaved changes';
+
+                } else {
+
+                    pendingText.innerText =
+                        count + ' new verb' +
+                        (count > 1 ? 's' : '') +
+                        ' ready to save';
+
+                }
+
+            }
+
+
+            /* =========================================================
+            REMOVE "NO VERBS" ROW
+            ========================================================== */
+
+            function removeEmptyRow() {
+
+                const emptyRow =
+                    document.getElementById('noVerbsRow');
+
+                if (emptyRow) {
+                    emptyRow.remove();
+                }
+
+            }
+
+
+            /* =========================================================
+            ADD NEW ROW
+            ========================================================== */
+
+            addBtn.addEventListener('click', function () {
+
+                removeEmptyRow();
+
+                const row = document.createElement('tr');
+
+                row.setAttribute('data-new-row', 'true');
+
+                row.style.borderBottom = '1px solid #eee';
+
+
+                row.innerHTML = `
+
+                    <td
+                        class="serial-number"
+                        style="
+                            padding:14px 15px;
+                            color:#666;
+                        "
+                    >
+                        -
+                    </td>
+
+
+                    <td style="padding:14px 15px;">
+
+                        <select
+                            class="new-type"
+                            style="
+                                width:100%;
+                                height:40px;
+                                padding:0 12px;
+                                border:1px solid #ccc;
+                                border-radius:8px;
+                                outline:none;
+                                background:#fff;
+                            "
+                        >
+
+                            <option value="">
+                                Select Type
+                            </option>
+
+                            <option value="Operator">
+                                Operator
+                            </option>
+
+                            <option value="Action">
+                                Action
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
+                    <td style="padding:14px 15px;">
+
+                        <input
+                            type="text"
+                            class="new-verb"
+                            placeholder="Enter verb..."
+                            style="
+                                width:100%;
+                                height:40px;
+                                padding:0 12px;
+                                border:1px solid #ccc;
+                                border-radius:8px;
+                                outline:none;
+                            "
+                        >
+
+                    </td>
+
+
+                    <td style="padding:14px 15px;">
+
+                        <input
+                            type="text"
+                            class="new-meaning"
+                            placeholder="Optional meaning..."
+                            style="
+                                width:100%;
+                                height:40px;
+                                padding:0 12px;
+                                border:1px solid #ccc;
+                                border-radius:8px;
+                                outline:none;
+                            "
+                        >
+
+                    </td>
+
+
+                    <td
+                        style="
+                            padding:14px 15px;
+                            color:#999;
+                        "
+                    >
+                        New
+                    </td>
+
+
+                    <td
+                        style="
+                            padding:14px 15px;
+                            text-align:center;
+                        "
+                    >
+
+                        <button
+                            type="button"
+                            class="remove-new-verb"
+                            style="
+                                width:38px;
+                                height:38px;
+                                border:none;
+                                border-radius:50%;
+                                background:#000;
+                                color:#fff;
+                                display:inline-flex;
+                                align-items:center;
+                                justify-content:center;
+                                cursor:pointer;
+                                transition:background .3s ease;
+                            "
+                            onmouseover="this.style.background='#dc3545'"
+                            onmouseout="this.style.background='#000'"
+                        >
+
+                            <i class="fa fa-times"></i>
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                tableBody.appendChild(row);
+
+                newRows.push(row);
+
+                updateSerialNumbers();
+
+                updatePendingText();
+
+
+                row.querySelector('.new-type').focus();
+
+            });
+
+
+            /* =========================================================
+            REMOVE NEW ROW
+            ========================================================== */
+
+            tableBody.addEventListener('click', function (event) {
+
+                const button =
+                    event.target.closest('.remove-new-verb');
+
+                if (!button) {
+                    return;
+                }
+
+                const row =
+                    button.closest('tr[data-new-row]');
+
+                if (!row) {
+                    return;
+                }
+
+                row.remove();
+
+                newRows =
+                    newRows.filter(item => item !== row);
+
+                updateSerialNumbers();
+
+                updatePendingText();
+
+
+                if (
+                    tableBody.querySelectorAll(
+                        'tr[data-id], tr[data-new-row]'
+                    ).length === 0
+                ) {
+
+                    tableBody.innerHTML = `
+
+                        <tr id="noVerbsRow">
+
+                            <td
+                                colspan="6"
+                                style="
+                                    padding:40px 20px;
+                                    text-align:center;
+                                    color:#999;
+                                "
+                            >
+                                No verbs have been added yet.
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+
+            });
+
+
+            /* =========================================================
+            EDIT BUTTON
+            ========================================================== */
+
+            tableBody.addEventListener('click', function (event) {
+
+                const button =
+                    event.target.closest('.verb-edit-btn');
+
+                if (!button) {
+                    return;
+                }
+
+                const row =
+                    document.getElementById(
+                        'row-' + button.dataset.id
+                    );
+
+                if (!row) {
+                    return;
+                }
+
+
+                row.querySelectorAll('.view').forEach(function (element) {
+
+                    element.style.display = 'none';
+
+                });
+
+
+                row.querySelectorAll('.edit').forEach(function (element) {
+
+                    element.style.display = 'block';
+
+                });
+
+
+                const editButton =
+                    row.querySelector('.verb-edit-btn');
+
+                const saveButton =
+                    row.querySelector('.verb-save-btn');
+
+
+                if (editButton) {
+                    editButton.style.display = 'none';
+                }
+
+                if (saveButton) {
+                    saveButton.style.display = 'inline-flex';
+                }
+
+
+                const input =
+                    row.querySelector('.verb-input');
+
+                if (input) {
+                    input.focus();
+                }
+
+            });
+
+
+            /* =========================================================
+            SAVE EDIT
+            ========================================================== */
+
+            tableBody.addEventListener('click', function (event) {
+
+                const button =
+                    event.target.closest('.verb-save-btn');
+
+                if (!button) {
+                    return;
+                }
+
+                const id = button.dataset.id;
+
+                const row =
+                    document.getElementById('row-' + id);
+
+                if (!row) {
+                    return;
+                }
+
+
+                const type =
+                    row.querySelector('.type-input').value;
+
+                const verb =
+                    row.querySelector('.verb-input').value;
+
+                const meaning =
+                    row.querySelector('.meaning-input').value;
+
+
+                if (!type || !verb) {
+
+                    showMessage(
+                        'Type and Name are required.',
+                        'error'
+                    );
+
+                    return;
+                }
+
+
+                button.disabled = true;
+
+
+                fetch(
+                    "{{ url('/admin/logic-manager/verb') }}/" + id,
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+
+                            'Content-Type':
+                                'application/json',
+
+                            'Accept':
+                                'application/json',
+
+                            'X-CSRF-TOKEN':
+                                csrfToken
+
+                        },
+
+                        body: JSON.stringify({
+
+                            _method: 'POST',
+
+                            type: type,
+
+                            verb: verb,
+
+                            meaning: meaning
+
+                        })
+
+                    }
+                )
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            'Failed to update verb.'
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    row.querySelector('.type-text').innerText =
+                        type;
+
+                    row.querySelector('.verb-text').innerText =
+                        verb;
+
+                    row.querySelector('.meaning-text').innerText =
+                        meaning || '-';
+
+
+                    row.querySelectorAll('.edit').forEach(function (element) {
+
+                        element.style.display = 'none';
+
+                    });
+
+
+                    row.querySelectorAll('.view').forEach(function (element) {
+
+                        element.style.display = 'inline';
+
+                    });
+
+
+                    button.style.display = 'none';
+
+                    row.querySelector('.verb-edit-btn').style.display =
+                        'inline-flex';
+
+
+                    showMessage(
+                        'Verb updated successfully.'
+                    );
+
+                })
+
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    showMessage(
+                        'Unable to update verb.',
+                        'error'
+                    );
+
+                })
+
+
+                .finally(() => {
+
+                    button.disabled = false;
+
+                });
+
+            });
+
+
+            /* =========================================================
+            DELETE
+            ========================================================== */
+
+            tableBody.addEventListener('click', function (event) {
+
+                const button =
+                    event.target.closest('.verb-delete-btn');
+
+                if (!button) {
+                    return;
+                }
+
+                const id =
+                    button.dataset.id;
+
+
+                if (!confirm('Delete this verb?')) {
+                    return;
+                }
+
+
+                button.disabled = true;
+
+
+                fetch(
+                    "{{ url('/admin/logic-manager/verb') }}/" + id,
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+
+                            'Content-Type':
+                                'application/json',
+
+                            'Accept':
+                                'application/json',
+
+                            'X-CSRF-TOKEN':
+                                csrfToken
+
+                        },
+
+                        body: JSON.stringify({
+
+                            _method: 'DELETE'
+
+                        })
+
+                    }
+                )
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Failed to delete verb.'
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    const row =
+                        document.getElementById(
+                            'row-' + id
+                        );
+
+                    if (row) {
+                        row.remove();
+                    }
+
+
+                    updateSerialNumbers();
+
+
+                    if (
+                        tableBody.querySelectorAll(
+                            'tr[data-id], tr[data-new-row]'
+                        ).length === 0
+                    ) {
+
+                        tableBody.innerHTML = `
+
+                            <tr id="noVerbsRow">
+
+                                <td
+                                    colspan="6"
+                                    style="
+                                        padding:40px 20px;
+                                        text-align:center;
+                                        color:#999;
+                                    "
+                                >
+                                    No verbs have been added yet.
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    }
+
+
+                    showMessage(
+                        'Verb deleted successfully.'
+                    );
+
+                })
+
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    showMessage(
+                        'Unable to delete verb.',
+                        'error'
+                    );
+
+                })
+
+
+                .finally(() => {
+
+                    button.disabled = false;
+
+                });
+
+            });
+
+
+            /* =========================================================
+            DONE — SAVE ALL NEW ROWS
+            ========================================================== */
+
+            doneBtn.addEventListener('click', function () {
+
+                const rows =
+                    Array.from(
+                        tableBody.querySelectorAll(
+                            'tr[data-new-row]'
+                        )
+                    );
+
+
+                if (rows.length === 0) {
+
+                    showMessage(
+                        'There are no new verbs to save.'
+                    );
+
+                    return;
+                }
+
+
+                const verbs = [];
+
+
+                for (const row of rows) {
+
+                    const type =
+                        row.querySelector('.new-type').value;
+
+                    const verb =
+                        row.querySelector('.new-verb').value.trim();
+
+                    const meaning =
+                        row.querySelector('.new-meaning').value.trim();
+
+
+                    if (!type || !verb) {
+
+                        showMessage(
+                            'Please complete the Type and Name for every new row.',
+                            'error'
+                        );
+
+                        return;
+                    }
+
+
+                    verbs.push({
+
+                        type: type,
+
+                        verb: verb,
+
+                        meaning: meaning
+
+                    });
+
+                }
+
+
+                doneBtn.disabled = true;
+
+
+                const originalDone =
+                    doneBtn.innerHTML;
+
+
+                doneBtn.innerHTML = `
+
+                    <i
+                        class="fa fa-spinner fa-spin"
+                    ></i>
+
+                    Saving...
+
+                `;
+
+
+                /*
+                * Send ALL newly created rows together.
+                */
+
+                fetch(
+                    "{{ route('admin.verb.store') }}",
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+
+                            'Content-Type':
+                                'application/json',
+
+                            'Accept':
+                                'application/json',
+
+                            'X-CSRF-TOKEN':
+                                csrfToken
+
+                        },
+
+                        body: JSON.stringify({
+
+                            verbs: verbs
+
+                        })
+
+                    }
+                )
+
+
+                .then(response => {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Failed to save verbs.'
+                        );
+
+                    }
+
+                    return response.json();
+
+                })
+
+
+                .then(data => {
+
+                    /*
+                    * The server should return the newly
+                    * created verbs.
+                    */
+
+                    const savedVerbs =
+                        data.verbs || [];
+
+
+                    rows.forEach(function (row, index) {
+
+                        const saved =
+                            savedVerbs[index];
+
+                        if (!saved) {
+                            return;
+                        }
+
+
+                        const newRow =
+                            createSavedVerbRow(saved);
+
+
+                        row.replaceWith(newRow);
+
+                    });
+
+
+                    newRows = [];
+
+
+                    updateSerialNumbers();
+
+                    updatePendingText();
+
+
+                    showMessage(
+                        'All verbs saved successfully.'
+                    );
+
+                })
+
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    showMessage(
+                        'Unable to save the new verbs.',
+                        'error'
+                    );
+
+                })
+
+
+                .finally(() => {
+
+                    doneBtn.disabled = false;
+
+                    doneBtn.innerHTML =
+                        originalDone;
+
+                });
+
+            });
+
+
+            /* =========================================================
+            CREATE SAVED TABLE ROW
+            ========================================================== */
+
+            function createSavedVerbRow(verb) {
+
+                const row =
+                    document.createElement('tr');
+
+                row.id =
+                    'row-' + verb.id;
+
+                row.dataset.id =
+                    verb.id;
+
+                row.style.borderBottom =
+                    '1px solid #eee';
+
+
+                row.innerHTML = `
+
+                    <td
+                        class="serial-number"
+                        style="
+                            padding:14px 15px;
+                            color:#666;
+                        "
+                    >
+                        -
+                    </td>
+
+
+                    <td style="padding:14px 15px;">
+
+                        <span
+                            class="view type-text"
+                            style="color:#333;"
+                        >
+                            ${escapeHtml(verb.type)}
+                        </span>
+
+
+                        <select
+                            class="edit type-input"
+                            style="
+                                display:none;
+                                width:100%;
+                                height:40px;
+                                padding:0 12px;
+                                border:1px solid #ccc;
+                                border-radius:8px;
+                                outline:none;
+                                background:#fff;
+                            "
+                        >
+
+                            <option
+                                value="Operator"
+                                ${verb.type === 'Operator' ? 'selected' : ''}
+                            >
+                                Operator
+                            </option>
+
+                            <option
+                                value="Action"
+                                ${verb.type === 'Action' ? 'selected' : ''}
+                            >
+                                Action
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
+                    <td style="padding:14px 15px;">
+
+                        <span
+                            class="view verb-text"
+                            style="color:#333;"
+                        >
+                            ${escapeHtml(verb.verb)}
+                        </span>
+
+
+                        <input
+                            type="text"
+                            class="edit verb-input"
+                            value="${escapeAttribute(verb.verb)}"
+                            style="
+                                display:none;
+                                width:100%;
+                                height:40px;
+                                padding:0 12px;
+                                border:1px solid #ccc;
+                                border-radius:8px;
+                                outline:none;
+                            "
+                        >
+
+                    </td>
+
+
+                    <td style="padding:14px 15px;">
+
+                        <span
+                            class="view meaning-text"
+                            style="color:#666;"
+                        >
+                            ${escapeHtml(verb.meaning || '-')}
+                        </span>
+
+
+                        <input
+                            type="text"
+                            class="edit meaning-input"
+                            value="${escapeAttribute(verb.meaning || '')}"
+                            style="
+                                display:none;
+                                width:100%;
+                                height:40px;
+                                padding:0 12px;
+                                border:1px solid #ccc;
+                                border-radius:8px;
+                                outline:none;
+                            "
+                        >
+
+                    </td>
+
+
+                    <td
+                        style="
+                            padding:14px 15px;
+                            color:#666;
+                        "
+                    >
+                        ${escapeHtml(verb.creator || 'You')}
+                    </td>
+
+
+                    <td
+                        style="
+                            padding:14px 15px;
+                            text-align:center;
+                        "
+                    >
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:center;
+                                gap:7px;
+                            "
+                        >
+
+                            <button
+                                type="button"
+                                class="verb-edit-btn"
+                                data-id="${verb.id}"
+                                style="
+                                    width:38px;
+                                    height:38px;
+                                    border:none;
+                                    border-radius:50%;
+                                    background:#000;
+                                    color:#fff;
+                                    display:inline-flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    cursor:pointer;
+                                    transition:background .3s ease;
+                                "
+                                onmouseover="this.style.background='#28a745'"
+                                onmouseout="this.style.background='#000'"
+                            >
+                                <i class="fa fa-edit"></i>
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="verb-save-btn"
+                                data-id="${verb.id}"
+                                style="
+                                    display:none;
+                                    width:38px;
+                                    height:38px;
+                                    border:none;
+                                    border-radius:50%;
+                                    background:#000;
+                                    color:#fff;
+                                    align-items:center;
+                                    justify-content:center;
+                                    cursor:pointer;
+                                "
+                            >
+                                <i class="fa fa-check"></i>
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="verb-delete-btn"
+                                data-id="${verb.id}"
+                                style="
+                                    width:38px;
+                                    height:38px;
+                                    border:none;
+                                    border-radius:50%;
+                                    background:#000;
+                                    color:#fff;
+                                    display:inline-flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    cursor:pointer;
+                                    transition:background .3s ease;
+                                "
+                                onmouseover="this.style.background='#dc3545'"
+                                onmouseout="this.style.background='#000'"
+                            >
+                                <i class="fa fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                return row;
+
+            }
+
+
+            /* =========================================================
+            SECURITY HELPERS
+            ========================================================== */
+
+            function escapeHtml(value) {
+
+                if (value === null || value === undefined) {
+                    return '';
+                }
+
+                return String(value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+
+            }
+
+
+            function escapeAttribute(value) {
+
+                return escapeHtml(value);
+
+            }
 
         });
     </script>
