@@ -341,6 +341,10 @@ class ConfigurationController extends Controller
             )->with('success', 'Configuration processed successfully.');
 
 
+            Log::info('ABOUT TO REDIRECT TO FINAL PROCESS', [
+                'configuration_id' => $config->id,
+            ]);
+
 
 
         } catch (\Throwable $e) {
