@@ -765,21 +765,30 @@ class ConfigurationController extends Controller
     
 
     //Final page
-    public function finalProcess($id = null){
+    // public function finalProcess($id = null){
 
    
-        $config = Configuration::findOrFail($id);
+    //     $config = Configuration::findOrFail($id);
 
-        return view('admin.config.final-process', [
-            'response'     => $config->configured_data,
-            'originalName' => $config->file_name,
-            'id'           => $config->id,
-            'configuration'=> $config,
-            'validation'=>$config->validation_data
-            // 'txt_name' => $config->
+    //     return view('admin.config.final-process', [
+    //         'response'     => $config->configured_data,
+    //         'originalName' => $config->file_name,
+    //         'id'           => $config->id,
+    //         'configuration'=> $config,
+    //         'validation'=>$config->validation_data
+    //         // 'txt_name' => $config->
+    //     ]);
+
+
+    // }
+
+    public function finalProcess($id = null)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Final process page reached',
+            'id' => $id,
         ]);
-
-
     }
 
 
