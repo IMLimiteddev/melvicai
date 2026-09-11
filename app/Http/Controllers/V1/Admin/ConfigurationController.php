@@ -530,11 +530,17 @@ class ConfigurationController extends Controller
             'time' => now()->toDateTimeString(),
         ]);
 
-        return redirect($redirectUrl)
-            ->with(
-                'success',
-                'Configuration processed successfully.'
-            );
+        // return redirect($redirectUrl)
+        //     ->with(
+        //         'success',
+        //         'Configuration processed successfully.'
+        //     );
+
+        return response()->json([
+            'success' => true,
+            'configuration_id' => $config->id,
+            'message' => 'Processing completed successfully.',
+        ]);
 
     } catch (\Throwable $e) {
 
