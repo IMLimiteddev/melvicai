@@ -192,6 +192,9 @@ class ConfigurationController extends Controller
     public function scanProcess2(Request $request, $id = null)
     {
 
+        // Allow this PHP request to run for up to 10 minutes
+        set_time_limit(600);
+
         $config = Configuration::findOrFail($id);
 
         $request->validate([
