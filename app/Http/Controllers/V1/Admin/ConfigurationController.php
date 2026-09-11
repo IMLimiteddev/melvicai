@@ -525,6 +525,8 @@ class ConfigurationController extends Controller
             'redirect_url' => $redirectUrl,
         ]);
 
+        dd(here);
+
         Log::info('RETURNING REDIRECT RESPONSE', [
             'configuration_id' => $config->id,
             'time' => now()->toDateTimeString(),
