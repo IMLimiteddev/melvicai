@@ -50,8 +50,117 @@
             transform: scale(1.15);
         }
 
+
+        /* =====================================================
+           PROCESSING PRELOADER
+        ====================================================== */
+
+        #processingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.97);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 30px;
+        }
+
+        #processingSpinner {
+            width: 58px;
+            height: 58px;
+            border: 5px solid #e5e5e5;
+            border-top: 5px solid #000;
+            border-radius: 50%;
+            animation: processingSpin 1s linear infinite;
+            margin-bottom: 25px;
+        }
+
+        #processingOverlay h3 {
+            margin: 0 0 10px 0;
+            font-weight: 600;
+            color: #222;
+        }
+
+        #processingMessage {
+            margin: 0;
+            color: #777;
+            font-size: 15px;
+        }
+
+        #processingBarContainer {
+            margin-top: 22px;
+            width: 280px;
+            height: 5px;
+            background: #e9e9e9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #processingBar {
+            width: 40%;
+            height: 100%;
+            background: #000;
+            border-radius: 10px;
+            animation: processingBarMove 1.5s ease-in-out infinite;
+        }
+
+        @keyframes processingSpin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes processingBarMove {
+            0% {
+                transform: translateX(-120%);
+            }
+
+            100% {
+                transform: translateX(350%);
+            }
+        }
+
     </style>
 
+
+    {{-- ========================================================= --}}
+    {{-- PROCESSING PRELOADER --}}
+    {{-- ONLY SHOW WHEN STATUS IS INACTIVE --}}
+    {{-- ========================================================= --}}
+
+    @if(($configuration?->status ?? 'draft') === 'inactive')
+
+        <div id="processingOverlay">
+
+            <div id="processingSpinner"></div>
+
+            <h3>
+                Processing Configuration
+            </h3>
+
+            <p id="processingMessage">
+                Please wait while your configuration is being processed...
+            </p>
+
+            <div id="processingBarContainer">
+                <div id="processingBar"></div>
+            </div>
+
+        </div>
+
+    @endif
+
+
+    {{-- ========================================================= --}}
+    {{-- MAIN PAGE --}}
+    {{-- ========================================================= --}}
 
     <div class="page-body" id="pageBody">
 
@@ -63,7 +172,9 @@
 
                     <div class="col-xl-4 col-sm-7 box-col-3">
 
-                        <h3>Warnings/Download Area</h3>
+                        <h3>
+                            Warnings/Download Area
+                        </h3>
 
                     </div>
 
@@ -85,9 +196,9 @@
                         <div class="card-body">
 
 
-                            {{-- ========================= --}}
+                            {{-- ================================================= --}}
                             {{-- TABS --}}
-                            {{-- ========================= --}}
+                            {{-- ================================================= --}}
 
                             <div
                                 style="
@@ -100,6 +211,8 @@
                                 "
                             >
 
+                                {{-- VALIDATION TAB --}}
+
                                 <a
                                     href="#"
                                     class="tab-link active"
@@ -108,6 +221,8 @@
                                     Validation Rule
                                 </a>
 
+
+                                {{-- DOWNLOAD TAB --}}
 
                                 @if (!empty($configuration?->output_file_path))
 
@@ -126,13 +241,18 @@
                                         href="#"
                                         class="tab-link"
                                         onclick="return false;"
-                                        style="opacity:0.5;cursor:not-allowed;"
+                                        style="
+                                            opacity:0.5;
+                                            cursor:not-allowed;
+                                        "
                                     >
                                         Download File
                                     </a>
 
                                 @endif
 
+
+                                {{-- OTHER TAB --}}
 
                                 <a
                                     href="#"
@@ -145,9 +265,9 @@
                             </div>
 
 
-                            {{-- ========================= --}}
+                            {{-- ================================================= --}}
                             {{-- VALIDATION CONTENT --}}
-                            {{-- ========================= --}}
+                            {{-- ================================================= --}}
 
                             <div
                                 style="
@@ -187,8 +307,12 @@
                                         type="button"
                                         class="our-btn"
                                         onclick="openValidationModal()"
-                                        onmouseover="this.querySelector('i').style.transform='rotate(10deg) scale(1.15)'"
-                                        onmouseout="this.querySelector('i').style.transform='rotate(0deg) scale(1)'"
+                                        onmouseover="
+                                            this.querySelector('i').style.transform='rotate(10deg) scale(1.15)'
+                                        "
+                                        onmouseout="
+                                            this.querySelector('i').style.transform='rotate(0deg) scale(1)'
+                                        "
                                     >
 
                                         <i class="fa fa-shield-alt"></i>
@@ -214,9 +338,9 @@
     </div>
 
 
-    {{-- ================================================= --}}
+    {{-- ========================================================= --}}
     {{-- VALIDATION MODAL --}}
-    {{-- ================================================= --}}
+    {{-- ========================================================= --}}
 
     <div
         class="modal fade"
@@ -239,12 +363,14 @@
                         Validation Rule
                     </h5>
 
+
                     <button
                         type="button"
                         class="btn-close"
                         onclick="closeValidationModal()"
                         aria-label="Close"
-                    ></button>
+                    >
+                    </button>
 
                 </div>
 
@@ -254,7 +380,11 @@
                     @forelse($validation ?? [] as $warning)
 
                         <div
-                            class="alert {{ ($warning['severity'] ?? '') === 'warning' ? 'alert-warning' : 'alert-info' }} mb-3"
+                            class="alert {{
+                                ($warning['severity'] ?? '') === 'warning'
+                                    ? 'alert-warning'
+                                    : 'alert-info'
+                            }} mb-3"
                         >
 
                             <div class="d-flex justify-content-between">
@@ -269,7 +399,9 @@
 
                             </div>
 
+
                             <hr>
+
 
                             <p class="mb-2">
 
@@ -343,43 +475,275 @@
     </div>
 
 
-    {{-- ================================================= --}}
+    {{-- ========================================================= --}}
     {{-- VALIDATION MODAL SCRIPT --}}
-    {{-- ================================================= --}}
+    {{-- ========================================================= --}}
 
     <script>
 
         function openValidationModal() {
 
-            const modalElement = document.getElementById('validationModal');
+            const modalElement =
+                document.getElementById('validationModal');
 
             if (!modalElement) {
                 return;
             }
 
-            const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+            const modal =
+                bootstrap.Modal.getOrCreateInstance(modalElement);
 
             modal.show();
-
         }
 
 
         function closeValidationModal() {
 
-            const modalElement = document.getElementById('validationModal');
+            const modalElement =
+                document.getElementById('validationModal');
 
             if (!modalElement) {
                 return;
             }
 
-            const modal = bootstrap.Modal.getInstance(modalElement);
+            const modal =
+                bootstrap.Modal.getInstance(modalElement);
 
             if (modal) {
                 modal.hide();
             }
-
         }
 
     </script>
 
+
+    {{-- ========================================================= --}}
+    {{-- QUEUE PROCESS STATUS CHECK --}}
+    {{-- ========================================================= --}}
+    {{-- 
+        STATUS VALUES:
+
+        draft    = normal draft
+        inactive = processing/not finished
+        active   = processing finished
+
+        The queue itself does NOT refresh the browser.
+        The browser checks the database status every 3 seconds.
+    --}}
+    {{-- ========================================================= --}}
+
+    @if(($configuration?->status ?? 'draft') === 'inactive')
+
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function () {
+
+                const overlay =
+                    document.getElementById('processingOverlay');
+
+                const message =
+                    document.getElementById('processingMessage');
+
+
+                if (!overlay) {
+                    return;
+                }
+
+
+                const statusUrl =
+                    "{{ route('admin.final-process-status', [
+                        'id' => $configuration->id
+                    ]) }}";
+
+
+                let checking = true;
+
+
+                function checkProcessingStatus() {
+
+                    if (!checking) {
+                        return;
+                    }
+
+
+                    fetch(statusUrl, {
+
+                        method: 'GET',
+
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+
+                        cache: 'no-store'
+
+                    })
+
+
+                    .then(function (response) {
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                'Unable to check processing status.'
+                            );
+
+                        }
+
+                        return response.json();
+
+                    })
+
+
+                    .then(function (data) {
+
+                        console.log(
+                            'Configuration status:',
+                            data.status
+                        );
+
+
+                        /*
+                         * ==========================================
+                         * INACTIVE
+                         * ==========================================
+                         *
+                         * Processing has not finished.
+                         *
+                         * Keep the preloader visible and check
+                         * again after 3 seconds.
+                         */
+
+                        if (data.status === 'inactive') {
+
+                            if (message) {
+
+                                message.innerText =
+                                    'Your configuration is still being processed. Please wait...';
+
+                            }
+
+
+                            setTimeout(
+                                checkProcessingStatus,
+                                3000
+                            );
+
+                            return;
+                        }
+
+
+                        /*
+                         * ==========================================
+                         * ACTIVE
+                         * ==========================================
+                         *
+                         * Processing is finished.
+                         *
+                         * Stop polling and refresh the page.
+                         */
+
+                        if (data.status === 'active') {
+
+                            checking = false;
+
+
+                            if (message) {
+
+                                message.innerText =
+                                    'Processing complete. Loading your results...';
+
+                            }
+
+
+                            setTimeout(function () {
+
+                                window.location.reload();
+
+                            }, 700);
+
+
+                            return;
+                        }
+
+
+                        /*
+                         * ==========================================
+                         * DRAFT
+                         * ==========================================
+                         *
+                         * Draft is not an active background
+                         * processing state.
+                         */
+
+                        if (data.status === 'draft') {
+
+                            checking = false;
+
+                            overlay.style.display = 'none';
+
+                            return;
+                        }
+
+
+                        /*
+                         * If something unexpected is returned,
+                         * simply check again.
+                         */
+
+                        setTimeout(
+                            checkProcessingStatus,
+                            3000
+                        );
+
+                    })
+
+
+                    .catch(function (error) {
+
+                        console.error(
+                            'Processing status check failed:',
+                            error
+                        );
+
+
+                        /*
+                         * Do not remove the preloader for a temporary
+                         * connection problem.
+                         *
+                         * Try again after 5 seconds.
+                         */
+
+                        if (message) {
+
+                            message.innerText =
+                                'Still checking the processing status...';
+
+                        }
+
+
+                        setTimeout(
+                            checkProcessingStatus,
+                            5000
+                        );
+
+                    });
+
+                }
+
+
+                /*
+                 * Start polling immediately.
+                 */
+
+                checkProcessingStatus();
+
+            });
+
+        </script>
+
+    @endif
+
+
 </x-layouts::app>
+

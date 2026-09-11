@@ -147,6 +147,11 @@ Route::prefix('admin/config-service')->middleware(['auth', 'verified'])->group(f
     Route::get('/single/config', [ConfigurationController::class, 'singleConfig'])
     ->name('admin.configs.single');
 
+    Route::get(
+    '/admin/config-service/final-process-status/{id}',
+    [ConfigurationController::class, 'finalProcessStatus']
+)->name('admin.final-process-status');
+
 });
 
 Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group(function () {
