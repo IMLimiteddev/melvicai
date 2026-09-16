@@ -63,10 +63,9 @@ class WorkflowController extends Controller
 
         return back()->with(
             'success',
-            'Workflow created successfully.'
+            'Workflow(s) created successfully.'
         );
     }
-
 
     public function indexWorkflow()
     {
@@ -76,25 +75,71 @@ class WorkflowController extends Controller
 
         $workflows = Workflow::all()
             ->groupBy('batch')
-            ->map(fn ($batch) => $batch->first()->setAttribute(
-                'inputs',
-                $batch->pluck('input_name')->filter()->values()
-            )->setAttribute(
-                'outputs',
-                $batch->pluck('output_name')->filter()->values()
-            )->setAttribute(
-            'configuration_id',
-            $batch->first()->configuration_id
-            ))
-            ->values();
+            ->map(function ($batch) {
 
-            // dd($workflows);
+                $first = $batch->first();
+
+                // Keep the existing batch-level data
+                $first->setAttribute(
+                    'inputs',
+                    $batch->pluck('input_name')->filter()->values()
+                );
+
+                $first->setAttribute(
+                    'outputs',
+                    $batch->pluck('output_name')->filter()->values()
+                );
+
+                // NEW:
+                // Keep every individual workflow/configuration
+                // under the same batch.
+                $first->setAttribute(
+                    'workflow_items',
+                    $batch->values()
+                );
+
+                return $first;
+            })
+            ->values();
 
         return view(
             'admin.workflow.index',
-            compact('configs', 'workflowConnectors', 'workflows')
+            compact(
+                'configs',
+                'workflowConnectors',
+                'workflows'
+            )
         );
     }
+
+
+    // public function indexWorkflow()
+    // {
+    //     $configs = Configuration::all();
+
+    //     $workflowConnectors = WorkflowConnector::all();
+
+    //     $workflows = Workflow::all()
+    //         ->groupBy('batch')
+    //         ->map(fn ($batch) => $batch->first()->setAttribute(
+    //             'inputs',
+    //             $batch->pluck('input_name')->filter()->values()
+    //         )->setAttribute(
+    //             'outputs',
+    //             $batch->pluck('output_name')->filter()->values()
+    //         )->setAttribute(
+    //         'configuration_id',
+    //         $batch->first()->configuration_id
+    //         ))
+    //         ->values();
+
+    //         // dd($workflows);
+
+    //     return view(
+    //         'admin.workflow.index',
+    //         compact('configs', 'workflowConnectors', 'workflows')
+    //     );
+    // }
 
     public function manageConnector()
     {
@@ -284,48 +329,101 @@ class WorkflowController extends Controller
     }
 
     public function workflowSave(Request $request)
-    {
-        $request->validate([
-            'workflows' => 'required|array|min:1',
-            'workflows.*.input_connector_id' => 'required|exists:workflow_connectors,id',
-            'workflows.*.configuration_id' => 'required|exists:configurations,id',
-            'workflows.*.output_connector_id' => 'required|exists:workflow_connectors,id',
-        ]);
+{
+    $request->validate([
+        'batch_name' => 'nullable|string|max:100|unique:workflows,batch',
+        'workflows' => 'required|array|min:1',
+        'workflows.*.input_connector_id' => 'required|exists:workflow_connectors,id',
+        'workflows.*.configuration_id' => 'required|string',
+        'workflows.*.output_connector_id' => 'required|exists:workflow_connectors,id',
+    ]);
 
+    \Log::info('WORKFLOW SAVE REQUEST', [
+        'workflows' => $request->workflows,
+    ]);
 
-        DB::beginTransaction();
+    DB::beginTransaction();
 
-        try {
+    try {
 
-            /*
-            * Generate ONE batch for this entire save operation.
-            */
-            $batch = 'WF_'. strtoupper(
+        if (empty($request->batch_name)) {
+
+            $batch = 'WF_' . strtoupper(
                 Str::random(6)
             );
 
-            foreach ($request->workflows as $workflowData) {
+        } else {
 
-                /*
-                * Make sure the connector types are correct.
-                */
-                $inputConnector = WorkflowConnector::where('id', $workflowData['input_connector_id'])
-                    ->where('type', 'input')
-                    ->firstOrFail();
+            $batch = trim($request->batch_name);
 
-                $outputConnector = WorkflowConnector::where('id', $workflowData['output_connector_id'])
-                    ->where('type', 'output')
-                    ->firstOrFail();
+            if (Workflow::where('batch', $batch)->exists()) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This batch name already exists. Please choose another name.',
+                ], 422);
+            }
+        }
+
+
+        foreach ($request->workflows as $workflowData) {
+
+            /*
+             * Make sure the connectors are correct.
+             */
+            $inputConnector = WorkflowConnector::where(
+                'id',
+                $workflowData['input_connector_id']
+            )
+                ->where('type', 'input')
+                ->firstOrFail();
+
+
+            $outputConnector = WorkflowConnector::where(
+                'id',
+                $workflowData['output_connector_id']
+            )
+                ->where('type', 'output')
+                ->firstOrFail();
+
+
+            /*
+             * Convert:
+             *
+             * "20,22,24"
+             *
+             * into:
+             *
+             * [20, 22, 24]
+             */
+            $configurationIds = array_filter(
+                array_map(
+                    'trim',
+                    explode(',', $workflowData['configuration_id'])
+                )
+            );
+
+
+            /*
+             * Create one workflow for EACH configuration.
+             */
+            foreach ($configurationIds as $configurationId) {
 
                 $configuration = Configuration::findOrFail(
-                    $workflowData['configuration_id']
+                    $configurationId
                 );
 
-                /*
-                * Create ONE database record for this
-                * Input -> Configuration -> Output chain.
-                */
-                Workflow::create([
+
+                \Log::info('CREATING WORKFLOW', [
+                    'batch' => $batch,
+                    'input_connector_id' => $inputConnector->id,
+                    'configuration_id' => $configuration->id,
+                    'configuration_name' => $configuration->config_name,
+                    'output_connector_id' => $outputConnector->id,
+                ]);
+
+
+                $workflow = Workflow::create([
                     'batch' => $batch,
 
                     'input_connector_id' => $inputConnector->id,
@@ -341,30 +439,43 @@ class WorkflowController extends Controller
                     'usage_count' => 0,
                     'user_identifier' => auth()->id(),
                 ]);
+
+
+                \Log::info('WORKFLOW CREATED', [
+                    'workflow_id' => $workflow->id,
+                    'batch' => $workflow->batch,
+                    'input_connector_id' => $workflow->input_connector_id,
+                    'configuration_id' => $workflow->configuration_id,
+                    'output_connector_id' => $workflow->output_connector_id,
+                ]);
             }
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Workflow saved successfully.',
-                'batch' => $batch,
-                'count' => count($request->workflows),
-            ]);
-
-        } catch (\Throwable $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Unable to save workflow.' . $e->getMessage(),
-                'error' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile(),
-            ], 500);
         }
+
+
+        DB::commit();
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Workflow saved successfully.',
+            'batch' => $batch,
+            'count' => count($request->workflows),
+        ]);
+
+
+    } catch (\Throwable $e) {
+
+        DB::rollBack();
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Unable to save workflow.' . $e->getMessage(),
+            'error' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile(),
+        ], 500);
     }
+}
 
     public function workflowSingle(Request $request, $id = null)
     {

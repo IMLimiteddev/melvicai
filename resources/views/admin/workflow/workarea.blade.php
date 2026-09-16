@@ -82,27 +82,56 @@
 
                         </div>
 
-                        <div style="position:absolute;right:30px;top:50%;transform:translateY(-50%);">
+                        <div
+                                style="
+                                    position:absolute;
+                                    right:30px;
+                                    top:50%;
+                                    transform:translateY(-50%);
+                                    display:flex;
+                                    align-items:center;
+                                    gap:10px;
+                                "
+                            >
+
+                                <input
+                                    type="text"
+                                    id="workflowBatchName"
+                                    placeholder="Enter batch name"
+                                    maxlength="100"
+                                    style="
+                                        width:220px;
+                                        height:42px;
+                                        padding:0 15px;
+                                        border:1px solid #d1d5db;
+                                        border-radius:24px;
+                                        background:#fff;
+                                        color:#111827;
+                                        font-size:14px;
+                                        outline:none;
+                                        box-sizing:border-box;
+                                    "
+                                >
 
                                 <button
-                                type="button"
-                                onclick="saveWorkflow()"
-                                style="
-                                    background:#000;
-                                    color:#fff;
-                                    border:1px solid #000;
-                                    border-radius:24px;
-                                    padding:10px 24px;
-                                    font-size:14px;
-                                    font-weight:600;
-                                    cursor:pointer;
-                                    transition:all 0.2s ease;
-                                "
-                                onmouseover="this.style.background='#28a745'; this.style.borderColor='#AEF09D';"
-                                onmouseout="this.style.background='#000'; this.style.borderColor='#000';"
-                            >
-                                Save Workflow
-                            </button>
+                                    type="button"
+                                    onclick="saveWorkflow()"
+                                    style="
+                                        background:#000;
+                                        color:#fff;
+                                        border:1px solid #000;
+                                        border-radius:24px;
+                                        padding:10px 24px;
+                                        font-size:14px;
+                                        font-weight:600;
+                                        cursor:pointer;
+                                        transition:all 0.2s ease;
+                                    "
+                                    onmouseover="this.style.background='#28a745'; this.style.borderColor='#AEF09D';"
+                                    onmouseout="this.style.background='#000'; this.style.borderColor='#000';"
+                                >
+                                    Save Workflow
+                                </button>
 
                         </div>
 
@@ -889,15 +918,15 @@
                                     Select Configuration
                                 </label>
 
-                                <select
+                               <select
                                     id="nodeConfiguration"
                                     onchange="updateSelectedNodeValue()"
+                                    multiple
                                     style="
                                         width:100%;
-                                        height:46px;
                                         border:1px solid #ddd;
                                         border-radius:10px;
-                                        padding:0 12px;
+                                        padding:8px 12px;
                                         background:#fff;
                                         color:#333;
                                         font-size:13px;
@@ -2364,89 +2393,93 @@
             |--------------------------------------------------------------------------
             */
 
-            function updateSelectedNodeValue() {
+           function updateSelectedNodeValue() {
 
-                if (!selectedWorkflowNode) {
-                    return;
-                }
-
-
-                const type =
-                    selectedWorkflowNode.dataset.nodeType;
+    if (!selectedWorkflowNode) {
+        return;
+    }
 
 
-                let select =
-                    null;
+    const type =
+        selectedWorkflowNode.dataset.nodeType;
 
 
-                if (type === 'input') {
-
-                    select =
-                        document.getElementById(
-                            'nodeInputConnector'
-                        );
-
-                }
+    let select =
+        null;
 
 
-                if (type === 'configuration') {
+    if (type === 'input') {
 
-                    select =
-                        document.getElementById(
-                            'nodeConfiguration'
-                        );
+        select =
+            document.getElementById(
+                'nodeInputConnector'
+            );
 
-                }
-
-
-                if (type === 'output') {
-
-                    select =
-                        document.getElementById(
-                            'nodeOutputConnector'
-                        );
-
-                }
+    }
 
 
-                if (!select) {
-                    return;
-                }
+    if (type === 'configuration') {
+
+        select =
+            document.getElementById(
+                'nodeConfiguration'
+            );
+
+    }
 
 
-                const value =
-                    select.value;
+    if (type === 'output') {
+
+        select =
+            document.getElementById(
+                'nodeOutputConnector'
+            );
+
+    }
 
 
-                const text =
-                    select.options[
-                        select.selectedIndex
-                    ]?.text || '';
+    if (!select) {
+        return;
+    }
 
 
-                selectedWorkflowNode.dataset.selectedValue =
-                    value;
+    const value =
+        type === 'configuration'
+            ? Array.from(select.selectedOptions).map(option => option.value)
+            : select.value;
 
 
-                selectedWorkflowNode.dataset.selectedName =
-                    text;
+    const text =
+        type === 'configuration'
+            ? Array.from(select.selectedOptions).map(option => option.text).join(', ')
+            : select.options[
+                select.selectedIndex
+            ]?.text || '';
 
 
-                const valueElement =
-                    selectedWorkflowNode.querySelector(
-                        '.workflow-node-value'
-                    );
+    selectedWorkflowNode.dataset.selectedValue =
+        value;
 
 
-                if (valueElement) {
+    selectedWorkflowNode.dataset.selectedName =
+        text;
 
-                    valueElement.textContent =
-                        text ||
-                        'Click to configure';
 
-                }
+    const valueElement =
+        selectedWorkflowNode.querySelector(
+            '.workflow-node-value'
+        );
 
-            }
+
+    if (valueElement) {
+
+        valueElement.textContent =
+            text ||
+            'Click to configure';
+
+    }
+
+}
 
 
             /*
@@ -3158,6 +3191,17 @@
         <script>
             function saveWorkflow() {
 
+                const batchNameInput = document.getElementById('workflowBatchName');
+
+                const batchName = batchNameInput
+                    ? batchNameInput.value.trim()
+                    : '';
+
+                // if (!batchName) {
+                //     alert('Please enter a batch name.');
+                //     return;
+                // }
+
                 const nodes = Array.from(
                     document.querySelectorAll('#workflowCanvas .workflow-node')
                 );
@@ -3230,51 +3274,6 @@
 
                     /*
                     |--------------------------------------------------------------------------
-                    | Convert connections into connector IDs
-                    |--------------------------------------------------------------------------
-                    */
-                    const inputConnectorIds = inputConnections.map(connection => {
-
-                        const inputNode = nodeMap[connection.from];
-
-                        return inputNode
-                            ? inputNode.dataset.selectedValue
-                            : null;
-
-                    });
-
-                    const outputConnectorIds = outputConnections.map(connection => {
-
-                        const outputNode = nodeMap[connection.to];
-
-                        return outputNode
-                            ? outputNode.dataset.selectedValue
-                            : null;
-
-                    });
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Remove ONLY invalid values.
-                    |
-                    | Do NOT use Set here because two different nodes may legitimately
-                    | reference the same connector.
-                    |--------------------------------------------------------------------------
-                    */
-                    const validInputIds = inputConnectorIds.filter(id =>
-                        id !== undefined &&
-                        id !== null &&
-                        id !== ''
-                    );
-
-                    const validOutputIds = outputConnectorIds.filter(id =>
-                        id !== undefined &&
-                        id !== null &&
-                        id !== ''
-                    );
-
-                    /*
-                    |--------------------------------------------------------------------------
                     | Validate configuration
                     |--------------------------------------------------------------------------
                     */
@@ -3283,6 +3282,7 @@
                         configId === null ||
                         configId === ''
                     ) {
+
                         console.error(
                             'Configuration has no selected value:',
                             configNode
@@ -3315,39 +3315,98 @@
                         outputConnections
                     );
 
-                    console.log(
-                        'Input IDs:',
-                        validInputIds
-                    );
-
-                    console.log(
-                        'Output IDs:',
-                        validOutputIds
-                    );
-
                     /*
                     |--------------------------------------------------------------------------
-                    | CREATE EVERY INPUT × OUTPUT COMBINATION
+                    | MATCH INPUTS AND OUTPUTS
+                    |--------------------------------------------------------------------------
+                    |
+                    | Instead of:
+                    |
+                    | Input 1 × Output 1
+                    | Input 1 × Output 2
+                    | Input 2 × Output 1
+                    | Input 2 × Output 2
+                    |
+                    | We pair them by their connection order:
+                    |
+                    | Input 1 → Config → Output 1
+                    | Input 2 → Config → Output 2
+                    |
                     |--------------------------------------------------------------------------
                     */
-                    for (let i = 0; i < validInputIds.length; i++) {
 
-                        for (let j = 0; j < validOutputIds.length; j++) {
+                    const pairCount = Math.min(
+                        inputConnections.length,
+                        outputConnections.length
+                    );
 
-                            workflows.push({
+                    for (let i = 0; i < pairCount; i++) {
 
-                                input_connector_id:
-                                    validInputIds[i],
+                        const inputNode =
+                            nodeMap[inputConnections[i].from];
 
-                                configuration_id:
-                                    configId,
+                        const outputNode =
+                            nodeMap[outputConnections[i].to];
 
-                                output_connector_id:
-                                    validOutputIds[j]
-
-                            });
-
+                        if (!inputNode || !outputNode) {
+                            continue;
                         }
+
+                        const inputConnectorId =
+                            inputNode.dataset.selectedValue;
+
+                        const outputConnectorId =
+                            outputNode.dataset.selectedValue;
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Skip invalid values
+                        |--------------------------------------------------------------------------
+                        */
+                        if (
+                            inputConnectorId === undefined ||
+                            inputConnectorId === null ||
+                            inputConnectorId === ''
+                        ) {
+                            console.error(
+                                'Input has no selected value:',
+                                inputNode
+                            );
+
+                            continue;
+                        }
+
+                        if (
+                            outputConnectorId === undefined ||
+                            outputConnectorId === null ||
+                            outputConnectorId === ''
+                        ) {
+                            console.error(
+                                'Output has no selected value:',
+                                outputNode
+                            );
+
+                            continue;
+                        }
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Create ONE workflow for this
+                        | Input → Configuration → Output
+                        |--------------------------------------------------------------------------
+                        */
+                        workflows.push({
+
+                            input_connector_id:
+                                inputConnectorId,
+
+                            configuration_id:
+                                configId,
+
+                            output_connector_id:
+                                outputConnectorId
+
+                        });
 
                     }
 
@@ -3358,12 +3417,12 @@
                     */
                     console.log(
                         'Expected workflows:',
-                        validInputIds.length * validOutputIds.length
+                        pairCount
                     );
 
                     console.log(
                         'Generated workflows for this config:',
-                        validInputIds.length * validOutputIds.length
+                        pairCount
                     );
 
                 });
@@ -3421,6 +3480,8 @@
                     },
 
                     body: JSON.stringify({
+
+                        batch_name: batchName,
 
                         workflows: workflows
 

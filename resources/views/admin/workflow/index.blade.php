@@ -222,20 +222,40 @@
                                 <tbody>
 
                                     @foreach ($workflows as $workflow)
-                                        <tr
-                                            style="
-                                                background:#fff;
-                                                box-shadow:0 2px 12px rgba(0,0,0,0.05);
-                                                border-radius:12px;
-                                            ">
 
-                                            {{-- BATCH --}}
+                                        @php
+
+                                            /*
+                                            |--------------------------------------------------------------------------
+                                            | Get every individual workflow belonging to this batch
+                                            |--------------------------------------------------------------------------
+                                            */
+                                            $configurationGroups = $workflow->workflow_items
+                                                ->groupBy('configuration_id')
+                                                ->values();
+
+                                        @endphp
+
+
+                                        {{-- ================================================================
+                                            ONE BATCH = ONE TABLE ROW
+                                            ================================================================ --}}
+
+                                        <tr class="workflow-row">
+
+                                            {{-- ============================================================
+                                                BATCH
+                                                ============================================================ --}}
+
                                             <td
+                                                class="workflow-batch-cell"
                                                 style="
                                                     padding:18px;
                                                     vertical-align:top;
                                                     min-width:160px;
-                                                ">
+                                                    background:#ffffff;
+                                                "
+                                            >
 
                                                 <div
                                                     style="
@@ -243,7 +263,8 @@
                                                         border:1px solid #e5e7eb;
                                                         border-radius:8px;
                                                         padding:9px 11px;
-                                                    ">
+                                                    "
+                                                >
 
                                                     <span
                                                         style="
@@ -252,7 +273,8 @@
                                                             color:#185fa5;
                                                             overflow-wrap:anywhere;
                                                             word-break:break-word;
-                                                        ">
+                                                        "
+                                                    >
                                                         {{ $workflow->batch }}
                                                     </span>
 
@@ -261,347 +283,776 @@
                                             </td>
 
 
-                                            {{-- INPUT CONNECTORS --}}
+                                            {{-- ============================================================
+                                                INPUT CONNECTORS
+                                                ============================================================ --}}
+
                                             <td
                                                 style="
-                                                    padding:18px;
+                                                    padding:0;
                                                     vertical-align:top;
                                                     min-width:330px;
-                                                ">
+                                                    background:#ffffff;
+                                                "
+                                            >
 
-                                                <div
-                                                    style="
-                                                        max-height:180px;
-                                                        overflow-y:auto;
-                                                        overflow-x:hidden;
-                                                        padding-right:5px;
-                                                    ">
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
+
+                                                    @php
+
+                                                        $configInputs = $configItems
+                                                            ->pluck('input_name')
+                                                            ->filter()
+                                                            ->values();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
 
                                                     <div
                                                         style="
-                                                            display:grid;
-                                                            grid-template-columns:repeat(3, minmax(0, 1fr));
-                                                            gap:8px;
-                                                            width:100%;
-                                                        ">
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
 
-                                                        @forelse ($workflow->inputs as $input)
+                                                        <div
+                                                            style="
+                                                                height:114px;
+                                                                max-height:114px;
+                                                                overflow-y:auto;
+                                                                overflow-x:hidden;
+                                                                padding-right:5px;
+                                                            "
+                                                        >
+
                                                             <div
                                                                 style="
-                                                                    display:flex;
-                                                                    align-items:flex-start;
-                                                                    gap:7px;
-                                                                    padding:9px 10px;
-                                                                    background:#f8f9fa;
-                                                                    border:1px solid #e5e7eb;
-                                                                    border-radius:8px;
-                                                                    font-size:12px;
-                                                                    font-weight:600;
-                                                                    color:#222;
-                                                                    min-width:0;
-                                                                    overflow-wrap:anywhere;
-                                                                    word-break:break-word;
-                                                                    line-height:1.4;
-                                                                ">
+                                                                    display:grid;
+                                                                    grid-template-columns:repeat(3,minmax(0,1fr));
+                                                                    gap:8px;
+                                                                    width:100%;
+                                                                "
+                                                            >
 
-                                                                <span
-                                                                    style="
-                                                                        width:7px;
-                                                                        height:7px;
-                                                                        min-width:7px;
-                                                                        border-radius:50%;
-                                                                        background:#AEF09D;
-                                                                        display:inline-block;
-                                                                        margin-top:4px;
-                                                                    "></span>
+                                                                @forelse ($configInputs as $input)
 
-                                                                <span
-                                                                    style="
-                                                                        min-width:0;
-                                                                        overflow-wrap:anywhere;
-                                                                        word-break:break-word;
-                                                                    ">
-                                                                    {{ $input }}
-                                                                </span>
+                                                                    <div
+                                                                        style="
+                                                                            display:flex;
+                                                                            align-items:flex-start;
+                                                                            gap:7px;
+                                                                            padding:9px 10px;
+                                                                            background:#f8f9fa;
+                                                                            border:1px solid #e5e7eb;
+                                                                            border-radius:8px;
+                                                                            font-size:12px;
+                                                                            font-weight:600;
+                                                                            color:#222;
+                                                                            min-width:0;
+                                                                            overflow-wrap:anywhere;
+                                                                            word-break:break-word;
+                                                                            line-height:1.4;
+                                                                            box-sizing:border-box;
+                                                                        "
+                                                                    >
+
+                                                                        <span
+                                                                            style="
+                                                                                width:7px;
+                                                                                height:7px;
+                                                                                min-width:7px;
+                                                                                border-radius:50%;
+                                                                                background:#AEF09D;
+                                                                                display:inline-block;
+                                                                                margin-top:4px;
+                                                                            "
+                                                                        ></span>
+
+                                                                        <span
+                                                                            style="
+                                                                                min-width:0;
+                                                                                overflow-wrap:anywhere;
+                                                                                word-break:break-word;
+                                                                            "
+                                                                        >
+                                                                            {{ $input }}
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                @empty
+
+                                                                    <span
+                                                                        style="
+                                                                            color:#888;
+                                                                            font-size:13px;
+                                                                        "
+                                                                    >
+                                                                        No input connector
+                                                                    </span>
+
+                                                                @endforelse
 
                                                             </div>
 
-                                                        @empty
-
-                                                            <span
-                                                                style="
-                                                                    color:#888;
-                                                                    font-size:13px;
-                                                                ">
-                                                                No input connector
-                                                            </span>
-                                                        @endforelse
+                                                        </div>
 
                                                     </div>
 
-                                                </div>
+                                                @endforeach
 
                                             </td>
 
 
-                                            {{-- CONFIGURATION --}}
+                                            {{-- ============================================================
+                                                CONFIGURATION
+                                                ============================================================ --}}
+
                                             <td
                                                 style="
-                                                    padding:18px;
+                                                    padding:0;
                                                     vertical-align:top;
                                                     min-width:200px;
-                                                ">
+                                                    background:#ffffff;
+                                                "
+                                            >
 
-                                                <div
-                                                    style="
-                                                        display:flex;
-                                                        flex-direction:column;
-                                                        gap:7px;
-                                                    ">
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
+
+                                                    @php
+
+                                                        $config = $configItems->first();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
 
                                                     <div
                                                         style="
-                                                            padding:9px 11px;
-                                                            background:#f8f9fa;
-                                                            border:1px solid #e5e7eb;
-                                                            border-radius:8px;
-                                                        ">
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
 
                                                         <div
                                                             style="
-                                                                font-weight:600;
-                                                                color:#111827;
-                                                                font-size:13px;
+                                                                padding:11px 12px;
+                                                                background:#f8f9fa;
+                                                                border:1px solid #e5e7eb;
+                                                                border-radius:8px;
                                                                 overflow-wrap:anywhere;
                                                                 word-break:break-word;
-                                                            ">
-                                                            {{ $workflow->config_name }}
-                                                        </div>
+                                                            "
+                                                        >
 
-                                                        <div
-                                                            style="
-                                                                font-size:11px;
-                                                                color:#6c757d;
-                                                                margin-top:4px;
-                                                            ">
-                                                            Configuration #{{ $workflow->configuration_id }}
+                                                            <div
+                                                                style="
+                                                                    font-weight:600;
+                                                                    color:#111827;
+                                                                    font-size:13px;
+                                                                    overflow-wrap:anywhere;
+                                                                    word-break:break-word;
+                                                                "
+                                                            >
+                                                                {{ $config->config_name }}
+                                                            </div>
+
+                                                            <div
+                                                                style="
+                                                                    font-size:11px;
+                                                                    color:#6c757d;
+                                                                    margin-top:4px;
+                                                                "
+                                                            >
+                                                                Configuration #{{ $config->configuration_id }}
+                                                            </div>
+
                                                         </div>
 
                                                     </div>
 
-                                                </div>
+                                                @endforeach
 
                                             </td>
 
 
-                                            {{-- OUTPUT CONNECTORS --}}
+                                            {{-- ============================================================
+                                                OUTPUT CONNECTORS
+                                                ============================================================ --}}
+
                                             <td
                                                 style="
-                                                    padding:18px;
+                                                    padding:0;
                                                     vertical-align:top;
                                                     min-width:330px;
-                                                ">
+                                                    background:#ffffff;
+                                                "
+                                            >
 
-                                                <div
-                                                    style="
-                                                        max-height:180px;
-                                                        overflow-y:auto;
-                                                        overflow-x:hidden;
-                                                        padding-right:5px;
-                                                    ">
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
+
+                                                    @php
+
+                                                        $configOutputs = $configItems
+                                                            ->pluck('output_name')
+                                                            ->filter()
+                                                            ->values();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
 
                                                     <div
                                                         style="
-                                                            display:grid;
-                                                            grid-template-columns:repeat(3, minmax(0, 1fr));
-                                                            gap:8px;
-                                                            width:100%;
-                                                        ">
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
 
-                                                        @forelse ($workflow->outputs as $output)
+                                                        <div
+                                                            style="
+                                                                height:114px;
+                                                                max-height:114px;
+                                                                overflow-y:auto;
+                                                                overflow-x:hidden;
+                                                                padding-right:5px;
+                                                            "
+                                                        >
+
                                                             <div
                                                                 style="
-                                                                    display:flex;
-                                                                    align-items:flex-start;
-                                                                    gap:7px;
-                                                                    padding:9px 10px;
-                                                                    background:#f8f9fa;
-                                                                    border:1px solid #e5e7eb;
-                                                                    border-radius:8px;
-                                                                    font-size:12px;
-                                                                    font-weight:600;
-                                                                    color:#222;
-                                                                    min-width:0;
-                                                                    overflow-wrap:anywhere;
-                                                                    word-break:break-word;
-                                                                    line-height:1.4;
-                                                                ">
+                                                                    display:grid;
+                                                                    grid-template-columns:repeat(3,minmax(0,1fr));
+                                                                    gap:8px;
+                                                                    width:100%;
+                                                                "
+                                                            >
 
-                                                                <span
-                                                                    style="
-                                                                        width:7px;
-                                                                        height:7px;
-                                                                        min-width:7px;
-                                                                        border-radius:50%;
-                                                                        background:#E94E1B;
-                                                                        display:inline-block;
-                                                                        margin-top:4px;
-                                                                    "></span>
+                                                                @forelse ($configOutputs as $output)
 
-                                                                <span
-                                                                    style="
-                                                                        min-width:0;
-                                                                        overflow-wrap:anywhere;
-                                                                        word-break:break-word;
-                                                                    ">
-                                                                    {{ $output }}
-                                                                </span>
+                                                                    <div
+                                                                        style="
+                                                                            display:flex;
+                                                                            align-items:flex-start;
+                                                                            gap:7px;
+                                                                            padding:9px 10px;
+                                                                            background:#f8f9fa;
+                                                                            border:1px solid #e5e7eb;
+                                                                            border-radius:8px;
+                                                                            font-size:12px;
+                                                                            font-weight:600;
+                                                                            color:#222;
+                                                                            min-width:0;
+                                                                            overflow-wrap:anywhere;
+                                                                            word-break:break-word;
+                                                                            line-height:1.4;
+                                                                            box-sizing:border-box;
+                                                                        "
+                                                                    >
+
+                                                                        <span
+                                                                            style="
+                                                                                width:7px;
+                                                                                height:7px;
+                                                                                min-width:7px;
+                                                                                border-radius:50%;
+                                                                                background:#E94E1B;
+                                                                                display:inline-block;
+                                                                                margin-top:4px;
+                                                                            "
+                                                                        ></span>
+
+                                                                        <span
+                                                                            style="
+                                                                                min-width:0;
+                                                                                overflow-wrap:anywhere;
+                                                                                word-break:break-word;
+                                                                            "
+                                                                        >
+                                                                            {{ $output }}
+                                                                        </span>
+
+                                                                    </div>
+
+                                                                @empty
+
+                                                                    <span
+                                                                        style="
+                                                                            color:#888;
+                                                                            font-size:13px;
+                                                                        "
+                                                                    >
+                                                                        No output connector
+                                                                    </span>
+
+                                                                @endforelse
 
                                                             </div>
 
-                                                        @empty
-
-                                                            <span
-                                                                style="
-                                                                    color:#888;
-                                                                    font-size:13px;
-                                                                ">
-                                                                No output connector
-                                                            </span>
-                                                        @endforelse
+                                                        </div>
 
                                                     </div>
 
-                                                </div>
+                                                @endforeach
 
                                             </td>
 
 
-                                            {{-- STATUS --}}
+                                            {{-- ============================================================
+                                                STATUS
+                                                ============================================================ --}}
+
                                             <td
                                                 style="
-                                                    padding:18px;
+                                                    padding:0;
                                                     vertical-align:top;
                                                     white-space:nowrap;
-                                                ">
+                                                    background:#ffffff;
+                                                "
+                                            >
 
-                                                @if ($workflow->status === 'active')
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
 
-                                                    <span
+                                                    @php
+
+                                                        $config = $configItems->first();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
+
+                                                    <div
                                                         style="
-                                                            display:inline-flex;
-                                                            align-items:center;
-                                                            gap:6px;
-                                                            color:#28a745;
-                                                            font-size:14px;
-                                                            font-weight:600;
-                                                        ">
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
 
-                                                        <span
-                                                            style="
-                                                                width:8px;
-                                                                height:8px;
-                                                                border-radius:50%;
-                                                                background:#28a745;
-                                                            ">
-                                                        </span>
+                                                        @if ($config->status === 'active')
 
-                                                        Active
+                                                            <span
+                                                                style="
+                                                                    display:inline-flex;
+                                                                    align-items:center;
+                                                                    gap:6px;
+                                                                    color:#28a745;
+                                                                    font-size:14px;
+                                                                    font-weight:600;
+                                                                "
+                                                            >
 
-                                                    </span>
+                                                                <span
+                                                                    style="
+                                                                        width:8px;
+                                                                        height:8px;
+                                                                        border-radius:50%;
+                                                                        background:#28a745;
+                                                                    "
+                                                                ></span>
 
-                                                @else
+                                                                Active
 
-                                                    <div style="display:flex;align-items:center;gap:15px;">
+                                                            </span>
 
-                                                        {{-- INACTIVE STATUS --}}
+                                                        @else
+
+                                                            <div
+                                                                style="
+                                                                    display:flex;
+                                                                    align-items:center;
+                                                                    gap:15px;
+                                                                "
+                                                            >
+
+                                                                <span
+                                                                    style="
+                                                                        display:inline-flex;
+                                                                        align-items:center;
+                                                                        gap:6px;
+                                                                        color:#dc3545;
+                                                                        font-size:14px;
+                                                                        font-weight:600;
+                                                                    "
+                                                                >
+
+                                                                    <span
+                                                                        style="
+                                                                            width:8px;
+                                                                            height:8px;
+                                                                            border-radius:50%;
+                                                                            background:#dc3545;
+                                                                        "
+                                                                    ></span>
+
+                                                                    Inactive
+
+                                                                </span>
+
+
+                                                                <form
+                                                                    id="activateConfigurationForm-{{ $config->id }}"
+                                                                    action="{{ route('admin.workflow.configuration.activate') }}"
+                                                                    method="POST"
+                                                                    style="margin:0;"
+                                                                >
+
+                                                                    @csrf
+
+                                                                    <input
+                                                                        type="hidden"
+                                                                        name="configuration_id"
+                                                                        value="{{ $config->configuration_id }}"
+                                                                    >
+
+                                                                    <input
+                                                                        type="hidden"
+                                                                        name="batch"
+                                                                        value="{{ $config->batch }}"
+                                                                    >
+
+                                                                    <a
+                                                                        href="javascript:void(0)"
+                                                                        onclick="
+                                                                            Swal.fire({
+                                                                                title: 'Activate Configuration?',
+                                                                                text: 'A test will be run to verify that the configured email credentials are correct. The configuration will only be activated if the test succeeds.',
+                                                                                icon: 'warning',
+                                                                                showCancelButton: true,
+                                                                                confirmButtonText: 'Yes, Test & Activate',
+                                                                                cancelButtonText: 'Cancel',
+                                                                                reverseButtons: true,
+                                                                                buttonsStyling: false,
+                                                                                customClass: {
+                                                                                    confirmButton: 'swal-confirm-button',
+                                                                                    cancelButton: 'swal-cancel-button'
+                                                                                }
+                                                                            }).then((result) => {
+
+                                                                                if (result.isConfirmed) {
+
+                                                                                    document
+                                                                                        .getElementById('workflowActivationLoader')
+                                                                                        .style.display = 'flex';
+
+                                                                                    document
+                                                                                        .getElementById('activateConfigurationForm-{{ $config->id }}')
+                                                                                        .submit();
+
+                                                                                }
+
+                                                                            });
+                                                                        "
+                                                                        style="
+                                                                            display:inline-flex;
+                                                                            align-items:center;
+                                                                            gap:7px;
+                                                                            padding:8px 4px;
+                                                                            color:#329b40;
+                                                                            font-size:14px;
+                                                                            font-weight:600;
+                                                                            text-decoration:none;
+                                                                            white-space:nowrap;
+                                                                            cursor:pointer;
+                                                                        "
+                                                                    >
+
+                                                                        <i class="fas fa-power-off"></i>
+
+                                                                        <span>Activate</span>
+
+                                                                        <i
+                                                                            class="fas fa-arrow-right"
+                                                                            style="font-size:12px;"
+                                                                        ></i>
+
+                                                                    </a>
+
+                                                                </form>
+
+                                                            </div>
+
+                                                        @endif
+
+                                                    </div>
+
+                                                @endforeach
+
+                                            </td>
+
+
+                                            {{-- ============================================================
+                                                USAGE
+                                                ============================================================ --}}
+
+                                            <td
+                                                style="
+                                                    padding:0;
+                                                    text-align:center;
+                                                    vertical-align:top;
+                                                    background:#ffffff;
+                                                "
+                                            >
+
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
+
+                                                    @php
+
+                                                        $config = $configItems->first();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
+
+                                                    <div
+                                                        style="
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
+
                                                         <span
                                                             style="
                                                                 display:inline-flex;
                                                                 align-items:center;
-                                                                gap:6px;
-                                                                color:#dc3545;
-                                                                font-size:14px;
+                                                                justify-content:center;
+                                                                min-width:35px;
+                                                                padding:6px 10px;
+                                                                border-radius:20px;
+                                                                background:#f1f3f5;
+                                                                color:#111827;
+                                                                font-size:13px;
                                                                 font-weight:600;
-                                                            ">
-
-                                                            <span
-                                                                style="
-                                                                    width:8px;
-                                                                    height:8px;
-                                                                    border-radius:50%;
-                                                                    background:#dc3545;
-                                                                ">
-                                                            </span>
-
-                                                            Inactive
-
+                                                            "
+                                                        >
+                                                            {{ $config->usage_count }}
                                                         </span>
 
+                                                    </div>
 
-                                                        {{-- ACTIVATE FORM --}}
-                                                        <form
-                                                            id="activateConfigurationForm-{{ $workflow->id }}"
-                                                            action="{{ route('admin.workflow.configuration.activate') }}"
-                                                            method="POST"
-                                                            style="margin:0;">
+                                                @endforeach
 
-                                                            @csrf
-
-                                                            <input
-                                                                type="hidden"
-                                                                name="configuration_id"
-                                                                value="{{ $workflow->configuration_id }}">
-
-                                                            <input
-                                                                type="hidden"
-                                                                name="batch"
-                                                                value="{{ $workflow->batch }}">
+                                            </td>
 
 
-                                                            {{-- ACTIVATE BUTTON --}}
-                                                            <a href="javascript:void(0)"
-                                                                onclick="
-                                                                    Swal.fire({
-                                                                        title: 'Activate Configuration?',
-                                                                        text: 'A test will be run to verify that the configured email credentials are correct. The configuration will only be activated if the test succeeds.',
-                                                                        icon: 'warning',
-                                                                        showCancelButton: true,
-                                                                        confirmButtonText: 'Yes, Test & Activate',
-                                                                        cancelButtonText: 'Cancel',
-                                                                        reverseButtons: true,
-                                                                        buttonsStyling: false,
+                                            {{-- ============================================================
+                                                USER
+                                                ============================================================ --}}
 
-                                                                        customClass: {
-                                                                            confirmButton: 'swal-confirm-button',
-                                                                            cancelButton: 'swal-cancel-button'
-                                                                        }
-                                                                    }).then((result) => {
+                                            <td
+                                                style="
+                                                    padding:0;
+                                                    vertical-align:top;
+                                                    min-width:150px;
+                                                    background:#ffffff;
+                                                "
+                                            >
 
-                                                                        if (result.isConfirmed) {
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
 
-                                                                            /*
-                                                                            |--------------------------------------------------------------------------
-                                                                            | Show preloader
-                                                                            |--------------------------------------------------------------------------
-                                                                            */
+                                                    @php
 
-                                                                            document.getElementById('workflowActivationLoader').style.display = 'flex';
+                                                        $config = $configItems->first();
 
-                                                                            /*
-                                                                            |--------------------------------------------------------------------------
-                                                                            | Submit form
-                                                                            |--------------------------------------------------------------------------
-                                                                            */
+                                                        $isFirstConfiguration = $configIndex === 0;
 
-                                                                            document
-                                                                                .getElementById('activateConfigurationForm-{{ $workflow->id }}')
-                                                                                .submit();
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
 
-                                                                        }
+                                                    @endphp
 
-                                                                    });
-                                                                "
+
+                                                    <div
+                                                        style="
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
+
+                                                        <div
+                                                            style="
+                                                                padding:9px 11px;
+                                                                background:#f8f9fa;
+                                                                border:1px solid #e5e7eb;
+                                                                border-radius:8px;
+                                                                font-size:13px;
+                                                                font-weight:500;
+                                                                color:#495057;
+                                                                overflow-wrap:anywhere;
+                                                                word-break:break-word;
+                                                            "
+                                                        >
+                                                            {{ $config->user_identifier }}
+                                                        </div>
+
+                                                    </div>
+
+                                                @endforeach
+
+                                            </td>
+
+
+                                            {{-- ============================================================
+                                                REPORT
+                                                ============================================================ --}}
+
+                                            <td
+                                                style="
+                                                    padding:0;
+                                                    vertical-align:top;
+                                                    min-width:150px;
+                                                    background:#ffffff;
+                                                "
+                                            >
+
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
+
+                                                    @php
+
+                                                        $config = $configItems->first();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
+
+                                                    <div
+                                                        style="
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
+
+                                                        <div
+                                                            style="
+                                                                padding:9px 11px;
+                                                                background:#f8f9fa;
+                                                                border:1px solid #e5e7eb;
+                                                                border-radius:8px;
+                                                                font-size:13px;
+                                                                font-weight:500;
+                                                                color:#495057;
+                                                                overflow-wrap:anywhere;
+                                                                word-break:break-word;
+                                                            "
+                                                        >
+                                                            Link here
+                                                        </div>
+
+                                                    </div>
+
+                                                @endforeach
+
+                                            </td>
+
+
+                                            {{-- ============================================================
+                                                USE
+                                                ============================================================ --}}
+
+                                            <td
+                                                style="
+                                                    padding:0;
+                                                    vertical-align:top;
+                                                    min-width:150px;
+                                                    background:#ffffff;
+                                                "
+                                            >
+
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
+
+                                                    @php
+
+                                                        $config = $configItems->first();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
+
+
+                                                    <div
+                                                        style="
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
+                                                        "
+                                                    >
+
+                                                        <div
+                                                            style="
+                                                                display:flex;
+                                                                justify-content:center;
+                                                                align-items:center;
+                                                            "
+                                                        >
+
+                                                            <a
+                                                                href="{{ route('admin.workflow.configuration.use', ['config_id' => $config->configuration_id]) }}"
                                                                 style="
                                                                     display:inline-flex;
                                                                     align-items:center;
@@ -611,296 +1062,163 @@
                                                                     font-size:14px;
                                                                     font-weight:600;
                                                                     text-decoration:none;
-                                                                    border-bottom:1px solid transparent;
-                                                                    transition:all .25s ease;
                                                                     white-space:nowrap;
-                                                                    cursor:pointer;
                                                                 "
-                                                                onmouseover="
-                                                                    this.style.color='#267a32';
-                                                                    this.style.borderBottomColor='#329b40';
-                                                                    this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                                "
-                                                                onmouseout="
-                                                                    this.style.color='#329b40';
-                                                                    this.style.borderBottomColor='transparent';
-                                                                    this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                                ">
+                                                            >
 
-                                                                <i class="fas fa-power-off"></i>
+                                                                <i class="fas fa-eye"></i>
 
-                                                                <span>Activate</span>
+                                                                <span>Use</span>
 
-                                                                <i class="fas fa-arrow-right action-arrow"
-                                                                    style="
-                                                                        font-size:12px;
-                                                                        transition:transform .25s ease;
-                                                                    ">
-                                                                </i>
+                                                                <i
+                                                                    class="fas fa-arrow-right"
+                                                                    style="font-size:12px;"
+                                                                ></i>
 
                                                             </a>
 
-                                                        </form>
+                                                        </div>
 
                                                     </div>
 
-                                                @endif
-
-                                            
+                                                @endforeach
 
                                             </td>
 
 
-                                            {{-- USAGE --}}
+                                            {{-- ============================================================
+                                                ACTION
+                                                ============================================================ --}}
+
                                             <td
                                                 style="
-                                                    padding:18px;
+                                                    padding:0;
                                                     text-align:center;
                                                     vertical-align:top;
-                                                ">
+                                                    min-width:220px;
+                                                    background:#ffffff;
+                                                "
+                                            >
 
-                                                <span
-                                                    style="
-                                                        display:inline-flex;
-                                                        align-items:center;
-                                                        justify-content:center;
-                                                        min-width:35px;
-                                                        padding:6px 10px;
-                                                        border-radius:20px;
-                                                        background:#f1f3f5;
-                                                        color:#111827;
-                                                        font-size:13px;
-                                                        font-weight:600;
-                                                    ">
-                                                    {{ $workflow->usage_count }}
-                                                </span>
+                                                @foreach ($configurationGroups as $configIndex => $configItems)
 
-                                            </td>
+                                                    @php
+
+                                                        $config = $configItems->first();
+
+                                                        $configInputs = $configItems
+                                                            ->pluck('input_name')
+                                                            ->filter()
+                                                            ->values();
+
+                                                        $configOutputs = $configItems
+                                                            ->pluck('output_name')
+                                                            ->filter()
+                                                            ->values();
+
+                                                        $isFirstConfiguration = $configIndex === 0;
+
+                                                        $rowBackground = $configIndex % 2 === 0
+                                                            ? '#ffffff'
+                                                            : '#f7f9fb';
+
+                                                    @endphp
 
 
-                                            {{-- USER --}}
-                                            <td
-                                                style="
-                                                    padding:18px;
-                                                    vertical-align:top;
-                                                    min-width:150px;
-                                                ">
-
-                                                <div
-                                                    style="
-                                                        padding:9px 11px;
-                                                        background:#f8f9fa;
-                                                        border:1px solid #e5e7eb;
-                                                        border-radius:8px;
-                                                        font-size:13px;
-                                                        font-weight:500;
-                                                        color:#495057;
-                                                        overflow-wrap:anywhere;
-                                                        word-break:break-word;
-                                                    ">
-                                                    {{ $workflow->user_identifier }}
-                                                </div>
-
-                                            </td>
-
-                                            <td
-                                                style="
-                                                    padding:18px;
-                                                    vertical-align:top;
-                                                    min-width:150px;
-                                                ">
-
-                                                <div
-                                                    style="
-                                                        padding:9px 11px;
-                                                        background:#f8f9fa;
-                                                        border:1px solid #e5e7eb;
-                                                        border-radius:8px;
-                                                        font-size:13px;
-                                                        font-weight:500;
-                                                        color:#495057;
-                                                        overflow-wrap:anywhere;
-                                                        word-break:break-word;
-                                                    ">
-                                                    Link here
-                                                </div>
-
-                                            </td>
-
-                                            <td
-                                                style="
-                                                    padding:18px;
-                                                    vertical-align:top;
-                                                    min-width:150px;
-                                                ">
-
-                                                  <div
-                                                    style="
-                                                        display:flex;
-                                                        gap:14px;
-                                                        justify-content:center;
-                                                        align-items:center;
-                                                        flex-wrap:wrap;
-                                                    ">
-
-                                                    
-
-                                                    {{-- VIEW --}}
-                                                    <a href="{{ route('admin.workflow.configuration.use', ['config_id' => $workflow?->configuration_id]) }}"
+                                                    <div
                                                         style="
-                                                                display:inline-flex;
-                                                                align-items:center;
-                                                                gap:7px;
-                                                                padding:8px 4px;
-                                                                color:#329b40;
-                                                                font-size:14px;
-                                                                font-weight:600;
-                                                                text-decoration:none;
-                                                                border-bottom:1px solid transparent;
-                                                                transition:all .25s ease;
-                                                                white-space:nowrap;
-                                                            "
-                                                        onmouseover="
-                                                                this.style.color='#267a32';
-                                                                this.style.borderBottomColor='#329b40';
-                                                                this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                            "
-                                                        onmouseout="
-                                                                this.style.color='#329b40';
-                                                                this.style.borderBottomColor='transparent';
-                                                                this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                            ">
-
-                                                        <i class="fas fa-eye"></i>
-
-                                                        <span>Use</span>
-
-                                                        <i class="fas fa-arrow-right action-arrow"
-                                                            style="
-                                                                    font-size:12px;
-                                                                    transition:transform .25s ease;
-                                                                ">
-                                                        </i>
-
-                                                    </a>
-
-                                                </div>
-
-                                            </td>
-
-
-                                            {{-- ACTION --}}
-                                            <td
-                                                style="
-                                                    padding:18px;
-                                                    text-align:center;
-                                                    vertical-align:top;
-                                                ">
-
-                                                <div
-                                                    style="
-                                                        display:flex;
-                                                        gap:14px;
-                                                        justify-content:center;
-                                                        align-items:center;
-                                                        flex-wrap:wrap;
-                                                    ">
-
-                                                    {{-- VIEW --}}
-                                                    <a href="{{ route('admin.workflow.single', ['id' => $workflow->id]) }}"
-                                                        style="
-                                                                display:inline-flex;
-                                                                align-items:center;
-                                                                gap:7px;
-                                                                padding:8px 4px;
-                                                                color:#329b40;
-                                                                font-size:14px;
-                                                                font-weight:600;
-                                                                text-decoration:none;
-                                                                border-bottom:1px solid transparent;
-                                                                transition:all .25s ease;
-                                                                white-space:nowrap;
-                                                            "
-                                                        onmouseover="
-                                                                this.style.color='#267a32';
-                                                                this.style.borderBottomColor='#329b40';
-                                                                this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                            "
-                                                        onmouseout="
-                                                                this.style.color='#329b40';
-                                                                this.style.borderBottomColor='transparent';
-                                                                this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                            ">
-
-                                                        <i class="fas fa-eye"></i>
-
-                                                        <span>View workflow</span>
-
-                                                        <i class="fas fa-arrow-right action-arrow"
-                                                            style="
-                                                                    font-size:12px;
-                                                                    transition:transform .25s ease;
-                                                                ">
-                                                        </i>
-
-                                                    </a>
-
-
-                                                    {{-- EDIT --}}
-                                                    <a href="javascript:void(0)"
-                                                        onclick="openEditWorkflowModal(
-                                                            @js($workflow->batch),
-                                                            @js($workflow->configuration_id),
-                                                            @js($workflow->inputs),
-                                                            @js($workflow->outputs)
-                                                        )"
-                                                        style="
-                                                            display:inline-flex;
-                                                            align-items:center;
-                                                            gap:7px;
-                                                            padding:8px 4px;
-                                                            color:#329b40;
-                                                            font-size:14px;
-                                                            font-weight:600;
-                                                            text-decoration:none;
-                                                            border-bottom:1px solid transparent;
-                                                            transition:all .25s ease;
-                                                            white-space:nowrap;
-                                                            cursor:pointer;
+                                                            height:150px;
+                                                            padding:18px;
+                                                            background:{{ $rowBackground }};
+                                                            {{ !$isFirstConfiguration ? 'border-top:12px solid #ffffff;' : '' }}
+                                                            box-sizing:border-box;
+                                                            overflow:hidden;
                                                         "
-                                                        onmouseover="
-                                                            this.style.color='#267a32';
-                                                            this.style.borderBottomColor='#329b40';
-                                                            this.querySelector('.action-arrow').style.transform='translateX(4px)';
-                                                        "
-                                                        onmouseout="
-                                                            this.style.color='#329b40';
-                                                            this.style.borderBottomColor='transparent';
-                                                            this.querySelector('.action-arrow').style.transform='translateX(0)';
-                                                        ">
+                                                    >
 
-                                                        <i class="fas fa-edit"></i>
-
-                                                        <span>Edit workflow</span>
-
-                                                        <i class="fas fa-arrow-right action-arrow"
+                                                        <div
                                                             style="
-                                                                font-size:12px;
-                                                                transition:transform .25s ease;
-                                                            ">
-                                                        </i>
+                                                                display:flex;
+                                                                gap:14px;
+                                                                justify-content:center;
+                                                                align-items:center;
+                                                                flex-wrap:wrap;
+                                                            "
+                                                        >
 
-                                                    </a>
+                                                            <a
+                                                                href="{{ route('admin.workflow.single', ['id' => $config->id]) }}"
+                                                                style="
+                                                                    display:inline-flex;
+                                                                    align-items:center;
+                                                                    gap:7px;
+                                                                    padding:8px 4px;
+                                                                    color:#329b40;
+                                                                    font-size:14px;
+                                                                    font-weight:600;
+                                                                    text-decoration:none;
+                                                                    white-space:nowrap;
+                                                                "
+                                                            >
 
-                                                </div>
+                                                                <i class="fas fa-eye"></i>
+
+                                                                <span>View workflow</span>
+
+                                                                <i
+                                                                    class="fas fa-arrow-right"
+                                                                    style="font-size:12px;"
+                                                                ></i>
+
+                                                            </a>
+
+
+                                                            <a
+                                                                href="javascript:void(0)"
+                                                                onclick="openEditWorkflowModal(
+                                                                    @js($config->batch),
+                                                                    @js($config->configuration_id),
+                                                                    @js($configInputs),
+                                                                    @js($configOutputs)
+                                                                )"
+                                                                style="
+                                                                    display:inline-flex;
+                                                                    align-items:center;
+                                                                    gap:7px;
+                                                                    padding:8px 4px;
+                                                                    color:#329b40;
+                                                                    font-size:14px;
+                                                                    font-weight:600;
+                                                                    text-decoration:none;
+                                                                    white-space:nowrap;
+                                                                    cursor:pointer;
+                                                                "
+                                                            >
+
+                                                                <i class="fas fa-edit"></i>
+
+                                                                <span>Edit workflow</span>
+
+                                                                <i
+                                                                    class="fas fa-arrow-right"
+                                                                    style="font-size:12px;"
+                                                                ></i>
+
+                                                            </a>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                @endforeach
 
                                             </td>
 
                                         </tr>
+
                                     @endforeach
 
                                 </tbody>
-
                             </table>
 
                         </div>
