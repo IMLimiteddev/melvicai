@@ -8,6 +8,7 @@ use Google\Client;
 use Google\Service\Gmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Mail\Mailable;
 
 class WorkflowGmailService
 {
@@ -246,22 +247,53 @@ class WorkflowGmailService
 
     public function authorizeGmail($connector)
     {
+        \Log::info('GMAIL OAUTH: STARTING AUTHORIZATION', [
+            'connector_id' => $connector->id,
+            'connector_name' => $connector->name,
+            'connector_type' => $connector->type,
+        ]);
+
         if ($connector->type !== 'input') {
+
+            \Log::error('GMAIL OAUTH: INVALID CONNECTOR TYPE', [
+                'connector_id' => $connector->id,
+                'connector_type' => $connector->type,
+            ]);
+
             throw new \Exception(
                 'Invalid Gmail input connector.'
             );
         }
 
+        \Log::info('GMAIL OAUTH: CONNECTOR TYPE VALIDATED', [
+            'connector_id' => $connector->id,
+        ]);
+
         if (
             empty($connector->email_client_id) ||
             empty($connector->email_client_secret)
         ) {
+
+            \Log::error('GMAIL OAUTH: CLIENT CREDENTIALS MISSING', [
+                'connector_id' => $connector->id,
+                'has_client_id' => !empty($connector->email_client_id),
+                'has_client_secret' => !empty($connector->email_client_secret),
+            ]);
+
             throw new \Exception(
                 'Gmail Client ID and Client Secret are required.'
             );
         }
 
+        \Log::info('GMAIL OAUTH: CLIENT CREDENTIALS VALIDATED', [
+            'connector_id' => $connector->id,
+        ]);
+
         $client = new \Google\Client();
+
+        \Log::info('GMAIL OAUTH: GOOGLE CLIENT CREATED', [
+            'connector_id' => $connector->id,
+        ]);
 
         $client->setClientId(
             $connector->email_client_id
@@ -271,17 +303,34 @@ class WorkflowGmailService
             $connector->email_client_secret
         );
 
-        $client->setRedirectUri(
-            route('admin.workflow.connector.gmail.callback')
+        $redirectUri = route(
+            'admin.workflow.connector.gmail.callback'
         );
+
+        $client->setRedirectUri(
+            $redirectUri
+        );
+
+        \Log::info('GMAIL OAUTH: REDIRECT URI SET', [
+            'connector_id' => $connector->id,
+            'redirect_uri' => $redirectUri,
+        ]);
 
         $client->setAccessType('offline');
         $client->setPrompt('consent');
+
+        \Log::info('GMAIL OAUTH: OFFLINE ACCESS AND CONSENT CONFIGURED', [
+            'connector_id' => $connector->id,
+        ]);
 
         $client->setScopes([
             'https://www.googleapis.com/auth/gmail.readonly',
             'https://www.googleapis.com/auth/gmail.modify',
             'https://www.googleapis.com/auth/gmail.send',
+        ]);
+
+        \Log::info('GMAIL OAUTH: GMAIL SCOPES CONFIGURED', [
+            'connector_id' => $connector->id,
         ]);
 
         /*
@@ -294,12 +343,32 @@ class WorkflowGmailService
             'gmail_oauth_connector_id' => $connector->id,
         ]);
 
-        return $client->createAuthUrl();
+        \Log::info('GMAIL OAUTH: CONNECTOR ID STORED IN SESSION', [
+            'connector_id' => $connector->id,
+        ]);
+
+        $authUrl = $client->createAuthUrl();
+
+        \Log::info('GMAIL OAUTH: AUTHORIZATION URL GENERATED', [
+            'connector_id' => $connector->id,
+            'is_google_url' => str_starts_with(
+                $authUrl,
+                'https://accounts.google.com/'
+            ),
+            'auth_url' => $authUrl,
+        ]);
+
+        \Log::info('GMAIL OAUTH: AUTHORIZATION PROCESS READY', [
+            'connector_id' => $connector->id,
+        ]);
+
+        return $authUrl;
     }
 
-
-    public function checkWorkflowEmails($workflow)
-    {
+   public function checkWorkflowEmails(
+    $workflow,
+    $subject = 'PDF_CONVERTER'
+    ) {
         /*
         |--------------------------------------------------------------------------
         | 1. Get configuration
@@ -451,19 +520,24 @@ class WorkflowGmailService
 
             /*
             |--------------------------------------------------------------------------
-            | 5. Search unread PDF-CONVERTER emails
+            | 5. Search unread emails using supplied subject
             |--------------------------------------------------------------------------
             */
 
+            $subject = trim($subject) ?: 'PDF_CONVERTER';
+
+            $query = 'in:anywhere is:unread subject:"' . $subject . '"';
+
             Log::info('WORKFLOW: Searching Gmail', [
                 'workflow_id' => $workflow->id,
-                'query' => 'in:anywhere is:unread subject:"PDF-CONVERTER"',
+                'subject' => $subject,
+                'query' => $query,
             ]);
 
             $response = $gmail->users_messages->listUsersMessages(
                 'me',
                 [
-                    'q' => 'in:anywhere is:unread subject:"PDF-CONVERTER"',
+                    'q' => $query,
                     'includeSpamTrash' => true,
                 ]
             );
@@ -486,6 +560,7 @@ class WorkflowGmailService
 
                 Log::info('WORKFLOW: No matching unread emails found', [
                     'workflow_id' => $workflow->id,
+                    'subject' => $subject,
                 ]);
 
                 return [
@@ -546,7 +621,7 @@ class WorkflowGmailService
                     |--------------------------------------------------------------------------
                     */
 
-                    $subject = '';
+                    $emailSubject = '';
                     $from = '';
 
                     foreach ($payload->getHeaders() as $header) {
@@ -556,7 +631,7 @@ class WorkflowGmailService
                         );
 
                         if ($headerName === 'subject') {
-                            $subject = trim(
+                            $emailSubject = trim(
                                 $header->getValue()
                             );
                         }
@@ -571,7 +646,7 @@ class WorkflowGmailService
                     Log::info('WORKFLOW: Email details', [
                         'workflow_id' => $workflow->id,
                         'message_id' => $messageId,
-                        'subject' => $subject,
+                        'subject' => $emailSubject,
                         'from' => $from,
                     ]);
 
@@ -618,14 +693,14 @@ class WorkflowGmailService
                         Log::error('WORKFLOW: No attachments found', [
                             'workflow_id' => $workflow->id,
                             'message_id' => $messageId,
-                            'subject' => $subject,
+                            'subject' => $emailSubject,
                         ]);
 
                         $failed++;
 
                         $emailResults[] = [
                             'message_id' => $messageId,
-                            'subject' => $subject,
+                            'subject' => $emailSubject,
                             'status' => 'failed',
                             'message' => 'No attachment found.',
                         ];
@@ -853,6 +928,44 @@ class WorkflowGmailService
                             'storage_path' => $storagePath,
                         ]);
 
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Send processed file to output account
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $outputConnector = \App\Models\WorkflowConnector::find(
+                            $workflow->output_connector_id
+                        );
+
+                        if (!$outputConnector || empty($outputConnector->account_email)) {
+
+                            Log::error('WORKFLOW: Output email connector not found', [
+                                'workflow_id' => $workflow->id,
+                                'output_connector_id' => $workflow->output_connector_id,
+                            ]);
+
+                            throw new \Exception(
+                                'Output email account is not configured for workflow ' .
+                                $workflow->id
+                            );
+                        }
+
+                        \Mail::to($outputConnector->account_email)
+                            ->send(
+                                new \App\Mail\ProcessedWorkflowFileMail(
+                                    $storagePath,
+                                    $mappedFilename
+                                )
+                            );
+
+                        Log::info('WORKFLOW: Processed file email sent', [
+                            'workflow_id' => $workflow->id,
+                            'output_connector_id' => $outputConnector->id,
+                            'recipient' => $outputConnector->account_email,
+                            'file' => $mappedFilename,
+                        ]);
+
 
                         /*
                         |--------------------------------------------------------------------------
@@ -880,7 +993,7 @@ class WorkflowGmailService
                         Log::error('WORKFLOW: No PDF attachment found', [
                             'workflow_id' => $workflow->id,
                             'message_id' => $messageId,
-                            'subject' => $subject,
+                            'subject' => $emailSubject,
                         ]);
 
                         throw new \Exception(
@@ -916,13 +1029,13 @@ class WorkflowGmailService
                     Log::info('WORKFLOW: Email processed successfully', [
                         'workflow_id' => $workflow->id,
                         'message_id' => $messageId,
-                        'subject' => $subject,
+                        'subject' => $emailSubject,
                         'processed_attachments' => $processedAttachments,
                     ]);
 
                     $emailResults[] = [
                         'message_id' => $messageId,
-                        'subject' => $subject,
+                        'subject' => $emailSubject,
                         'from' => $from,
                         'status' => 'processed',
                         'attachments' => $processedAttachments,
@@ -931,12 +1044,6 @@ class WorkflowGmailService
                 } catch (\Throwable $e) {
 
                     $failed++;
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | IMPORTANT: Full error log
-                    |--------------------------------------------------------------------------
-                    */
 
                     Log::error('WORKFLOW: Email processing failed', [
                         'workflow_id' => $workflow->id,
@@ -970,7 +1077,9 @@ class WorkflowGmailService
                 'found' => count($messages),
                 'processed' => $processed,
                 'failed' => $failed,
+                'subject' => $subject,
             ]);
+
 
             return [
                 'count' => count($messages),
@@ -978,6 +1087,7 @@ class WorkflowGmailService
                 'failed' => $failed,
                 'emails' => $emailResults,
             ];
+
         } catch (\Throwable $e) {
 
             /*
@@ -1092,10 +1202,7 @@ class WorkflowGmailService
                     );
                 }
             }
-        }
-
-
-    
+    }
     
     public function gmailCallback(Request $request)
     {
@@ -1197,7 +1304,7 @@ class WorkflowGmailService
                 );
         }
 
-        $connector->token_status = 'token_valid';
+        $connector->token_status = 'token_validd';
         $connector->status = 'active';
 
         $connector->save();

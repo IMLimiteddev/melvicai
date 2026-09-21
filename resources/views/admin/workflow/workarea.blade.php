@@ -3189,94 +3189,145 @@
 
         {{--Saves workflow--}}
         <script>
-            function saveWorkflow() {
+           function saveWorkflow() {
 
-                const batchNameInput = document.getElementById('workflowBatchName');
+                const batchNameInput =
+                    document.getElementById('workflowBatchName');
 
-                const batchName = batchNameInput
-                    ? batchNameInput.value.trim()
-                    : '';
+                const batchName =
+                    batchNameInput
+                        ? batchNameInput.value.trim()
+                        : '';
+
 
                 // if (!batchName) {
                 //     alert('Please enter a batch name.');
                 //     return;
                 // }
 
-                const nodes = Array.from(
-                    document.querySelectorAll('#workflowCanvas .workflow-node')
-                );
+
+                const nodes =
+                    Array.from(
+                        document.querySelectorAll(
+                            '#workflowCanvas .workflow-node'
+                        )
+                    );
+
 
                 if (nodes.length === 0) {
-                    alert('Please add at least one workflow.');
+
+                    alert(
+                        'Please add at least one workflow.'
+                    );
+
                     return;
                 }
 
-                if (!workflowConnections || workflowConnections.length === 0) {
-                    alert('Please connect your workflow nodes first.');
+
+                if (
+                    !workflowConnections ||
+                    workflowConnections.length === 0
+                ) {
+
+                    alert(
+                        'Please connect your workflow nodes first.'
+                    );
+
                     return;
                 }
+
 
                 /*
                 |--------------------------------------------------------------------------
                 | Create node map
                 |--------------------------------------------------------------------------
                 */
+
                 const nodeMap = {};
 
+
                 nodes.forEach(node => {
-                    nodeMap[node.dataset.nodeId] = node;
+
+                    nodeMap[
+                        node.dataset.nodeId
+                    ] = node;
+
                 });
 
+
                 const workflows = [];
+
 
                 /*
                 |--------------------------------------------------------------------------
                 | Find every configuration
                 |--------------------------------------------------------------------------
                 */
-                const configurationNodes = nodes.filter(node =>
-                    node.dataset.nodeType === 'configuration'
-                );
+
+                const configurationNodes =
+                    nodes.filter(node =>
+                        node.dataset.nodeType === 'configuration'
+                    );
+
 
                 configurationNodes.forEach(configNode => {
 
-                    const configId = configNode.dataset.selectedValue;
+                    const configId =
+                        configNode.dataset.selectedValue;
+
 
                     /*
                     |--------------------------------------------------------------------------
                     | Find ALL inputs connected TO this configuration
                     |--------------------------------------------------------------------------
                     */
-                    const inputConnections = workflowConnections.filter(connection => {
 
-                        return (
-                            connection.to === configNode.dataset.nodeId &&
-                            nodeMap[connection.from] &&
-                            nodeMap[connection.from].dataset.nodeType === 'input'
-                        );
+                    const inputConnections =
+                        workflowConnections.filter(connection => {
 
-                    });
+                            return (
+                                connection.to ===
+                                    configNode.dataset.nodeId &&
+
+                                nodeMap[connection.from] &&
+
+                                nodeMap[
+                                    connection.from
+                                ].dataset.nodeType === 'input'
+                            );
+
+                        });
+
 
                     /*
                     |--------------------------------------------------------------------------
                     | Find ALL outputs connected FROM this configuration
                     |--------------------------------------------------------------------------
                     */
-                    const outputConnections = workflowConnections.filter(connection => {
 
-                        return (
-                            connection.from === configNode.dataset.nodeId &&
-                            nodeMap[connection.to] &&
-                            nodeMap[connection.to].dataset.nodeType === 'output'
-                        );
+                    const outputConnections =
+                        workflowConnections.filter(connection => {
 
-                    });
+                            return (
+                                connection.from ===
+                                    configNode.dataset.nodeId &&
+
+                                nodeMap[connection.to] &&
+
+                                nodeMap[
+                                    connection.to
+                                ].dataset.nodeType === 'output'
+                            );
+
+                        });
+
 
                     /*
                     |--------------------------------------------------------------------------
                     | Validate configuration
                     |--------------------------------------------------------------------------
                     */
+
                     if (
                         configId === undefined ||
                         configId === null ||
@@ -3291,83 +3342,90 @@
                         return;
                     }
 
+
                     /*
                     |--------------------------------------------------------------------------
                     | DEBUG
                     |--------------------------------------------------------------------------
                     */
+
                     console.log(
                         '======================================'
                     );
+
 
                     console.log(
                         'Configuration:',
                         configId
                     );
 
+
                     console.log(
                         'Input connections:',
                         inputConnections
                     );
+
 
                     console.log(
                         'Output connections:',
                         outputConnections
                     );
 
+
                     /*
                     |--------------------------------------------------------------------------
-                    | MATCH INPUTS AND OUTPUTS
+                    | MATCH EVERY INPUT WITH EVERY OUTPUT
                     |--------------------------------------------------------------------------
                     |
-                    | Instead of:
+                    | Example:
                     |
-                    | Input 1 × Output 1
-                    | Input 1 × Output 2
-                    | Input 2 × Output 1
-                    | Input 2 × Output 2
+                    | Input 1 ──┐
+                    |           ├── Configuration ── Output 1
+                    | Input 2 ──┘                  └─ Output 2
                     |
-                    | We pair them by their connection order:
+                    | Creates:
                     |
                     | Input 1 → Config → Output 1
+                    | Input 1 → Config → Output 2
+                    | Input 2 → Config → Output 1
                     | Input 2 → Config → Output 2
                     |
                     |--------------------------------------------------------------------------
                     */
 
-                    const pairCount = Math.min(
-                        inputConnections.length,
-                        outputConnections.length
-                    );
-
-                    for (let i = 0; i < pairCount; i++) {
+                    for (
+                        let i = 0;
+                        i < inputConnections.length;
+                        i++
+                    ) {
 
                         const inputNode =
-                            nodeMap[inputConnections[i].from];
+                            nodeMap[
+                                inputConnections[i].from
+                            ];
 
-                        const outputNode =
-                            nodeMap[outputConnections[i].to];
 
-                        if (!inputNode || !outputNode) {
+                        if (!inputNode) {
                             continue;
                         }
+
 
                         const inputConnectorId =
                             inputNode.dataset.selectedValue;
 
-                        const outputConnectorId =
-                            outputNode.dataset.selectedValue;
 
                         /*
                         |--------------------------------------------------------------------------
-                        | Skip invalid values
+                        | Validate input
                         |--------------------------------------------------------------------------
                         */
+
                         if (
                             inputConnectorId === undefined ||
                             inputConnectorId === null ||
                             inputConnectorId === ''
                         ) {
+
                             console.error(
                                 'Input has no selected value:',
                                 inputNode
@@ -3376,62 +3434,110 @@
                             continue;
                         }
 
-                        if (
-                            outputConnectorId === undefined ||
-                            outputConnectorId === null ||
-                            outputConnectorId === ''
-                        ) {
-                            console.error(
-                                'Output has no selected value:',
-                                outputNode
-                            );
-
-                            continue;
-                        }
 
                         /*
                         |--------------------------------------------------------------------------
-                        | Create ONE workflow for this
-                        | Input → Configuration → Output
+                        | Pair this input with EVERY output
                         |--------------------------------------------------------------------------
                         */
-                        workflows.push({
 
-                            input_connector_id:
-                                inputConnectorId,
+                        for (
+                            let j = 0;
+                            j < outputConnections.length;
+                            j++
+                        ) {
 
-                            configuration_id:
-                                configId,
+                            const outputNode =
+                                nodeMap[
+                                    outputConnections[j].to
+                                ];
 
-                            output_connector_id:
-                                outputConnectorId
 
-                        });
+                            if (!outputNode) {
+                                continue;
+                            }
+
+
+                            const outputConnectorId =
+                                outputNode.dataset.selectedValue;
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Validate output
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if (
+                                outputConnectorId === undefined ||
+                                outputConnectorId === null ||
+                                outputConnectorId === ''
+                            ) {
+
+                                console.error(
+                                    'Output has no selected value:',
+                                    outputNode
+                                );
+
+                                continue;
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Create workflow
+                            |--------------------------------------------------------------------------
+                            */
+
+                            workflows.push({
+
+                                input_connector_id:
+                                    inputConnectorId,
+
+                                configuration_id:
+                                    configId,
+
+                                output_connector_id:
+                                    outputConnectorId
+
+                            });
+
+                        }
 
                     }
 
+
                     /*
                     |--------------------------------------------------------------------------
-                    | Check expected number
+                    | DEBUG WORKFLOW COUNT
                     |--------------------------------------------------------------------------
                     */
+
+                    const expectedWorkflows =
+                        inputConnections.length *
+                        outputConnections.length;
+
+
                     console.log(
-                        'Expected workflows:',
-                        pairCount
+                        'Expected workflows for this config:',
+                        expectedWorkflows
                     );
+
 
                     console.log(
                         'Generated workflows for this config:',
-                        pairCount
+                        expectedWorkflows
                     );
 
                 });
+
 
                 /*
                 |--------------------------------------------------------------------------
                 | Final validation
                 |--------------------------------------------------------------------------
                 */
+
                 if (workflows.length === 0) {
 
                     alert(
@@ -3441,57 +3547,75 @@
                     return;
                 }
 
+
                 /*
                 |--------------------------------------------------------------------------
                 | IMPORTANT DEBUG
                 |--------------------------------------------------------------------------
                 */
+
                 console.log(
                     '======================================'
                 );
+
 
                 console.log(
                     'FINAL WORKFLOWS:',
                     workflows
                 );
 
+
                 console.log(
                     'TOTAL WORKFLOWS:',
                     workflows.length
                 );
+
 
                 /*
                 |--------------------------------------------------------------------------
                 | Save
                 |--------------------------------------------------------------------------
                 */
-                fetch("{{ route('admin.workflow.save') }}", {
 
-                    method: "POST",
+                fetch(
+                    "{{ route('admin.workflow.save') }}",
+                    {
 
-                    headers: {
+                        method: "POST",
 
-                        "Content-Type": "application/json",
+                        headers: {
 
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            "Content-Type":
+                                "application/json",
 
-                        "Accept": "application/json"
+                            "X-CSRF-TOKEN":
+                                "{{ csrf_token() }}",
 
-                    },
+                            "Accept":
+                                "application/json"
 
-                    body: JSON.stringify({
+                        },
 
-                        batch_name: batchName,
 
-                        workflows: workflows
+                        body: JSON.stringify({
 
-                    })
+                            batch_name:
+                                batchName,
 
-                })
+                            workflows:
+                                workflows
+
+                        })
+
+                    }
+                )
+
 
                 .then(async response => {
 
-                    const data = await response.json();
+                    const data =
+                        await response.json();
+
 
                     if (!response.ok) {
 
@@ -3502,15 +3626,20 @@
 
                     }
 
+
                     return data;
 
                 })
+
 
                 .then(data => {
 
                     if (data.success) {
 
-                        alert(data.message);
+                        alert(
+                            data.message
+                        );
+
 
                         console.log(
                             'Saved workflow:',
@@ -3528,12 +3657,14 @@
 
                 })
 
+
                 .catch(error => {
 
                     console.error(
                         'Workflow save error:',
                         error
                     );
+
 
                     alert(
                         error.message ||

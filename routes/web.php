@@ -188,7 +188,7 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
     ->name('admin.workflow.configuration.activate');
 
     // change the naming
-    Route::get('/configuration/use-config/{config_id?}',[WorkflowController::class, 'useParameterView'])
+    Route::get('/configuration/use-config/{pair_code?}/{batch?}/{config_id?}',[WorkflowController::class, 'useParameterView'])
     ->name('admin.workflow.configuration.use');
 
 
@@ -197,11 +197,11 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
 
 });
 
-Route::get('/google/gmail/connect', [GmailController::class, 'connect'])
-    ->name('gmail.connect');
+// Route::get('/google/gmail/connect', [GmailController::class, 'connect'])
+//     ->name('gmail.connect');
 
-Route::get('/google/gmail/callback', [GmailController::class, 'callback'])
-    ->name('gmail.callback');
+// Route::get('/google/gmail/callback', [GmailController::class, 'callback'])
+//     ->name('gmail.callback');
 
 Route::get(
     '/connector/{id}/gmail/authorize',

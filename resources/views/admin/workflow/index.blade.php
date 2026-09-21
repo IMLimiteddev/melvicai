@@ -248,42 +248,148 @@
                                                 ============================================================ --}}
 
                                             <td
-                                                class="workflow-batch-cell"
-                                                style="
-                                                    padding:18px;
-                                                    vertical-align:top;
-                                                    min-width:160px;
-                                                    background:#ffffff;
-                                                "
-                                            >
-
-                                                <div
+                                                    class="workflow-batch-cell"
                                                     style="
-                                                        background:#f8f9fa;
-                                                        border:1px solid #e5e7eb;
-                                                        border-radius:8px;
-                                                        padding:9px 11px;
+                                                        padding:18px;
+                                                        vertical-align:top;
+                                                        min-width:180px;
+                                                        background:#ffffff;
                                                     "
                                                 >
 
-                                                    <span
+                                                    <div
                                                         style="
-                                                            font-size:12px;
-                                                            font-weight:600;
-                                                            color:#185fa5;
-                                                            overflow-wrap:anywhere;
-                                                            word-break:break-word;
+                                                            display:flex;
+                                                            flex-direction:column;
+                                                            align-items:flex-start;
+                                                            gap:14px;
+                                                            background:#f8f9fa;
+                                                            border:1px solid #e5e7eb;
+                                                            border-radius:12px;
+                                                            padding:14px;
+                                                            box-shadow:0 2px 6px rgba(0,0,0,0.04);
                                                         "
                                                     >
-                                                        {{ $workflow->batch }}
-                                                    </span>
 
-                                                </div>
+                                                        <!-- Batch label -->
+                                                        <div
+                                                            style="
+                                                                width:100%;
+                                                                display:flex;
+                                                                flex-direction:column;
+                                                                gap:5px;
+                                                            "
+                                                        >
+
+                                                            <span
+                                                                style="
+                                                                    font-size:10px;
+                                                                    font-weight:700;
+                                                                    color:#9ca3af;
+                                                                    text-transform:uppercase;
+                                                                    letter-spacing:0.7px;
+                                                                "
+                                                            >
+                                                                Batch
+                                                            </span>
+
+                                                            <span
+                                                                style="
+                                                                    font-size:14px;
+                                                                    font-weight:700;
+                                                                    color:#185fa5;
+                                                                    overflow-wrap:anywhere;
+                                                                    word-break:break-word;
+                                                                    line-height:1.4;
+                                                                "
+                                                            >
+                                                                {{ $workflow->batch }}
+                                                            </span>
+
+                                                        </div>
+
+
+                                                        <!-- Divider -->
+                                                        <div
+                                                            style="
+                                                                width:100%;
+                                                                height:1px;
+                                                                background:#e5e7eb;
+                                                            "
+                                                        ></div>
+
+
+                                                        <!-- Activate button -->
+                                                        <form
+                                                            id="activateConfigurationForm-{{ $workflow?->id }}"
+                                                            action="{{ route('admin.workflow.configuration.activate') }}"
+                                                            method="POST"
+                                                            style="
+                                                                margin:0;
+                                                                width:100%;
+                                                            "
+                                                        >
+
+                                                            @csrf
+
+                                                            <input
+                                                                type="hidden"
+                                                                name="batch"
+                                                                value="{{ $workflow?->batch }}"
+                                                            >
+
+                                                            <button
+                                                                type="button"
+                                                                class="activate-workflow-btn"
+                                                                data-form-id="activateConfigurationForm-{{ $workflow?->id }}"
+                                                                data-batch="{{ $workflow?->batch }}"
+                                                                style="
+                                                                    display:flex;
+                                                                    align-items:center;
+                                                                    justify-content:center;
+                                                                    gap:8px;
+                                                                    width:100%;
+                                                                    padding:9px 14px;
+                                                                    border:1px solid #329b40;
+                                                                    border-radius:22px;
+                                                                    background:#ffffff;
+                                                                    color:#329b40;
+                                                                    font-size:13px;
+                                                                    font-weight:600;
+                                                                    white-space:nowrap;
+                                                                    cursor:pointer;
+                                                                    transition:all 0.2s ease;
+                                                                    box-sizing:border-box;
+                                                                "
+                                                            >
+
+                                                                <i
+                                                                    class="fas fa-power-off"
+                                                                    style="font-size:12px;"
+                                                                ></i>
+
+                                                                <span>
+                                                                    Activate
+                                                                </span>
+
+                                                                <i
+                                                                    class="fas fa-arrow-right activate-arrow"
+                                                                    style="
+                                                                        font-size:11px;
+                                                                        transition:transform 0.2s ease;
+                                                                    "
+                                                                ></i>
+
+                                                            </button>
+
+                                                        </form>
+
+                                                    </div>
 
                                             </td>
 
 
-                                            {{-- ============================================================
+                                           {{-- ============================================================
                                                 INPUT CONNECTORS
                                                 ============================================================ --}}
 
@@ -300,9 +406,26 @@
 
                                                     @php
 
+                                                        /*
+                                                        * The database contains one row for every
+                                                        * input/output combination.
+                                                        *
+                                                        * Example:
+                                                        * 2 -> Config 14 -> 3
+                                                        * 2 -> Config 14 -> 1
+                                                        * 4 -> Config 14 -> 3
+                                                        * 4 -> Config 14 -> 1
+                                                        *
+                                                        * For display, we only want:
+                                                        * 2
+                                                        * 4
+                                                        *
+                                                        * Therefore remove duplicate connector names.
+                                                        */
                                                         $configInputs = $configItems
                                                             ->pluck('input_name')
                                                             ->filter()
+                                                            ->unique()
                                                             ->values();
 
                                                         $isFirstConfiguration = $configIndex === 0;
@@ -512,9 +635,27 @@
 
                                                     @php
 
+                                                        /*
+                                                        * Same principle as inputs.
+                                                        *
+                                                        * The database contains the Cartesian-product rows,
+                                                        * so duplicate output connectors must be removed
+                                                        * for display.
+                                                        *
+                                                        * Example:
+                                                        * 3
+                                                        * 3
+                                                        * 1
+                                                        * 1
+                                                        *
+                                                        * becomes:
+                                                        * 3
+                                                        * 1
+                                                        */
                                                         $configOutputs = $configItems
                                                             ->pluck('output_name')
                                                             ->filter()
+                                                            ->unique()
                                                             ->values();
 
                                                         $isFirstConfiguration = $configIndex === 0;
@@ -625,7 +766,6 @@
 
                                             </td>
 
-
                                             {{-- ============================================================
                                                 STATUS
                                                 ============================================================ --}}
@@ -726,7 +866,7 @@
                                                                 </span>
 
 
-                                                                <form
+                                                                {{-- <form
                                                                     id="activateConfigurationForm-{{ $config->id }}"
                                                                     action="{{ route('admin.workflow.configuration.activate') }}"
                                                                     method="POST"
@@ -804,7 +944,7 @@
 
                                                                     </a>
 
-                                                                </form>
+                                                                </form> --}}
 
                                                             </div>
 
@@ -1051,31 +1191,38 @@
                                                             "
                                                         >
 
-                                                            <a
-                                                                href="{{ route('admin.workflow.configuration.use', ['config_id' => $config->configuration_id]) }}"
-                                                                style="
-                                                                    display:inline-flex;
-                                                                    align-items:center;
-                                                                    gap:7px;
-                                                                    padding:8px 4px;
-                                                                    color:#329b40;
-                                                                    font-size:14px;
-                                                                    font-weight:600;
-                                                                    text-decoration:none;
-                                                                    white-space:nowrap;
-                                                                "
-                                                            >
+                                                            @if ($config->status == 'inactive')
+                                                                <span style="font-style: italic; color: red">Not Set yet</span>
+                                                           
+                                                                @else
 
-                                                                <i class="fas fa-eye"></i>
+                                                                    <a
+                                                                        href="{{ route('admin.workflow.configuration.use', ['pair_code'=>$config?->pair_code, 'batch'=> $workflow?->batch, 'config_id' => $config?->configuration_id]) }}"
+                                                                        style="
+                                                                            display:inline-flex;
+                                                                            align-items:center;
+                                                                            gap:7px;
+                                                                            padding:8px 4px;
+                                                                            color:#329b40;
+                                                                            font-size:14px;
+                                                                            font-weight:600;
+                                                                            text-decoration:none;
+                                                                            white-space:nowrap;
+                                                                        "
+                                                                    >
 
-                                                                <span>Use</span>
+                                                                        <i class="fas fa-eye"></i>
 
-                                                                <i
-                                                                    class="fas fa-arrow-right"
-                                                                    style="font-size:12px;"
-                                                                ></i>
+                                                                        <span>Use</span>
 
-                                                            </a>
+                                                                        <i
+                                                                            class="fas fa-arrow-right"
+                                                                            style="font-size:12px;"
+                                                                        ></i>
+
+                                                                    </a>
+
+                                                            @endif
 
                                                         </div>
 
@@ -2320,5 +2467,163 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+    <script>
+        /*
+        |--------------------------------------------------------------------------
+        | ACTIVATION SETTINGS
+        |--------------------------------------------------------------------------
+        */
+
+        const workflowActivationSettings = {
+
+            title: 'Activate Workflow Batch?',
+
+            text: 'A test will be run to verify that the configured credentials are correct. The workflow will only be activated if the test succeeds.',
+
+            icon: 'warning',
+
+            confirmButtonText: 'Yes, Test & Activate',
+
+            cancelButtonText: 'Cancel'
+
+        };
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ACTIVATE WORKFLOW
+        |--------------------------------------------------------------------------
+        */
+
+        document.addEventListener('click', function (event) {
+
+            const button =
+                event.target.closest('.activate-workflow-btn');
+
+            if (!button) {
+                return;
+            }
+
+
+            const formId =
+                button.dataset.formId;
+
+            const form =
+                document.getElementById(formId);
+
+            if (!form) {
+                return;
+            }
+
+
+            Swal.fire({
+
+                title:
+                    workflowActivationSettings.title,
+
+                text:
+                    workflowActivationSettings.text,
+
+                icon:
+                    workflowActivationSettings.icon,
+
+                showCancelButton: true,
+
+                confirmButtonText:
+                    workflowActivationSettings.confirmButtonText,
+
+                cancelButtonText:
+                    workflowActivationSettings.cancelButtonText,
+
+                reverseButtons: true,
+
+                buttonsStyling: false,
+
+                customClass: {
+
+                    confirmButton:
+                        'swal-confirm-button',
+
+                    cancelButton:
+                        'swal-cancel-button'
+
+                }
+
+            }).then((result) => {
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+
+
+                const loader =
+                    document.getElementById(
+                        'workflowActivationLoader'
+                    );
+
+                if (loader) {
+                    loader.style.display = 'flex';
+                }
+
+
+                form.submit();
+
+            });
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUTTON HOVER EFFECT
+        |--------------------------------------------------------------------------
+        */
+
+        document.addEventListener('mouseover', function (event) {
+
+            const button =
+                event.target.closest('.activate-workflow-btn');
+
+            if (!button) {
+                return;
+            }
+
+            button.style.background = '#329b40';
+            button.style.color = '#fff';
+            button.style.transform = 'translateY(-1px)';
+
+            const arrow =
+                button.querySelector('.activate-arrow');
+
+            if (arrow) {
+                arrow.style.transform = 'translateX(3px)';
+            }
+
+        });
+
+
+        document.addEventListener('mouseout', function (event) {
+
+            const button =
+                event.target.closest('.activate-workflow-btn');
+
+            if (!button) {
+                return;
+            }
+
+            button.style.background = '#fff';
+            button.style.color = '#329b40';
+            button.style.transform = 'translateY(0)';
+
+            const arrow =
+                button.querySelector('.activate-arrow');
+
+            if (arrow) {
+                arrow.style.transform = 'translateX(0)';
+            }
+
+        });
+
+    </script>
     
 </x-layouts::app>
