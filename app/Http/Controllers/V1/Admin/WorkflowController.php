@@ -300,20 +300,39 @@ class WorkflowController extends Controller
 
     public function workflowSave(Request $request)
     {
+
+    // dd('here');
         $request->validate([
             'batch_name' => 'nullable|string|max:100|unique:workflows,batch',
             'workflows' => 'required|array|min:1',
+            
             'workflows.*.input_connector_id' => 'required|exists:workflow_connectors,id',
             'workflows.*.configuration_id' => 'required|string',
             'workflows.*.output_connector_id' => 'required|exists:workflow_connectors,id',
         ]);
 
+         // Get configuration IDs already used
+        $existingConfigurationIds = Workflow::whereIn(
+            'configuration_id',
+            collect($request->workflows)->pluck('configuration_id')
+        )->pluck('configuration_id');
+
+        if ($existingConfigurationIds->isNotEmpty()) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'One or more configurations have already been used.',
+                'configuration_ids' => $existingConfigurationIds,
+            ], 422);
+        }
+
+        
         \Log::info('WORKFLOW SAVE REQUEST', [
             'workflows' => $request->workflows,
         ]);
 
         DB::beginTransaction();
-
+       
         try {
 
             if (empty($request->batch_name)) {
@@ -1528,6 +1547,30 @@ class WorkflowController extends Controller
             compact('configuration', 'workflow')
         );
     }
+
+
+    private function em_in_em_out($configID, $batch)
+    {
+        
+ 
+        $workflow = Workflow::where('configuration_id', $configID)
+            ->where('batch', $batch)
+            ->firstOrFail();
+
+
+        $configuration = Configuration::findOrFail(
+            $workflow->configuration_id
+        );
+
+        
+
+        return view(
+            'admin.workflow.use_parameters.EM_IN-EM_OUT',
+            compact('configuration', 'workflow')
+        );
+    }
+
+
 
     
 }

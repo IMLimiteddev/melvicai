@@ -176,14 +176,14 @@
                                             Usage
                                         </th>
 
-                                        <th
+                                        {{-- <th
                                             style="
                                                 padding:15px;
                                                 border:none;
                                                 min-width:150px;
                                             ">
                                             User
-                                        </th>
+                                        </th> --}}
 
                                         <th
                                             style="
@@ -1024,7 +1024,7 @@
                                                 USER
                                                 ============================================================ --}}
 
-                                            <td
+                                            {{-- <td
                                                 style="
                                                     padding:0;
                                                     vertical-align:top;
@@ -1079,7 +1079,7 @@
 
                                                 @endforeach
 
-                                            </td>
+                                            </td> --}}
 
 
                                             {{-- ============================================================
