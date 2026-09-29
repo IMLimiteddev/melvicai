@@ -17,6 +17,7 @@ class Workflow extends Model
         'usage_count',
         'user_identifier',
         'batch',
-        'pair_code'
+        'pair_code',
+        'subject'
     ];
 }

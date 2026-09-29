@@ -289,6 +289,135 @@
                                 box-shadow:0 4px 18px rgba(0,0,0,0.04);
                             ">
 
+
+                                    <div
+                                        style="
+                                        font-size:11px;
+                                        font-weight:700;
+                                        letter-spacing:1.5px;
+                                        text-transform:uppercase;
+                                        color:#888;
+                                        margin-bottom:22px;
+                                        
+
+                                
+                                    ">
+                                        Over view
+                                    </div>
+
+                                    {{-- WORKFLOW DETAILS --}}
+                                    <div
+                                        style="
+                                            display:grid;
+                                            grid-template-columns:repeat(3,1fr);
+                                            gap:14px;
+                                            margin-top:22px;
+                                        ">
+
+                                        {{-- USAGE --}}
+                                        <div
+                                            style="
+                                                border:1px solid #e5e7eb;
+                                                border-radius:12px;
+                                                padding:15px 17px;
+                                                background:#fafafa;
+                                            ">
+
+                                            <div
+                                                style="
+                                                    font-size:11px;
+                                                    font-weight:700;
+                                                    text-transform:uppercase;
+                                                    letter-spacing:1px;
+                                                    color:#888;
+                                                    margin-bottom:6px;
+                                                ">
+                                                Usage
+                                            </div>
+
+                                            <div
+                                                style="
+                                                    font-size:18px;
+                                                    font-weight:700;
+                                                    color:#222;
+                                                ">
+                                                {{ $workflow->usage_count ?? 0 }}
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- USER --}}
+                                        <div
+                                            style="
+                                                border:1px solid #e5e7eb;
+                                                border-radius:12px;
+                                                padding:15px 17px;
+                                                background:#fafafa;
+                                            ">
+
+                                            <div
+                                                style="
+                                                    font-size:11px;
+                                                    font-weight:700;
+                                                    text-transform:uppercase;
+                                                    letter-spacing:1px;
+                                                    color:#888;
+                                                    margin-bottom:6px;
+                                                ">
+                                                User
+                                            </div>
+
+                                            <div
+                                                style="
+                                                    font-size:14px;
+                                                    font-weight:600;
+                                                    color:#222;
+                                                    overflow-wrap:anywhere;
+                                                    word-break:break-word;
+                                                ">
+                                                {{ $workflow->user_identifier ?: 'N/A' }}
+                                            </div>
+
+                                        </div>
+
+
+                                        {{-- CONFIG ID --}}
+                                        <div
+                                            style="
+                                                border:1px solid #e5e7eb;
+                                                border-radius:12px;
+                                                padding:15px 17px;
+                                                background:#fafafa;
+                                            ">
+
+                                            <div
+                                                style="
+                                                    font-size:11px;
+                                                    font-weight:700;
+                                                    text-transform:uppercase;
+                                                    letter-spacing:1px;
+                                                    color:#888;
+                                                    margin-bottom:6px;
+                                                ">
+                                                Configuration ID
+                                            </div>
+
+                                            <div
+                                                style="
+                                                    font-size:14px;
+                                                    font-weight:600;
+                                                    color:#222;
+                                                ">
+                                                #{{ $workflow->configuration_id }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
                                     <div
                                         style="
                                     font-size:11px;
@@ -297,7 +426,10 @@
                                     text-transform:uppercase;
                                     color:#888;
                                     margin-bottom:22px;
-                                ">
+                                    margin-top:22px
+
+                                
+                                    ">
                                         Workflow Configuration
                                     </div>
 
@@ -647,116 +779,173 @@
                                     </div>
 
 
-                                    {{-- WORKFLOW DETAILS --}}
-                                    <div
+
+
+
+
+
+
+
+
+
+
+                                    <table class="table align-middle"
                                         style="
-                                    display:grid;
-                                    grid-template-columns:repeat(3,1fr);
-                                    gap:14px;
-                                    margin-top:22px;
-                                ">
-
-                                        {{-- USAGE --}}
-                                        <div
-                                            style="
-                                        border:1px solid #e5e7eb;
-                                        border-radius:12px;
-                                        padding:15px 17px;
-                                        background:#fafafa;
-                                    ">
-
-                                            <div
-                                                style="
-                                            font-size:11px;
-                                            font-weight:700;
-                                            text-transform:uppercase;
-                                            letter-spacing:1px;
-                                            color:#888;
-                                            margin-bottom:6px;
+                                            width:100%;
+                                            min-width:900px;
+                                            border-collapse:separate;
+                                            border-spacing:0 10px;
+                                            table-layout:auto;
                                         ">
-                                                Usage
-                                            </div>
 
-                                            <div
-                                                style="
-                                            font-size:18px;
-                                            font-weight:700;
-                                            color:#222;
-                                        ">
-                                                {{ $workflow->usage_count ?? 0 }}
-                                            </div>
+                                        <thead>
+                                            <tr style="background:#f8f9fa;">
 
-                                        </div>
+                                                <th style="
+                                                    padding:15px;
+                                                    border:none;
+                                                    min-width:250px;
+                                                ">
+                                                    Subject
+                                                </th>
 
+                                                <th style="
+                                                    padding:15px;
+                                                    border:none;
+                                                    min-width:250px;
+                                                ">
+                                                    Input Name
+                                                </th>
 
-                                        {{-- USER --}}
-                                        <div
-                                            style="
-                                        border:1px solid #e5e7eb;
-                                        border-radius:12px;
-                                        padding:15px 17px;
-                                        background:#fafafa;
-                                    ">
+                                                <th style="
+                                                    padding:15px;
+                                                    border:none;
+                                                    min-width:250px;
+                                                ">
+                                                    Configuration
+                                                </th>
 
-                                            <div
-                                                style="
-                                            font-size:11px;
-                                            font-weight:700;
-                                            text-transform:uppercase;
-                                            letter-spacing:1px;
-                                            color:#888;
-                                            margin-bottom:6px;
-                                        ">
-                                                User
-                                            </div>
+                                                <th style="
+                                                    padding:15px;
+                                                    border:none;
+                                                    min-width:250px;
+                                                ">
+                                                    Output Name
+                                                </th>
 
-                                            <div
-                                                style="
-                                            font-size:14px;
-                                            font-weight:600;
-                                            color:#222;
-                                            overflow-wrap:anywhere;
-                                            word-break:break-word;
-                                        ">
-                                                {{ $workflow->user_identifier ?: 'N/A' }}
-                                            </div>
-
-                                        </div>
+                                            </tr>
+                                        </thead>
 
 
-                                        {{-- CONFIG ID --}}
-                                        <div
-                                            style="
-                                        border:1px solid #e5e7eb;
-                                        border-radius:12px;
-                                        padding:15px 17px;
-                                        background:#fafafa;
-                                    ">
+                                        <tbody>
 
-                                            <div
-                                                style="
-                                            font-size:11px;
-                                            font-weight:700;
-                                            text-transform:uppercase;
-                                            letter-spacing:1px;
-                                            color:#888;
-                                            margin-bottom:6px;
-                                        ">
-                                                Configuration ID
-                                            </div>
+                                            @foreach ($batch as $item)
 
-                                            <div
-                                                style="
-                                            font-size:14px;
-                                            font-weight:600;
-                                            color:#222;
-                                        ">
-                                                #{{ $workflow->configuration_id }}
-                                            </div>
+                                                <tr style="background:#ffffff;">
 
-                                        </div>
+                                                    {{-- SUBJECT --}}
+                                                    <td style="
+                                                        padding:18px;
+                                                        vertical-align:top;
+                                                        border:none;
+                                                        font-size:14px;
+                                                        font-weight:600;
+                                                        color:#185fa5;
+                                                        overflow-wrap:anywhere;
+                                                    ">
 
-                                    </div>
+                                                        <div style="
+                                                            display:flex;
+                                                            align-items:center;
+                                                            gap:10px;
+                                                        ">
+
+                                                            <span>
+                                                                {{ $item->subject }}
+                                                            </span>
+
+                                                            <button
+                                                                type="button"
+                                                                onclick="openSubjectModal(
+                                                                    @js($item->id),
+                                                                    @js($item->subject)
+                                                                )"
+                                                                style="
+                                                                    border:none;
+                                                                    background:transparent;
+                                                                    padding:4px;
+                                                                    color:#6c757d;
+                                                                    cursor:pointer;
+                                                                    font-size:14px;
+                                                                "
+                                                                title="Edit subject"
+                                                            >
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+
+                                                        </div>
+
+                                                    </td>
+
+
+                                                    {{-- INPUT NAME --}}
+                                                    <td style="
+                                                        padding:18px;
+                                                        vertical-align:top;
+                                                        border:none;
+                                                        font-size:13px;
+                                                        color:#222;
+                                                        overflow-wrap:anywhere;
+                                                    ">
+
+                                                        {{ $item->input_name }}
+
+                                                    </td>
+
+
+                                                    {{-- CONFIGURATION --}}
+                                                    <td style="
+                                                        padding:18px;
+                                                        vertical-align:top;
+                                                        border:none;
+                                                        font-size:13px;
+                                                        color:#222;
+                                                        overflow-wrap:anywhere;
+                                                    ">
+
+                                                        {{ $item->config_name }}
+
+                                                    </td>
+
+
+                                                    {{-- OUTPUT NAME --}}
+                                                    <td style="
+                                                        padding:18px;
+                                                        vertical-align:top;
+                                                        border:none;
+                                                        font-size:13px;
+                                                        color:#222;
+                                                        overflow-wrap:anywhere;
+                                                    ">
+
+                                                        {{ $item->output_name }}
+
+                                                    </td>
+
+                                                </tr>
+
+                                            @endforeach
+
+                                        </tbody>
+
+                                    </table>
+
+
+
+                                    
+
+
+                                    
 
                                 </div>
 
@@ -1380,7 +1569,239 @@
 
         </div>
 
+        <div class="modal fade" id="subjectManagerModal" tabindex="-1" aria-hidden="true">
+
+            <div class="modal-dialog modal-l modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-header"
+                        style="
+                            background:#fff;
+                            border-bottom:1px solid #eee;
+                            padding:20px 24px;
+                        ">
+
+                        <h4 class="modal-title"
+                            style="
+                                font-weight:700;
+                                color:#222;
+                                margin:0;
+                            ">
+
+                            <i class="fa fa-edit me-2"></i>
+                            Manage Subject
+
+                        </h4>
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        </button>
+
+                    </div>
+
+
+                    <div class="modal-body" style="padding:24px;">
+
+                        <form
+                            action="{{route("admin.workflow.subject.update")}}"
+                            method="POST"
+                        >
+
+                            @csrf
+
+                            {{-- BATCH RECORD ID --}}
+                            <input
+                                type="hidden"
+                                name="batch_id"
+                                id="subjectBatchId"
+                            >
+
+
+                            <div class="row g-3">
+
+                                <div class="col-md-12">
+
+                                    <label
+                                        class="form-label"
+                                        style="
+                                            font-weight:600;
+                                            color:#333;
+                                            margin-bottom:8px;
+                                        "
+                                    >
+
+                                        Subject
+
+                                        <span style="color:#dc3545;">
+                                            *
+                                        </span>
+
+                                    </label>
+
+
+                                    <select
+                                        name="subject"
+                                        id="subjectSelect"
+                                        class="form-select"
+                                        required
+                                        style="
+                                            height:48px;
+                                            border-radius:10px;
+                                            border:1px solid #dee2e6;
+                                            padding:0 14px;
+                                        "
+                                    >
+
+                                        <option value="" selected disabled>
+                                            Select subject
+                                        </option>
+
+                                        @foreach ($subject as $itemSubject)
+
+                                            <option value="{{ $itemSubject->name }}">
+
+                                                {{ $itemSubject->name }}
+
+                                            </option>
+
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            {{-- SAVE BUTTON --}}
+                            <div style="
+                                display:flex;
+                                justify-content:flex-start;
+                                margin-top:25px;
+                            ">
+
+                                <button
+                                    type="submit"
+                                    style="
+                                        height:48px;
+                                        padding:0 22px;
+                                        border-radius:24px;
+                                        background:#000;
+                                        color:#fff;
+                                        border:none;
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:center;
+                                        gap:10px;
+                                        font-size:15px;
+                                        cursor:pointer;
+                                        transition:background .3s ease,
+                                                transform .3s ease;
+                                    "
+                                    onmouseover="
+                                        this.style.background='#28a745';
+                                        this.style.transform='translateY(-2px)'
+                                    "
+                                    onmouseout="
+                                        this.style.background='#000';
+                                        this.style.transform='translateY(0)'
+                                    "
+                                >
+
+                                    <i class="fa fa-save"></i>
+
+                                    <span>
+                                        Save Subject
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="modal-footer"
+                        style="
+                            border-top:1px solid #eee;
+                            padding:16px 24px;
+                        "
+                    >
+
+                        <button
+                            type="button"
+                            data-bs-dismiss="modal"
+                            style="
+                                height:48px;
+                                padding:0 18px;
+                                border-radius:24px;
+                                background:#000;
+                                color:#fff;
+                                border:none;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                gap:10px;
+                                font-size:15px;
+                                cursor:pointer;
+                                transition:background .3s ease,
+                                        transform .3s ease;
+                            "
+                            onmouseover="
+                                this.style.background='#dc3545';
+                                this.style.transform='translateY(-2px)'
+                            "
+                            onmouseout="
+                                this.style.background='#000';
+                                this.style.transform='translateY(0)'
+                            "
+                        >
+
+                            <i class="fa fa-times"></i>
+
+                            <span>
+                                Close
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+
+   <script>
+        function openSubjectModal(batchId, currentSubjectId) {
+
+            console.log('Batch ID:', batchId);
+            console.log('Subject ID:', currentSubjectId);
+
+            document.getElementById('subjectBatchId').value = batchId;
+
+            document.getElementById('subjectSelect').value = currentSubjectId;
+
+            const modalElement =
+                document.getElementById('subjectManagerModal');
+
+            const modal =
+                bootstrap.Modal.getOrCreateInstance(modalElement);
+
+            modal.show();
+        }
+
+</script>
 
 
     <script>

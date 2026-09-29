@@ -178,6 +178,57 @@
 
                             </flux:sidebar.group>
 
+                            <flux:sidebar.group label="Processor" collapsible>
+
+                                <div x-data="{ open: {{ request()->routeIs(
+                                    'admin.index.config',
+                                    
+                                ) ? 'true' : 'false' }} }">
+
+                                    <flux:sidebar.item
+                                        href="javascript:void(0)"
+                                        @click="open = !open"
+                                        icon="cog"
+                                    >
+
+                                        <span style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+
+                                            <span>Processors</span>
+
+                                            <flux:icon
+                                                name="chevron-down"
+                                                style="width:16px; transition:0.3s;"
+                                                x-bind:style="open ? 'transform:rotate(180deg)' : ''"
+                                            />
+
+                                        </span>
+
+                                    </flux:sidebar.item>
+
+
+                                    <div x-show="open" x-transition style="margin-left:25px;">
+
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.index.manual') }}"
+                                            wire:navigate
+                                        >
+                                            Manual
+                                        </flux:sidebar.item>
+
+
+                                        <flux:sidebar.item
+                                            href="{{ route('admin.index.ai') }}"
+                                            wire:navigate
+                                        >
+                                            AI
+                                        </flux:sidebar.item>
+
+                                    </div>
+
+                                </div>
+
+                            </flux:sidebar.group>
+
 
                             <flux:sidebar.group label="Workflows" collapsible>
 
@@ -393,6 +444,9 @@
                             </flux:sidebar.group>
 
                         </flux:sidebar>
+
+
+                        
                     </div>
                 </div>
 

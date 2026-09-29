@@ -913,40 +913,63 @@
                                     font-size:12px;
                                     font-weight:600;
                                     color:#555;
-                                    margin-bottom:7px;
+                                    margin-bottom:10px;
                                 ">
                                     Select Configuration
                                 </label>
 
-                               <select
+                                <div
                                     id="nodeConfiguration"
-                                    onchange="updateSelectedNodeValue()"
-                                    multiple
                                     style="
-                                        width:100%;
-                                        border:1px solid #ddd;
-                                        border-radius:10px;
-                                        padding:8px 12px;
-                                        background:#fff;
-                                        color:#333;
-                                        font-size:13px;
-                                        outline:none;
+                                        display:flex;
+                                        flex-direction:column;
+                                        gap:8px;
+                                        max-height:200px;
+                                        overflow-y:auto;
                                     "
                                 >
 
-                                    <option value="">
-                                        Select configuration
-                                    </option>
-
                                     @foreach($configs as $config)
 
-                                        <option value="{{ $config->id }}">
-                                            {{ $config->name ?? $config->config_name }}
-                                        </option>
+                                        <label style="
+                                            display:flex;
+                                            align-items:center;
+                                            gap:10px;
+                                            padding:10px 12px;
+                                            border:1px solid #ddd;
+                                            border-radius:10px;
+                                            background:#fff;
+                                            cursor:pointer;
+                                            font-size:13px;
+                                            color:#333;
+                                            transition:all 0.2s ease;
+                                        "
+                                        onmouseover="this.style.borderColor='#28a745';"
+                                        onmouseout="this.style.borderColor='#ddd';"
+                                        >
+
+                                            <input
+                                                type="checkbox"
+                                                class="node-configuration-checkbox"
+                                                value="{{ $config->id }}"
+                                                onchange="updateSelectedNodeValue()"
+                                                style="
+                                                    width:16px;
+                                                    height:16px;
+                                                    cursor:pointer;
+                                                    accent-color:#28a745;
+                                                "
+                                            >
+
+                                            <span>
+                                                {{ $config->name ?? $config->config_name }}
+                                            </span>
+
+                                        </label>
 
                                     @endforeach
 
-                                </select>
+                                </div>
 
                             </div>
 
@@ -2340,6 +2363,108 @@
                 const type =
                     node.dataset.nodeType;
 
+                let select =
+                    null;
+
+
+                if (type === 'input') {
+
+                    select =
+                        document.getElementById(
+                            'nodeInputConnector'
+                        );
+
+                }
+
+
+                if (type === 'configuration') {
+
+                    select =
+                        document.getElementById(
+                            'nodeConfiguration'
+                        );
+
+                }
+
+
+                if (type === 'output') {
+
+                    select =
+                        document.getElementById(
+                            'nodeOutputConnector'
+                        );
+
+                }
+
+
+                if (!select) {
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | CONFIGURATION CHECKBOXES
+                |--------------------------------------------------------------------------
+                */
+
+                if (type === 'configuration') {
+
+                    const selectedValues =
+                        node.dataset.selectedValue
+                            ? node.dataset.selectedValue.split(',')
+                            : [];
+
+
+                    const checkboxes =
+                        select.querySelectorAll(
+                            '.node-configuration-checkbox'
+                        );
+
+
+                    checkboxes.forEach(function (checkbox) {
+
+                        checkbox.checked =
+                            selectedValues.includes(
+                                checkbox.value
+                            );
+
+                    });
+
+
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | INPUT / OUTPUT
+                |--------------------------------------------------------------------------
+                */
+
+                select.value =
+                    node.dataset.selectedValue ||
+                    '';
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | UPDATE NODE SETTING
+            |--------------------------------------------------------------------------
+            */
+
+            function updateSelectedNodeValue() {
+
+                if (!selectedWorkflowNode) {
+                    return;
+                }
+
+
+                const type =
+                    selectedWorkflowNode.dataset.nodeType;
+
 
                 let select =
                     null;
@@ -2380,107 +2505,76 @@
                 }
 
 
-                select.value =
-                    node.dataset.selectedValue ||
-                    '';
+                /*
+                |--------------------------------------------------------------------------
+                | CONFIGURATION CHECKBOXES
+                |--------------------------------------------------------------------------
+                */
+
+                const value =
+                    type === 'configuration'
+
+                        ? Array.from(
+                            select.querySelectorAll(
+                                '.node-configuration-checkbox:checked'
+                            )
+                        ).map(
+                            checkbox => checkbox.value
+                        )
+
+                        : select.value;
+
+
+                const text =
+                    type === 'configuration'
+
+                        ? Array.from(
+                            select.querySelectorAll(
+                                '.node-configuration-checkbox:checked'
+                            )
+                        ).map(
+                            checkbox =>
+                                checkbox.parentElement
+                                    .querySelector('span')
+                                    ?.textContent.trim() || ''
+                        ).join(', ')
+
+                        : select.options[
+                            select.selectedIndex
+                        ]?.text || '';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | SAVE TO NODE
+                |--------------------------------------------------------------------------
+                */
+
+                selectedWorkflowNode.dataset.selectedValue =
+                    Array.isArray(value)
+                        ? value.join(',')
+                        : value;
+
+
+                selectedWorkflowNode.dataset.selectedName =
+                    text;
+
+
+                const valueElement =
+                    selectedWorkflowNode.querySelector(
+                        '.workflow-node-value'
+                    );
+
+
+                if (valueElement) {
+
+                    valueElement.textContent =
+                        text ||
+                        'Click to configure';
+
+                }
 
             }
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | UPDATE NODE SETTING
-            |--------------------------------------------------------------------------
-            */
-
-           function updateSelectedNodeValue() {
-
-    if (!selectedWorkflowNode) {
-        return;
-    }
-
-
-    const type =
-        selectedWorkflowNode.dataset.nodeType;
-
-
-    let select =
-        null;
-
-
-    if (type === 'input') {
-
-        select =
-            document.getElementById(
-                'nodeInputConnector'
-            );
-
-    }
-
-
-    if (type === 'configuration') {
-
-        select =
-            document.getElementById(
-                'nodeConfiguration'
-            );
-
-    }
-
-
-    if (type === 'output') {
-
-        select =
-            document.getElementById(
-                'nodeOutputConnector'
-            );
-
-    }
-
-
-    if (!select) {
-        return;
-    }
-
-
-    const value =
-        type === 'configuration'
-            ? Array.from(select.selectedOptions).map(option => option.value)
-            : select.value;
-
-
-    const text =
-        type === 'configuration'
-            ? Array.from(select.selectedOptions).map(option => option.text).join(', ')
-            : select.options[
-                select.selectedIndex
-            ]?.text || '';
-
-
-    selectedWorkflowNode.dataset.selectedValue =
-        value;
-
-
-    selectedWorkflowNode.dataset.selectedName =
-        text;
-
-
-    const valueElement =
-        selectedWorkflowNode.querySelector(
-            '.workflow-node-value'
-        );
-
-
-    if (valueElement) {
-
-        valueElement.textContent =
-            text ||
-            'Click to configure';
-
-    }
-
-}
-
 
             /*
             |--------------------------------------------------------------------------

@@ -9,6 +9,7 @@ use App\Livewire\Admin\Roles;
 use App\Http\Controllers\Admin\GmailController;
 use App\Http\Controllers\V1\Admin\ConfigurationController;
 use App\Http\Controllers\V1\Admin\WorkflowController;
+use App\Http\Controllers\V1\Admin\ManualController;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/onboard/services', 'onboard.services')->name('onboard.services');
@@ -176,6 +177,9 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
     Route::post('/workflow-update', [WorkflowController::class, 'workflowUpdate'])
     ->name('admin.workflow.update');
 
+    Route::post('/workflow-subject-update', [WorkflowController::class, 'workflowSubjectUpdate'])
+    ->name('admin.workflow.subject.update');
+
     Route::get('/workflow-single/{id?}', [WorkflowController::class, 'workflowSingle'])
     ->name('admin.workflow.single');
 
@@ -194,6 +198,22 @@ Route::prefix('admin/workflow-service')->middleware(['auth', 'verified'])->group
 
     Route::post('/configuration/use-config/process/{config_id?}',[WorkflowController::class, 'useParameterProcessConfig'])
     ->name('admin.workflow.configuration.process.use');
+
+});
+
+Route::prefix('admin/processors')->middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/manual-index', [ManualController::class, 'manualIndex'])
+    ->name('admin.index.manual');
+
+    Route::post('/manual-process', [ManualController::class, 'manualProcess'])
+    ->name('admin.process.manual');
+
+    Route::get('/ai-index', [ManualController::class, 'aiIndex'])
+    ->name('admin.index.ai');
+
+    Route::get('/download/{batch}',[ManualController::class, 'manualDownload'])
+    ->name('manual.download.page');
 
 });
 

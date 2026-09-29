@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Configuration; 
 use App\Models\Verb;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\Workflow;
@@ -494,12 +495,17 @@ class WorkflowController extends Controller
 
         $configs = Configuration::all();
 
+        $subject = Subject::all();
+
+
         return view(
             'admin.workflow.single',
             compact(
                 'workflow',
                 'workflowConnectors',
-                'configs'
+                'configs',
+                'batch',
+                'subject'
             )
         );
     }
@@ -1568,6 +1574,47 @@ class WorkflowController extends Controller
             'admin.workflow.use_parameters.EM_IN-EM_OUT',
             compact('configuration', 'workflow')
         );
+    }
+
+
+   public function workflowSubjectUpdate(Request $request)
+    {
+
+        $request->validate([
+            'batch_id' => 'required|exists:workflows,id',
+            'subject' => 'required|exists:subjects,name',
+        ]);
+
+    // dd($request->all());
+
+
+        $workflow = Workflow::findOrFail($request->batch_id);
+
+        // Do not update active workflow
+
+        if (Workflow::where('subject', 'DEFAULT')->exists()) {
+
+            alert()
+                ->error(
+                    'Cannot Update Subject',
+                    'Already have a default configuration.'
+                );
+
+            return redirect()->back();
+        }
+        
+
+        $workflow->update([
+            'subject' => $request->subject,
+        ]);
+
+        alert()
+            ->success(
+                'Subject Updated',
+                'The workflow subject was updated successfully.'
+            );
+
+        return redirect()->back();
     }
 
 
